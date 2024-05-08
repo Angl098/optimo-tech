@@ -1,2 +1,0 @@
-# optimo-tech
-Henry PF
