@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import validation from '..//Validation//CreateSuplements//Validation';
-import {postSuplements } from "../Redux/actions";
+import {postSuplements } from "..//..//Redux/actions";
 import style from './CreateSuplement.module.css';
 
 function CreateSuplement(){
