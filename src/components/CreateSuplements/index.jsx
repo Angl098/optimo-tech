@@ -43,13 +43,13 @@ function CreateSuplement() {
     //manejar la imagen
     const [imagenURL, setImagenURL] = useState('');
 
-    const handleImagen = (event) => {
-        event.preventDefault();
-        const image = event.target.value;
-        setImagenURL(image);
-        setNewSuplements({ ...newSuplements, image: image });
-        setErrors(validation({ ...newSuplements, image: image }))
-    };
+    // const handleImagen = (event) => {
+    //     event.preventDefault();
+    //     const image = event.target.value;
+    //     setImagenURL(image);
+    //     setNewSuplements({ ...newSuplements, image: image });
+    //     setErrors(validation({ ...newSuplements, image: image }))
+    // };
 
     //submit
     const handleSubmit = (e) => {
