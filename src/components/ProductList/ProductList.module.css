@@ -1,4 +1,7 @@
 .item{
+    width: 250px;
+    height: 400px;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -50,5 +53,9 @@
 }
 
 .newData{
+    margin: 25px;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
 }

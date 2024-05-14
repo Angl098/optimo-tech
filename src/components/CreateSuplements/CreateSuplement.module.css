@@ -20,7 +20,7 @@ label {
 
 .form {
     width: 500px;
-    height: auto;
+    gap: 5px;
    
     background-color: #4e54c8; /* Color de fondo */
     background-image: linear-gradient(to right, #1684A7, #09A599); 
@@ -69,4 +69,10 @@ label {
     border-radius: 4px;
     font-size: 15px;
   }
-  
+  .subirfoto{
+    background-color: white;
+  }
+  .subirfoto:hover{
+    background-color: grey;
+    cursor: pointer;
+  }
