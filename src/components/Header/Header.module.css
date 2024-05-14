@@ -1,0 +1,43 @@
+
+/* Header */
+header {
+	display: flex;
+	justify-content: space-between;
+	padding: 30px 0 40px 0;
+}
+
+.container-icon {
+	position: relative;
+}
+
+
+/* .count-products {
+	position: absolute;
+	top: 55%;
+	right: 0;
+
+	background-color: #daa9a9;
+	color: #fff;
+	width: 25px;
+	height: 25px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	
+} */
+
+#contador-productos {
+	font-size: 12px;
+}
+
+.icon-close {
+	width: 25px;
+	height: 25px;
+} 
+
+.icon-close:hover {
+	stroke: red;
+	cursor: pointer;
+}
