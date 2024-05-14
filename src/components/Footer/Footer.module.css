@@ -1,0 +1,83 @@
+.sbFooter{
+    padding: 4rem 4rem;
+}
+
+.footer{
+    background-color: #c9dbcc;
+    border-radius: 8px;
+    box-shadow: 5px 13px 45px rgba(0, 0, 0, 0.22);
+}
+
+.sbFooter{
+    display: flex;
+    flex-direction: column;
+}
+
+.footerLinks{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.linksDiv{
+    width: 150px;
+    margin: 1rem;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    color: rgb(63, 63, 64);
+}
+
+a{
+    color: rgb(63, 63, 64);
+}
+
+.socialmedia{
+    display: flex;
+    flex-direction: row;
+}
+
+.socialmedia img{
+    width: 80%;
+}
+
+.linksDiv h4{
+    font-size: 14px;
+    line-height: 17px;
+    margin-bottom: 0.9rem;
+}
+
+.linksDiv p{
+    font-size: 12px;
+    line-height: 15px;
+    margin: 0.5rem 0;
+    cursor: pointer;
+}
+
+.footerBelow{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 0.2rem;
+}
+
+hr{
+    color: white !important;
+    width: 100%;
+}
+
+.footerCopyright{
+    font-size: 13px;
+    line-height: 15px;
+    color: rgb(63, 63, 64);
+    font-weight: 600;
+}
+
+@media screen and (max-width: 850px) {
+
+}
