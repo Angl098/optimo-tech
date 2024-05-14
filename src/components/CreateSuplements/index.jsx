@@ -5,36 +5,64 @@ import { postSuplements } from "..//..//Redux/actions";
 import style from './CreateSuplement.module.css';
 
 function CreateSuplement() {
+    const [disableSubmit, setDisableSubmit] = useState(true);
     const dispatch = useDispatch();
     //estado principal 
-    const [newSuplements, setNewSuplements] = useState({});
+    const [newSuplements, setNewSuplements] = useState({
+        images: []
+    });
     //estado de errores
     const [errors, setErrors] = useState({ name: 'Completa todos los datos' });
 
     //manejador del estado principal new Driver
     function handleChange(event) {
+        const { name, files, value, type, checked } = event.target;
+        let newValue = value;
+        if (name === "images") {
+            newValue = [
+                ...newSuplements.images,
+                ...Array.from(files).slice(0, 3 - newSuplements.images.length),
+            ];
+        }
         event.preventDefault();
         setErrors(validation({
             ...newSuplements, [event.target.name]: event.target.value
         })
         );
-        setNewSuplements({ ...newSuplements, [event.target.name]: event.target.value });
+        setNewSuplements({ ...newSuplements, [name]: newValue });
     }
+    const handleImageRemove = (index) => {
+        const updatedImages = [...newSuplements.images];
+        updatedImages.splice(index, 1);
+        setNewSuplements((prevData) => ({
+            ...prevData,
+            images: updatedImages,
+        }));
+    };
 
     //manejar la imagen
     const [imagenURL, setImagenURL] = useState('');
 
-    const handleImagen = (event) => {
-        event.preventDefault();
-        const image = event.target.value;
-        setImagenURL(image);
-        setNewSuplements({ ...newSuplements, image: image });
-        setErrors(validation({ ...newSuplements, image: image }))
-    };
+    // const handleImagen = (event) => {
+    //     event.preventDefault();
+    //     const image = event.target.value;
+    //     setImagenURL(image);
+    //     setNewSuplements({ ...newSuplements, image: image });
+    //     setErrors(validation({ ...newSuplements, image: image }))
+    // };
 
     //submit
-    const handleSubmit = (event) => {
-        dispatch(postSuplements(newSuplements));
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const formDataToSend = new FormData();
+        Object.entries(newSuplements).forEach(([key, value]) => {
+          if (key === "images") {
+            value.forEach((image) => formDataToSend.append("images", image));
+          } else {
+            formDataToSend.append(key, value);
+          }
+        });
+        dispatch(postSuplements(formDataToSend));
     };
 
     // Manejar el cambio de las opciones seleccionadas category
@@ -91,11 +119,11 @@ function CreateSuplement() {
             <input type="text" className={style.form_style} name='price' value={newSuplements.price} onChange={handleChange} />
             {errors.price !== '' && <p className={style.errors}>{errors.price}</p>}
 
-            <label>Imagen </label>
+            {/* <label>Imagen </label>
             <input type="text" className={style.form_style} name='image' onChange={handleImagen} />
             {imagenURL && <img src={imagenURL} alt="Vista previa de la imagen"
                 style={{ maxWidth: '300px', maxHeight: '300px', padding: '20px' }} />}
-            {errors.image !== '' && <p className={style.errors}>{errors.image}</p>}
+            {errors.image !== '' && <p className={style.errors}>{errors.image}</p>} */}
 
             <label>Cantidad</label>
             <input type="text" className={style.form_style} name='amount' value={newSuplements.amount} onChange={handleChange} />
@@ -104,6 +132,45 @@ function CreateSuplement() {
             {console.log('nuevo suplemento', newSuplements)}
             {Object.keys(errors).length <= 0 && <button className={style.btn} type="submit">Registrar</button>}
 
+            <div>
+                <input type="file" accept="image/*" name="images" id="images" onChange={handleChange} className="hidden" multiple />
+                <label htmlFor="images">
+                    <span>
+                        Subir foto
+                    </span>
+                </label>
+            </div>
+            {newSuplements.images.length > 0 && (
+                <div>
+                    <p>
+                        Previsualización de imágenes:
+                    </p>
+                    <div>
+                        {newSuplements.images.map((image, index) => (
+                            <div key={index}>
+                                <div>
+                                    <img src={URL.createObjectURL(image)} alt={`Imagen ${index + 1}`} />
+                                    <button type="button" onClick={() => handleImageRemove(index)}>
+                                        X
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                        {[...Array(1 - newSuplements.images.length)].map((_, index) => (
+                            <div key={index}>
+                                <span>
+                                    Imagen {newSuplements.images.length + index + 1}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+            <button
+                type="submit"
+            >
+                Enviar
+            </button>
         </form>
     </>
 }
