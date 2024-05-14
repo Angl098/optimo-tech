@@ -50,26 +50,6 @@
     
 }
 
-.divPagination{
+.newData{
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
 }
-
-.pageItem{
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 5px;
-    }
-
-.pagination {
-    display: flex;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    }
