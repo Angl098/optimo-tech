@@ -20,7 +20,7 @@ function App() {
         <Route path={PATHROUTES.LANDING} element={<Landing/>} />
         <Route path={PATHROUTES.HOME} element={<Home/>} />
         <Route path='createsuplements' element={<CreateSuplement/>}/>
-<Route path='login' element={<Login/>}/>
+        <Route path='login' element={<Login/>}/>
       </Routes>
         <Footer />
       </div>
