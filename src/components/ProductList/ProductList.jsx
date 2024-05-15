@@ -7,7 +7,7 @@ export default function ProductList() {
     const [datas,setDatas]=useState([...data]) 
     const [datasAux,setDatasAux]=useState([...data]) 
     useEffect(()=>{
-        axios.get("http://localhost:3001/suplements/allSuplemets").then(({data})=>{
+        axios.get("http://localhost:3001/suplements/").then(({data})=>{
             console.log(data);
             setDatas([...datas,...data])
             setDatasAux([...datas,...data])
