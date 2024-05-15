@@ -23,10 +23,9 @@ export const postSuplements = (newSuplements) => {
 };
 
 export const getSuplement = (id) => {
-    console.log(id);
     return async function (dispatch) {
         try {
-            const { data } = await axios.get(`http://localhost:3001/${id}`);
+            const { data } = await axios.get(`http://localhost:3001/suplements/${id}`);
             console.log(data)
             return dispatch({
                 type: GET_SUPLEMENT,

@@ -14,9 +14,10 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case GET_SUPLEMENT:
+      console.log(payload);
       return {
         ...state,
-        getSuplementById: payload,
+        getSuplementById: {...payload},
       };
 
     case CLEAN_PRODUCT_BY_ID:

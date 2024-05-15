@@ -91,7 +91,7 @@ export default function ProductList() {
             <div className={style.newData}>
 
                 {newData.map(product => (
-                    <div className={style.item} key={product.id}>
+                    <div className={style.item} key={product.id} onClick={()=>{console.log(product);}}>
                         <figure>
                             <img className={style.image} src={product.image} alt={product.name} />
                         </figure>

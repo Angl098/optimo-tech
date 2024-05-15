@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import styles from './Detail.module.css'
 import { useParams } from "react-router-dom";
 import { getSuplement, cleanProductById } from "../../Redux//actions";
 
@@ -7,8 +8,8 @@ const Detail = () => {
     const { id } = useParams();
 
     const dispatch = useDispatch();
-    const suplementById = useSelector((state) => state.getSuplement);
-
+    const suplementById = useSelector((state) => state.getSuplementById);
+    const [data, setData] = useState(suplementById)
     useEffect(() => {
         dispatch(getSuplement(id));
 
@@ -17,20 +18,23 @@ const Detail = () => {
         };
     }, [id]);
 
-    let productoFiltrado;
-    // if (suplementById) {
-    //     productoFiltrado = Object.fromEntries(
-    //         Object.entries(suplementById).filter(
-    //             ([key, value]) =>
-    //                 value !== null &&
-    //                 key !== "" &&
-    //                 key !== "" &&
-    //                 key !== ""
-    //         )
-    //     );
-    // }
+    let productoFiltrado = suplementById;
+    console.log(productoFiltrado);
+    if (suplementById) {
+        productoFiltrado = Object.fromEntries(
+            Object.entries(suplementById).filter(
+                ([key, value]) =>
+                    value !== null &&
+                    key !== "" &&
+                    key !== "" &&
+                    key !== ""
+            )
+        );
+    }
 
     useEffect(() => {
+        console.log(suplementById);
+        console.log(data);
         if (suplementById && suplementById.image && Array.isArray(suplementById.image)) {
             const imagenes = suplementById.image;
             const data = imagenes.map((img) => ({
