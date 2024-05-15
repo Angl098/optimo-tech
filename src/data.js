@@ -17,7 +17,7 @@ export const data = [
     },
     {
         "name": "THE BUILDER - Mass Gainer",
-        "category": "Proteina",
+        "category": "Proteinas y Aminoacidos",
         "description": "Más que un ganador, un arquitecto de músculo. Con 581 calorías de calidad, 55g de proteína, 70g de carbohidratos complejos, más 5g de creatina Monohidratada; Vas a ganar lo que realmente quieres, músculo magro.",
         "price": 85000,
         "image": "https://hypersupps.com/wp-content/uploads/2023/11/thebuilder_home.png",
@@ -25,7 +25,7 @@ export const data = [
     },
     {
         "name": "JUST A WHEY - Proteína Whey",
-        "category": "Proteina",
+        "category": "Proteinas y Aminoacidos",
         "description": "JUST A WHEY: La revolución en proteínas. Ligera, sabrosa y sin complicaciones. 24g de proteína pura y enzimas digestivas en cada toma, para los verdaderos gym rats.",
         "price": 140000,
         "image": "https://hypersupps.com/wp-content/uploads/2023/11/JUSTAWHEY_HOME.png",
@@ -33,7 +33,7 @@ export const data = [
     },
     {
         "name": "FACTOR - Amino Blend",
-        "category": "Aminoacidos",
+        "category": "Proteinas y Aminoacidos",
         "description": "Revoluciona tu entreno con un sabor perfecto a limonada Lychee. Una mezcla única de BCAAs, Glutamina, Multivitamínico y Vitamina C, todo en uno, sin carbohidratos ni rellenos.",
         "price": 110000,
         "image": "https://hypersupps.com/wp-content/uploads/2023/11/factor_home.png",
@@ -41,7 +41,7 @@ export const data = [
     },
     {
         "name": "PHANTOM - Preworkout",
-        "category": "Pre-entreno",
+        "category": "Proteinas y Aminoacidos",
         "description": "¡Prepárate para experimentar la furia de PHANTOM, nuestro Pre-Workout sabor toronja! Diseñado para llevarte al límite y más allá en cada sesión de entrenamiento. Con ingredientes estratégicamente seleccionados, 5g de L-citrulina, 2g de Arginina, 3,5g de Beta-Alanina, y 1g de L-Tirosina.",
         "price": 125000,
         "image": "https://hypersupps.com/wp-content/uploads/2023/11/phantom_HOME.png",
@@ -57,7 +57,7 @@ export const data = [
     },
     {
         "name": "Gold Standard Whey Protein",
-        "category": "Proteina",
+        "category": "Proteinas y Aminoacidos",
         "description": "Es un alimento de alta calidad que contiene una mezcla de aislado de proteína de suero, concentrado de proteína de suero y proteína de suero hidrolizada.",
         "price": 122.499,
         "image": "https://acdn.mitiendanube.com/stores/002/268/228/products/suplemento-en-polvo-optimum-nutrition-gold-standard-100-whey-proteina-sabor-cookies-cream-en-pote-de-2-27kg-5a29832d221178e4fb16988446352517-1024-1024.jpg",
@@ -81,7 +81,7 @@ export const data = [
     },
     {
         "name": "Omega 3",
-        "category": "Ácidos Grasos",
+        "category": "Acidos Grasos Esenciales",
         "description": "El Omega 3 favorece la reducción del colesterol, triglicéridos y el riesgo cardiovascular. Los tres ácidos grasos omega-3 principales son el ácido alfa-linolénico (ALA), el ácido eicosapentaenoico (EPA) y el ácido docosahexaenoico (DHA).",
         "price": 22.800,
         "image": "https://tienda.ysonut.com.ar/3155-product_image/omega-3-dha.jpg",

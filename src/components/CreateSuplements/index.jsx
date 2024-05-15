@@ -56,11 +56,11 @@ function CreateSuplement() {
         e.preventDefault();
         const formDataToSend = new FormData();
         Object.entries(newSuplements).forEach(([key, value]) => {
-          if (key === "images") {
-            value.forEach((image) => formDataToSend.append("images", image));
-          } else {
-            formDataToSend.append(key, value);
-          }
+            if (key === "images") {
+                value.forEach((image) => formDataToSend.append("images", image));
+            } else {
+                formDataToSend.append(key, value);
+            }
         });
         dispatch(postSuplements(formDataToSend));
     };
@@ -135,37 +135,40 @@ function CreateSuplement() {
             <div>
                 <input type="file" accept="image/*" name="images" id="images" onChange={handleChange} className="hidden" multiple />
                 <label htmlFor="images">
-                    <span>
+                    <span className={style.subirfoto}>
                         Subir foto
                     </span>
                 </label>
             </div>
-            {newSuplements.images.length > 0 && (
-                <div>
-                    <p>
-                        Previsualización de imágenes:
-                    </p>
+            <div>
+
+                {newSuplements.images.length > 0 && (
                     <div>
-                        {newSuplements.images.map((image, index) => (
-                            <div key={index}>
-                                <div>
-                                    <img src={URL.createObjectURL(image)} alt={`Imagen ${index + 1}`} />
-                                    <button type="button" onClick={() => handleImageRemove(index)}>
-                                        X
-                                    </button>
+                        <p>
+                            Previsualización de imágenes:
+                        </p>
+                        <div>
+                            {newSuplements.images.map((image, index) => (
+                                <div key={index}>
+                                    <div>
+                                        <img src={URL.createObjectURL(image)} alt={`Imagen ${index + 1}`} />
+                                        <button type="button" onClick={() => handleImageRemove(index)}>
+                                            X
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                        {[...Array(1 - newSuplements.images.length)].map((_, index) => (
-                            <div key={index}>
-                                <span>
-                                    Imagen {newSuplements.images.length + index + 1}
-                                </span>
-                            </div>
-                        ))}
+                            ))}
+                            {[...Array(1 - newSuplements.images.length)].map((_, index) => (
+                                <div key={index}>
+                                    <span>
+                                        Imagen {newSuplements.images.length + index + 1}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
             <button
                 type="submit"
             >

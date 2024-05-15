@@ -19,12 +19,7 @@ const Home = () => {
                 setTotal={setTotal}
                 countProducts={countProducts}
                 setCountProducts={setCountProducts} />
-
-            <ProductList />
-            <div className={style.carouselContent}>
-                <Carousel />
-            </div>
-
+            <ProductList/>
         </div>
     )
 }

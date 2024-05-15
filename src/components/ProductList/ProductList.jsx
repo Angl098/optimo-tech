@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { data } from '../../data'
 import style from './ProductList.module.css'
+import axios from 'axios'
 
 export default function ProductList() {
-    const [datas,setDatas]=useState([...data, ...data, ...data]) 
-    const [datasAux,setDatasAux]=useState([...data, ...data, ...data]) 
+    const [datas,setDatas]=useState([...data]) 
+    const [datasAux,setDatasAux]=useState([...data]) 
+    useEffect(()=>{
+        axios.get("http://localhost:3001/suplements/allSuplemets").then(({data})=>{
+            console.log(data);
+            setDatas([...datas,...data])
+            setDatasAux([...datas,...data])
+        })
+    },[])
+
+
     const arrayCategory = [
         { id: 1, category: 'Vitaminas y Minerales' },
         { id: 2, category: 'Proteinas y Aminoacidos' },
@@ -16,6 +26,7 @@ export default function ProductList() {
         { id: 8, category: 'Salud Articular y Ósea' },
         { id: 9, category: 'Salud Cardiovascular' },
         { id: 10, category: 'Salud Cerebral y Cognitiva' },
+        { id: 11, category: 'Creatina' },
     ];
 
 
@@ -25,7 +36,7 @@ export default function ProductList() {
         setNumberPage(1)
     }, [datas.length])
 
-    const NumAlojamientosPage = 3;
+    const NumAlojamientosPage = 6;
     const lastIndex = numberPage * NumAlojamientosPage;
     const firstIndex = lastIndex - NumAlojamientosPage;
     const newData = datas.slice(firstIndex, lastIndex);
@@ -44,10 +55,14 @@ export default function ProductList() {
     };
     const filterCateory=(e)=>{
         const {value}=e.target
-
+        if (value==="all") {
+            setDatas(datasAux)
+            return
+        }
         const newdatas=datasAux.filter((data)=>{
-            return value.includes(data.category)
+            return value===data.category
         })
+        
         setDatas(newdatas)
     }
     return (
@@ -55,24 +70,23 @@ export default function ProductList() {
             <div>
 
             <select onChange={filterCateory} name="" id="">
-                <option value=""  disabled selected >Categoria</option>
+                <option value="all"  >Todos</option>
                 {arrayCategory.map((category)=>{
                 return <option key={category.id} value={category.category}>{category.category}</option>
                 })}
             </select>
             </div>
-            <div className="flex h-[5%] w-full justify-center items-center m-2">
-                <button onClick={prevPage} disabled={numberPage === 1} className=" bg-transparent ">❮</button>
+            <div >
+                <button onClick={prevPage} disabled={numberPage === 1} >❮</button>
                 {[...Array(totalPages)].map((_, index) => (
                     <button
                         key={index + 1}
                         onClick={() => goToPage(index + 1)}
-                        className={` rounded-[50%] py-1 px-2 ${numberPage === index + 1 ? "bg-[#8b8e58]" : "bg-whiteseñales"}`}
                     >
                         {index + 1}
                     </button>
                 ))}
-                <button onClick={nextPage} disabled={numberPage === totalPages} className=" bg-transparent ">❯</button>
+                <button onClick={nextPage} disabled={numberPage === totalPages}>❯</button>
             </div>
             <div className={style.newData}>
 
