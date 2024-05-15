@@ -1,13 +1,33 @@
-import { POST_SUPLEMENTS} from "./actions"; 
-const initialState={postSuplements:''}
-const rootReducer=(state=initialState,action)=>{
-const {type,payload}=action;
+import { GET_SUPLEMENT, CLEAN_PRODUCT_BY_ID, POST_SUPLEMENTS } from "./actions"
 
-switch (type) {
+
+const initialState = { getSuplementById: {}, postSuplements: '' };
+
+const rootReducer = (state = initialState, action) => {
+  const { type, payload } = action;
+
+  switch (type) {
     case POST_SUPLEMENTS:
-      return { ...state, postSuplements: payload};
+      return {
+        ...state,
+        postSuplements: payload
+      };
 
-    default: return {...state};
-}
-}
+    case GET_SUPLEMENT:
+      return {
+        ...state,
+        getSuplementById: payload,
+      };
+
+    case CLEAN_PRODUCT_BY_ID:
+      return {
+        ...state,
+        getSuplementById: payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
 export default rootReducer;
