@@ -4,6 +4,9 @@ import style from './ProductList.module.css'
 import axios from 'axios'
 
 export default function ProductList() {
+
+    const [category,setCategory]=useState([])
+
     const initialState = {
         category: "Proteina",
         orderBy: "price",
@@ -12,18 +15,24 @@ export default function ProductList() {
 
 
 
-    const [datas, setDatas] = useState([...data])
-    const [datasAux, setDatasAux] = useState([...data])
+    const [datas, setDatas] = useState([])
+    const [datasAux, setDatasAux] = useState([])
     useEffect(() => {
         axios.get("http://localhost:3001/suplements/").then(({ data }) => {
-            console.log(data);
             setDatas([...datas, ...data])
             setDatasAux([...datas, ...data])
         })
+        
+        axios.get("http://localhost:3001/category/").then(({ data }) => {
+            console.log(data);
+            setCategory([ ...data])
+        })
+
+
     }, [])
 
     const [filter, setFilter] = useState({
-        category: "Proteina",
+        category: "",
         orderBy: "price",
         orderDirection: "",
     });
@@ -45,11 +54,10 @@ export default function ProductList() {
     const fetchAlojamientos = async (queryParams) => {
         try {
             const { data } = await axios.get("http://localhost:3001/suplements/filter/" + queryParams);
-            console.log(data);
-            console.log(queryParams);
+            setDatas(data)
             //   dispatch(getAllAlojamientos(data));
         } catch (error) {
-            console.log(error);
+            console.log(error); 
         }
     };
 
@@ -134,10 +142,10 @@ export default function ProductList() {
             </div>
             <div>
 
-                <select onChange={handleFilterChange} name="" id="">
-                    <option value="all"  >Todos</option>
-                    {arrayCategory.map((category) => {
-                        return <option key={category.id} value={category.category}>{category.category}</option>
+                <select onChange={handleFilterChange} name="category" id="">
+                    <option value="">Todos</option>
+                    {category.map((category) => {
+                        return <option key={category.id} value={category.id}>{category.name}</option>
                     })}
                 </select>
             </div>
