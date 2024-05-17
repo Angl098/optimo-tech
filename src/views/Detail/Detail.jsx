@@ -3,13 +3,36 @@ import { useEffect, useState } from "react";
 import styles from './Detail.module.css'
 import { useParams } from "react-router-dom";
 import { getSuplement, cleanProductById } from "../../Redux//actions";
+import axios from "axios";
+
+//MercadoPago import
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 
 const Detail = () => {
     const { id } = useParams();
+    const [preferenceId, setPreferenceId] = useState(null)
+
+    initMercadoPago('TEST-6dbf75c0-2c45-479d-bb78-b5cf38079c81');
 
     const dispatch = useDispatch();
     const suplementById = useSelector((state) => state.getSuplementById);
     const [data, setData] = useState(suplementById)
+
+    const createPreference = async () => {
+        try {
+            const response = await axios.post("http://localhost:3001/create-order", {
+                description: '',
+                price: 100,
+                quantity: 1,
+                currency_id: "ARS"
+            })
+
+            const {id} = response.data
+            return id;
+        } catch (error) {
+            console.log(error);
+        }
+    };
     useEffect(() => {
         dispatch(getSuplement(id));
 
@@ -31,6 +54,14 @@ const Detail = () => {
             )
         );
     }
+
+    const handleBuy = async () => {
+        const id = await createPreference();
+
+        if(id){
+            setPreferenceId(id)
+        }
+    };
 
     useEffect(() => {
         // console.log(suplementById);
@@ -86,6 +117,10 @@ const Detail = () => {
                                 <button className={styles.buttonCart}>
                                     Add To Cart
                                 </button>
+                                <button className={styles.buttonCart} onClick={handleBuy}>
+                                    Buy
+                                </button>
+                                {preferenceId && <Wallet initialization={{ preferenceId }} />}
                             </div>
                         </div>
                     </div>
