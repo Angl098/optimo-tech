@@ -19,7 +19,7 @@ const Detail = () => {
     }, [id]);
 
     let productoFiltrado = suplementById;
-    console.log(productoFiltrado);
+    // console.log(productoFiltrado);
     if (suplementById) {
         productoFiltrado = Object.fromEntries(
             Object.entries(suplementById).filter(
@@ -33,8 +33,8 @@ const Detail = () => {
     }
 
     useEffect(() => {
-        console.log(suplementById);
-        console.log(data);
+        // console.log(suplementById);
+        // console.log(data);
         if (suplementById && suplementById.image && Array.isArray(suplementById.image)) {
             const imagenes = suplementById.image;
             const data = imagenes.map((img) => ({
@@ -54,7 +54,7 @@ const Detail = () => {
                 <div className={styles.contenedor}>
                     <div className={styles.detailContainer}>
                         <div className={styles.productInfo}>
-                            <h1 className={styles.productTittle}>{productoFiltrado.model}</h1>
+                            <h1 className={styles.productTittle}>{productoFiltrado.name}</h1>
                             <button className={styles.productPrice}>
                                 ${productoFiltrado.price}
                             </button>

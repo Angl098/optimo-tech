@@ -4,6 +4,7 @@ export const POST_SUPLEMENTS ="POST_SUPLEMENTS";
 export const GET_SUPLEMENT ="GET_SUPLEMENT";
 export const GET_SUPLEMENTS ="GET_SUPLEMENTS";
 export const CLEAN_PRODUCT_BY_ID ="CLEAN_PRODUCT_BY_ID";
+export const PAYMENT_ID ="PAYMENT_ID";
 
 
 export const postSuplements = (newSuplements) => {
@@ -26,7 +27,6 @@ export const getSuplement = (id) => {
     return async function (dispatch) {
         try {
             const { data } = await axios.get(`http://localhost:3001/suplements/${id}`);
-            console.log(data)
             return dispatch({
                 type: GET_SUPLEMENT,
                 payload: data,
@@ -43,3 +43,4 @@ export const cleanProductById = () => {
         payload: {}
     }
 }
+

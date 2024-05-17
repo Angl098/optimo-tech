@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { data } from '../../data'
 import style from './ProductList.module.css'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 export default function ProductList() {
-    const [datas,setDatas]=useState([...data]) 
-    const [datasAux,setDatasAux]=useState([...data]) 
-    useEffect(()=>{
-        axios.get("http://localhost:3001/suplements/").then(({data})=>{
+    const [datas, setDatas] = useState([...data])
+    const [datasAux, setDatasAux] = useState([...data])
+    useEffect(() => {
+        axios.get("http://localhost:3001/suplements/").then(({ data }) => {
             console.log(data);
-            setDatas([...datas,...data])
-            setDatasAux([...datas,...data])
+            setDatas([...datas, ...data])
+            setDatasAux([...datas, ...data])
         })
-    },[])
+    }, [])
 
 
     const arrayCategory = [
@@ -53,28 +54,28 @@ export default function ProductList() {
     const goToPage = (page) => {
         setNumberPage(page);
     };
-    const filterCateory=(e)=>{
-        const {value}=e.target
-        if (value==="all") {
+    const filterCateory = (e) => {
+        const { value } = e.target
+        if (value === "all") {
             setDatas(datasAux)
             return
         }
-        const newdatas=datasAux.filter((data)=>{
-            return value===data.category
+        const newdatas = datasAux.filter((data) => {
+            return value === data.category
         })
-        
+
         setDatas(newdatas)
     }
     return (
         <div>
             <div>
 
-            <select onChange={filterCateory} name="" id="">
-                <option value="all"  >Todos</option>
-                {arrayCategory.map((category)=>{
-                return <option key={category.id} value={category.category}>{category.category}</option>
-                })}
-            </select>
+                <select onChange={filterCateory} name="" id="">
+                    <option value="all"  >Todos</option>
+                    {arrayCategory.map((category) => {
+                        return <option key={category.id} value={category.category}>{category.category}</option>
+                    })}
+                </select>
             </div>
             <div >
                 <button onClick={prevPage} disabled={numberPage === 1} >❮</button>
@@ -91,20 +92,23 @@ export default function ProductList() {
             <div className={style.newData}>
 
                 {newData.map(product => (
-                    <div className={style.item} key={product.id} onClick={()=>{console.log(product);}}>
-                        <figure>
-                            <img className={style.image} src={product.image} alt={product.name} />
-                        </figure>
-                        <div className={style.info - product}>
-                            <div className={style.info}>
-                                <h4>{product.name}</h4>
-                                <p className={style.price}>${product.price}</p>
+                    <Link to={`/detail/${product.id}`}>
+                        <div className={style.item} key={product.id} onClick={() => { console.log(product); }}>
+                            <figure>
+                                <img className={style.image} src={product.image} alt={product.name} />
+                            </figure>
+                            <div className={style.info - product}>
+                                <div className={style.info}>
+                                    <h4>{product.name}</h4>
+                                    <p className={style.price}>${product.price}</p>
+                                </div>
+                                <button className={style.btnAddToCart} onClick={() => onAddProduct(product)}>
+                                    Añadir al carrito
+                                </button>
                             </div>
-                            <button className={style.btnAddToCart} onClick={() => onAddProduct(product)}>
-                                Añadir al carrito
-                            </button>
                         </div>
-                    </div>
+                    </Link>
+
                 ))
                 }
             </div>
