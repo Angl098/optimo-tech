@@ -34,6 +34,7 @@ setErrors(validation({...newSuplements,image: image}))
 //submit
 const handleSubmit= (event)=>{
     dispatch(postSuplements(newSuplements));
+
 };
 
     // Manejar el cambio de las opciones seleccionadas category

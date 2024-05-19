@@ -1,0 +1,75 @@
+.form {
+    width: 500px;
+    height: auto;
+   
+    background-color: #4e54c8; /* Color de fondo */
+    background-image: linear-gradient(to right, #1684A7, #09A599); 
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+
+    border: 2px solid #264143;
+    border-radius: 20px;
+    box-shadow: 3px 4px 0px 1px #f7e203;
+}
+
+.title {
+    color: #264143;
+    font-weight: 900;
+    font-size: 30px;
+    margin-top: 20px;
+    text-shadow: 2px 2px 4px #f7e203;
+}
+
+.form_style {
+    outline: none;
+    border: 2px solid #264143;
+    box-shadow: 3px 4px 0px 1px #f7e203;
+    width: 290px;
+    padding: 12px 10px;
+    border-radius: 4px;
+    font-size: 15px;
+  }
+
+  .errors {
+    color: rgb(241, 16, 16);
+     background-color: #f6EC72;
+    font-family: cursive;
+
+}  
+
+.password_input_container {
+    position: relative;
+  }
+  
+  .show_hide_btn {
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Ajusta este valor según sea necesario */
+    transform: translateY(-50%);
+  background-color: transparent; /* Establece el fondo transparente */
+  border: none; /* Elimina el borde */
+}
+
+.show_hide_btn:focus {
+    outline: none; /* Elimina el borde al hacer clic */
+  }
+
+  .btn {
+    margin-bottom: 16px;
+    padding: 10px;
+    margin: 25px 0px;
+    width: 200px;
+    font-size: 15px;
+    background: #54debe;
+    border-radius: 10px;
+    font-weight: 500px;
+    box-shadow: 3px 3px 0px 0px #f7e203;
+}
+ 
+.btn:hover {
+    opacity: .9;
+  }

@@ -1,5 +1,6 @@
 import {React, useState} from 'react';
 import validation from '../Validation/Login/Validation';
+import GoogleAuth from '../GoogleAuth';
 import style from './Login.module.css';
 function Login(){
     const [login, setLogin] = useState({});
@@ -36,6 +37,7 @@ function Login(){
             </div>
 
         <button className={style.btn} type="submit">Login</button>
+        <GoogleAuth/>
     </form>
     </>
 }
