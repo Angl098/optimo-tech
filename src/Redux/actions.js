@@ -7,10 +7,10 @@ export const CLEAN_PRODUCT_BY_ID ="CLEAN_PRODUCT_BY_ID";
 
 
 export const postSuplements = (newSuplements) => {
-    const endpoint = 'http://localhost:3001/suplements';
+
     return async function (dispatch) {
         try {
-            const response = await axios.post(endpoint, newSuplements);
+            const response = await axios.post("/suplements", newSuplements);
             return dispatch({
                 type: POST_SUPLEMENTS,
                 payload: response.data
@@ -25,7 +25,7 @@ export const postSuplements = (newSuplements) => {
 export const getSuplement = (id) => {
     return async function (dispatch) {
         try {
-            const { data } = await axios.get(`http://localhost:3001/suplements/${id}`);
+            const { data } = await axios.get(`/suplements/${id}`);
             console.log(data)
             return dispatch({
                 type: GET_SUPLEMENT,

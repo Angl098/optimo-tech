@@ -18,12 +18,12 @@ export default function ProductList() {
     const [datas, setDatas] = useState([])
     const [datasAux, setDatasAux] = useState([])
     useEffect(() => {
-        axios.get("http://localhost:3001/suplements/").then(({ data }) => {
+        axios.get("/suplements/").then(({ data }) => {
             setDatas([...datas, ...data])
             setDatasAux([...datas, ...data])
         })
         
-        axios.get("http://localhost:3001/category/").then(({ data }) => {
+        axios.get("/category/").then(({ data }) => {
             console.log(data);
             setCategory([ ...data])
         })
@@ -53,7 +53,7 @@ export default function ProductList() {
     };
     const fetchAlojamientos = async (queryParams) => {
         try {
-            const { data } = await axios.get("http://localhost:3001/suplements/filter/" + queryParams);
+            const { data } = await axios.get("/suplements/filter/" + queryParams);
             setDatas(data)
             //   dispatch(getAllAlojamientos(data));
         } catch (error) {
