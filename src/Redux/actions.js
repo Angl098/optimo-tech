@@ -17,6 +17,22 @@ export const REMOVE_ALL_FROM_CART = 'REMOVE_ALL_FROM_CART,';
 // export const GET_USER_BY_NAME = 'GET_USER_BY_NAME';
 export const POST_REGISTER_USER="POST_REGISTER_USER";
 
+export const GET_SUPLEMENTS_BY_NAME = "GET_SUPLEMENTS_BY_NAME";
+export const NOT_GET_SUPLEMENT_BY_NAME = "NOT_GET_SUPLEMENT_BY_NAME";
+
+
+//Función que hace la peticion con axios al back-end
+//para traer todos los suplementos
+export const getSuplements = () => {
+    return async function(dispatch){
+        const response = await axios.get('http://localhost:3001/suplements')
+        return dispatch({
+            type: GET_SUPLEMENTS,
+            payload: response.data
+        })
+    }
+}
+
 export const postSuplements = (newSuplements) => {
 
     return async function (dispatch) {

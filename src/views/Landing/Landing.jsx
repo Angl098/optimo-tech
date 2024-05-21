@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import style from './Landing.module.css'
+import NavBarLanding from '../../components/NavBarLanding/NavBarLanding';
 import Carousel from '../../components/Carousel/Carousel';
 
 const Home = () => {
     return(
         <div className={style.container}>
-            
             <div className={style.section}>
                 <Link to={'/detail'} className={style.productOne} onClick={scroll}>
                     <img className={style.productsFirst} src='../../../img/omega-3.jpeg' alt="" />

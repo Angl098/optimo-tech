@@ -1,13 +1,15 @@
-import React, { useState, useEffect  } from 'react';
+/* eslint-disable react/prop-types */
+import { useState, useEffect  } from 'react';
 import style from './NavBar.module.css'
 import logo from '../../assets/logo.png'
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PATHROURES from '../../helpers/PathRoutes';
-import ShoppingCart from "../ShoppingCart/ShoppingCart";
-import { useDispatch, useSelector } from 'react-redux';
-import { showShoppingCart } from "../../Redux/actions";
+// import SearchBar from '../SearchBar/SearchBar';
 
-const NavBar = () => {
+const NavBar = (props) => {
+
+    const { handleSearch, handleSubmit } = props
+
     const [showNav, setShowNav] = useState(null);
     const [quantityProductsCart, setQuantityProductsCart] = useState(0)
     const location = useLocation()
@@ -51,7 +53,21 @@ const NavBar = () => {
                 </div>
 
                 <div className={style.searchDeskContent}>
-                    {/* <SearchBar></SearchBar> */}
+                    <form onChange={handleSearch} action="" className={style.form1}>
+                        <div className={style.group}>
+                            <input required type="text" className={style.input} />
+                            <span className={style.highlight}></span>
+                            <span className={style.bar}></span>
+                            <label>Tu Suplemento</label>
+                        </div>
+                        <div className={style.groupButton}>
+                            <button type="submit" onClick={handleSubmit} className={style.cssbuttonsIo}>
+                                
+                                    Buscar
+                                
+                            </button>
+                        </div>
+                    </form>
                 </div>
 
                 <div className={style.cartContainer}>

@@ -19,6 +19,16 @@
     padding: 25px;
 }
 
+.contenedorCards {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content:space-evenly;
+    padding: 25px 25px 25px 25px;
+    gap: 25px;
+}
+
 .image {
     position: relative;
     object-fit: cover;
