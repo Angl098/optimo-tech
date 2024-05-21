@@ -23,7 +23,6 @@ const initialState = {
 
 const rootReducer = (state = initialState, action) => {
   const { type, payload } = action;
-  console.log('Reducer action:', action);
   switch (type) {
     case POST_SUPLEMENTS:
       return {
@@ -32,7 +31,6 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case GET_SUPLEMENT:
-      console.log(payload);
       return {
         ...state,
         getSuplementById: { ...payload },
@@ -51,40 +49,69 @@ const rootReducer = (state = initialState, action) => {
       }
 
     case ADD_TO_CART:
-      console.log('ADD_TO_CART action dispatched with payload:', payload);
-      const productFound = state.cart.find(
-        (product) => product.id == payload)
-      if (productFound) {
-        const updatedCart = state.cart.map((product) =>
-          product.id == payload
+      const productExists = state.cart.find(product => product.id === payload.id);
+
+      if (productExists) {
+        const updatedCart = state.cart.map(product =>
+          product.id === payload.id
             ? {
-              ...product,
-              quantity: product.quantity + 1,
-              total: product.price * (product.quantity + 1),
-            }
+                ...product,
+                quantity: product.quantity + 1,
+                total: product.price * (product.quantity + 1),
+              }
             : product
-        )
-        console.log('Product already in cart. Updated cart:', updatedCart);
+        );
         return {
           ...state,
           cart: updatedCart,
         };
-      }
-      const productToAdd = state.cart.find(
-        (cart) => cart.id == payload
-      );
-      if (productToAdd) {
-        const updatedProduct = {
-          ...productToAdd,
+      }else {
+        const productToAdd = {
+          ...payload,
           quantity: 1,
-          total: productToAdd.price,
-        }
-        console.log('Product not in cart. Adding to cart:', updatedProduct);
+          total: payload.price,
+        };
         return {
           ...state,
-          cart: [...state.cart, updatedProduct],
+          cart: [...state.cart, productToAdd],
         };
       }
+      
+      
+      // console.log('ADD_TO_CART action dispatched with payload:', payload);
+      // const productFound = state.cart.find(
+      //   (product) => product.id == payload)
+      // if (productFound) {
+      //   const updatedCart = state.cart.map((product) =>
+      //     product.id == payload
+      //       ? {
+      //         ...product,
+      //         quantity: product.quantity + 1,
+      //         total: product.price * (product.quantity + 1),
+      //       }
+      //       : product
+      //   )
+      //   console.log('Product already in cart. Updated cart:', updatedCart);
+      //   return {
+      //     ...state,
+      //     cart: updatedCart,
+      //   };
+      // }
+      // const productToAdd = state.cart.find(
+      //   (cart) => cart.id == payload
+      // );
+      // if (productToAdd) {
+      //   const updatedProduct = {
+      //     ...productToAdd,
+      //     quantity: 1,
+      //     total: productToAdd.price,
+      //   }
+      //   console.log('Product not in cart. Adding to cart:', updatedProduct);
+      //   return {
+      //     ...state,
+      //     cart: [...state.cart, updatedProduct],
+      //   };
+      // }
 
     case REMOVE_ALL_FROM_CART:
       const updatedCart = state.cart.filter(

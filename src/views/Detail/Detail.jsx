@@ -6,7 +6,7 @@ import { getSuplement, cleanProductById, addToCart, showShoppingCart } from "../
 import ShoppingCart from "../../components/ShoppingCart/ShoppingCart";
 
 //MercadoPago import
-import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
+// import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 
 const Detail = () => {
     const { id } = useParams();
@@ -18,7 +18,7 @@ const Detail = () => {
     const suplementById = useSelector((state) => state.getSuplementById);
     const dispatch = useDispatch();
 
-    initMercadoPago('TEST-6dbf75c0-2c45-479d-bb78-b5cf38079c81');
+    // initMercadoPago('TEST-6dbf75c0-2c45-479d-bb78-b5cf38079c81');
 
         // SE MUEVE PARA SHOPPING CART
     // const createPreference = async () => {
@@ -87,7 +87,7 @@ const Detail = () => {
 
     const handleAddToCart = () => {
         if (suplementById && suplementById.id) {
-            dispatch(addToCart(suplementById.id));
+            dispatch(addToCart(suplementById));
             dispatch(showShoppingCart(true))
         }
     };

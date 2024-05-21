@@ -16,12 +16,10 @@ const ItemShoppingCart = () => {
     const handleRemoveFromCart = (id) => {
         dispatch(removeFromCart(id))
     };
-    const handleIncrementProductInCart = (id) => {
-        console.log('handler incrementar uno del ItemShopping', id)
-        dispatch(addToCart(id))
+    const handleIncrementProductInCart = (product) => {
+        dispatch(addToCart(product))
     }
     const handleRemoveOneFromCart = (id) => {
-        console.log('handler remover uno del ItemShopping', id)
         dispatch(removeOneFromCart(id))
     }
 
@@ -29,7 +27,9 @@ const ItemShoppingCart = () => {
         <>
             <div className={style.containerItem}>
                 <ul className={style.listUL}>
-                    {itemProduct?.map((product) => (
+                    {itemProduct?.map((product) => {
+                        console.log(product);
+                        return (
                         <>
                             <li key={product.id} className={style.listLi}>
                                 <div className={style.divProduct}>
@@ -55,7 +55,7 @@ const ItemShoppingCart = () => {
                                         </div>
                                     </div>
                                     <div className={style.divImageProduct}>
-                                        <img className={style.imgProduct} src={product.image?.[0]} alt="" />
+                                        <img className={style.imgProduct} src={product.image} alt="" />
                                     </div>
                                     <div className={style.detailProduct}>
                                         <span>{product.name}</span>
@@ -84,11 +84,11 @@ const ItemShoppingCart = () => {
                                             </div>
                                             <div className={style.quantity}>
                                                 <p className={style.counterProduct}>
-                                                    {product.amount}
+                                                    {product.quantity}
                                                 </p>
                                             </div>
                                             <div>
-                                                <button className={style.buttonPlus} onClick={() => handleIncrementProductInCart(product.id)}>
+                                                <button className={style.buttonPlus} onClick={() => handleIncrementProductInCart(product)}>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         fill="none"
@@ -112,7 +112,7 @@ const ItemShoppingCart = () => {
                             </li>
                             <hr />
                         </>
-                    ))}
+                    )})}
                 </ul>
             </div>
         </>

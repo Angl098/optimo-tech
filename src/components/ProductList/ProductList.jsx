@@ -23,7 +23,6 @@ export default function ProductList() {
         })
 
         axios.get("http://localhost:3001/category/").then(({ data }) => {
-            console.log(data);
             setCategory([...data])
         })
 
