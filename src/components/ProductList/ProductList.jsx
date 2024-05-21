@@ -8,12 +8,6 @@ export default function ProductList() {
 
     const [category, setCategory] = useState([])
 
-    const initialState = {
-        category: "Proteina",
-        orderBy: "price",
-        orderDirection: "",
-    };
-
     const [datas, setDatas] = useState([])
     const [datasAux, setDatasAux] = useState([])
     useEffect(() => {
@@ -65,21 +59,6 @@ export default function ProductList() {
         fetchAlojamientos(queryParams);
     }, [filter]);
 
-    const arrayCategory = [
-        { id: 1, category: 'Vitaminas y Minerales' },
-        { id: 2, category: 'Proteinas y Aminoacidos' },
-        { id: 3, category: 'Acidos Grasos Esenciales' },
-        { id: 4, category: 'Antioxidantes' },
-        { id: 5, category: 'Probioticos y Prebioticos' },
-        { id: 6, category: 'Herbales y Botanicos' },
-        { id: 7, category: 'Rendimiento Deportivo' },
-        { id: 8, category: 'Salud Articular y Ósea' },
-        { id: 9, category: 'Salud Cardiovascular' },
-        { id: 10, category: 'Salud Cerebral y Cognitiva' },
-        { id: 11, category: 'Creatina' },
-    ];
-
-
     const [numberPage, setNumberPage] = useState(1);
 
     useEffect(() => {
@@ -103,18 +82,6 @@ export default function ProductList() {
     const goToPage = (page) => {
         setNumberPage(page);
     };
-    const filterCateory = (e) => {
-        const { value } = e.target
-        if (value === "all") {
-            setDatas(datasAux)
-            return
-        }
-        const newdatas = datasAux.filter((data) => {
-            return value === data.category
-        })
-
-        setDatas(newdatas)
-    }
 
     const handleFilterChange = async (e) => {
         const changeFilter = { ...filter, [e.target.name]: e.target.value };

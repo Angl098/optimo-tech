@@ -55,8 +55,12 @@ const NavBar = () => {
 
                 <div className={style.cartContainer}>
                     <div className={style.buttonContainerDesk}>
+                        <Link to={"/login"}>
                         <button className={style.buttonLog}>Log In</button>
+                        </Link>
+                        <Link to={"registeruser"}>
                         <button className={style.buttonSign}>Sign Up</button>
+                        </Link>
                     </div>
                     
                     <button className={style.cartButton} onClick={() => shoppingCart()}>

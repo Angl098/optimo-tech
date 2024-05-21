@@ -1,12 +1,8 @@
 export default function Validation(inputs){
     const errors = {};
     
-    const regexLetras = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/i;
     const regex3 = /.{3,}/;
     //validacion name
-    if (!regexLetras.test(inputs.name)) {
-        errors.name = 'Debe ser un nombre'
-    }
     if (!inputs.name) {
         errors.name = 'El nombre no puede estar vacio'}
     if (!regex3.test(inputs.name)) {

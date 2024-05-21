@@ -8,6 +8,7 @@ import {
   REMOVE_ALL_FROM_CART,
   INJECT_CART_DATA,
   SHOW_SHOPPING_CART,
+  POST_REGISTER_USER
 } from "./actions"
 
 
@@ -161,7 +162,9 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         showShoppingCart: payload
       }
-
+      case POST_REGISTER_USER:
+        return {...state, postRegisterUser: payload}
+  
 
     default:
       return state;

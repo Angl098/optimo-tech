@@ -23,7 +23,7 @@ const Detail = () => {
         // SE MUEVE PARA SHOPPING CART
     // const createPreference = async () => {
     //     try {
-    //         const response = await axios.post("http://localhost:3001/payment/create-order", {
+    //         const response = await axios.post("/payment/create-order", {
     //             description: '',
     //             price: 100,
     //             quantity: 1,
