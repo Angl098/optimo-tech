@@ -82,7 +82,7 @@ export default function ProductList() {
     const goToPage = (page) => {
         setNumberPage(page);
     };
-s
+
     const handleFilterChange = async (e) => {
         const changeFilter = { ...filter, [e.target.name]: e.target.value };
         setFilter(changeFilter);
