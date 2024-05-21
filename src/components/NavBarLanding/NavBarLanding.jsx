@@ -1,14 +1,11 @@
-/* eslint-disable react/prop-types */
 import { useState } from 'react';
-import style from './NavBar.module.css'
+import style from './NavBarLanding.module.css'
 import logo from '../../../public/logo.png'
 import { Link } from "react-router-dom";
 import PATHROURES from '../../helpers/PathRoutes';
 // import SearchBar from '../SearchBar/SearchBar';
 
-const NavBar = (props) => {
-
-    const { handleSearch, handleSubmit } = props
+const NavBarLanding = () => {
 
     const [showNav, setShowNav] = useState(null);
 
@@ -29,24 +26,6 @@ const NavBar = (props) => {
                     <Link to={PATHROURES.HOME} className={style.linkDesk} onClick={toggleNav}>Products</Link>
                 </div>
 
-                <div className={style.searchDeskContent}>
-                    <form onChange={handleSearch} action="" className={style.form1}>
-                        <div className={style.group}>
-                            <input required type="text" className={style.input} />
-                            <span className={style.highlight}></span>
-                            <span className={style.bar}></span>
-                            <label>Tu Suplemento</label>
-                        </div>
-                        <div className={style.groupButton}>
-                            <button onClick={handleSubmit} className={style.cssbuttonsIo}>
-                                <span>
-                                    Buscar
-                                </span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
                 <div className={style.cartContainer}>
                     <div className={style.buttonContainerDesk}>
                         <button className={style.buttonLog}>Log In</button>
@@ -61,4 +40,4 @@ const NavBar = (props) => {
     )
 }
 
-export default NavBar
+export default NavBarLanding

@@ -1,0 +1,110 @@
+.link{
+    color: #5C5470;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px 10px 5px 10px;
+  }
+
+  .item{
+    width: 250px;
+    height: 400px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    background-color: #fff;
+    margin-bottom: 2em;
+    border-radius: 8px;
+    box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+    border: 1px solid #7471723a;
+    cursor: pointer;
+    overflow: hidden;
+    text-decoration: none;
+    color: #000;
+    padding: 25px;
+}
+
+.card {
+    position: relative;
+    width: 260px;
+    height: 400px;
+    background: #171717;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 12px;
+    gap: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    padding-top: 0px;
+  }
+  
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    left: -5px;
+    margin: auto;
+    width: 250px;
+    height: 330px;
+    border-radius: 10px;
+    background: linear-gradient(-45deg, #0766AD 0%, #C5E898 100% );
+    z-index: -10;
+    pointer-events: none;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  .card::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(-45deg, #0766AD 0%, #C5E898 100% );
+    transform: translate3d(0, 0, 0) scale(0.95);
+    filter: blur(20px);
+  }
+  
+  .heading {
+    font-size: 20px;
+    text-transform: capitalize;
+    font-weight: 700;
+    padding: 40px 0px 0px 0px;
+  }
+  
+  .card p:not(.heading) {
+    font-size: 14px;
+  }
+  
+  .card p:last-child {
+    color: whitesmoke;
+    font-weight: 600;
+  }
+  
+  .card:hover::after {
+    filter: blur(30px);
+  }
+  
+  .card:hover::before {
+    transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
+  }
+
+  h4{
+    color: white;
+  }
+
+  .btnAddToCart {
+    display: flex;
+    flex-direction: column-reverse;
+    border: none;
+    border-radius: 30px;
+
+    margin: 5px;
+    padding: 10px;
+    background-color: #78bf83;
+    color: #fff;
+    cursor: pointer;
+    
+}
