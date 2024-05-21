@@ -59,4 +59,9 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 15px;
+    text-decoration: none;
+}
+
+.LinkWithoutUnderline {
+    text-decoration: none; 
 }

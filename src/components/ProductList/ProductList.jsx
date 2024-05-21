@@ -14,8 +14,6 @@ export default function ProductList() {
         orderDirection: "",
     };
 
-
-
     const [datas, setDatas] = useState([])
     const [datasAux, setDatasAux] = useState([])
     useEffect(() => {
@@ -172,10 +170,9 @@ export default function ProductList() {
                             <div className={style.info - product}>
                                 <div className={style.info}>
                                     <h4>{product.name}</h4>
-                                    <p className={style.price}>${product.price}</p>
                                 </div>
                                 <button className={style.btnAddToCart} onClick={() => onAddProduct(product)}>
-                                    Añadir al carrito
+                                <p className={style.price}>${product.price}</p>
                                 </button>
                             </div>
                         </div>

@@ -2,37 +2,41 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import styles from './Detail.module.css'
 import { useParams } from "react-router-dom";
-import { getSuplement, cleanProductById } from "../../Redux//actions";
-import axios from "axios";
+import { getSuplement, cleanProductById, addToCart, showShoppingCart } from "../../Redux//actions";
+import ShoppingCart from "../../components/ShoppingCart/ShoppingCart";
 
 //MercadoPago import
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 
 const Detail = () => {
     const { id } = useParams();
+    const [images, setImages] = useState("");
     const [preferenceId, setPreferenceId] = useState(null)
+    const [showCart, setShowCart] = useState(false);
+    // const [data, setData] = useState(suplementById)
+    const cart = useSelector((state) => state.cart)
+    const suplementById = useSelector((state) => state.getSuplementById);
+    const dispatch = useDispatch();
 
     initMercadoPago('TEST-6dbf75c0-2c45-479d-bb78-b5cf38079c81');
 
-    const dispatch = useDispatch();
-    const suplementById = useSelector((state) => state.getSuplementById);
-    const [data, setData] = useState(suplementById)
+        // SE MUEVE PARA SHOPPING CART
+    // const createPreference = async () => {
+    //     try {
+    //         const response = await axios.post("http://localhost:3001/payment/create-order", {
+    //             description: '',
+    //             price: 100,
+    //             quantity: 1,
+    //             currency_id: "ARS"
+    //         })
 
-    const createPreference = async () => {
-        try {
-            const response = await axios.post("http://localhost:3001/create-order", {
-                description: '',
-                price: 100,
-                quantity: 1,
-                currency_id: "ARS"
-            })
+    //         const { id } = response.data
+    //         return id;
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
-            const {id} = response.data
-            return id;
-        } catch (error) {
-            console.log(error);
-        }
-    };
     useEffect(() => {
         dispatch(getSuplement(id));
 
@@ -55,13 +59,14 @@ const Detail = () => {
         );
     }
 
-    const handleBuy = async () => {
-        const id = await createPreference();
+    // SE MUEVE PARA SHOPPING CART
+    // const handleBuy = async () => {
+    //     const id = await createPreference();
 
-        if(id){
-            setPreferenceId(id)
-        }
-    };
+    //     if (id) {
+    //         setPreferenceId(id)
+    //     }
+    // };
 
     useEffect(() => {
         // console.log(suplementById);
@@ -78,6 +83,18 @@ const Detail = () => {
             }
         }
     }, [suplementById]);
+
+
+    const handleAddToCart = () => {
+        if (suplementById && suplementById.id) {
+            dispatch(addToCart(suplementById.id));
+            dispatch(showShoppingCart(true))
+        }
+    };
+
+    const scroll = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
 
     return (
         <>
@@ -100,7 +117,7 @@ const Detail = () => {
                                         ([key, value]) =>
                                             key !== "id" &&
                                             key !== "image" &&
-                                            key !== "category" &&
+                                            key !== "amount" &&
                                             key !== "price" &&
                                             key !== "description" && (
                                                 <li className={styles.productSpec} key={key}>
@@ -113,14 +130,15 @@ const Detail = () => {
                                     )}
                                 </ul>
                             </div>
-                            <div className={styles.divButtonCart}>
-                                <button className={styles.buttonCart}>
+                            <div className={styles.divButtonCart} onClick={scroll}>
+                                <button className={styles.buttonCart} onClick={handleAddToCart}>
                                     Add To Cart
                                 </button>
-                                <button className={styles.buttonCart} onClick={handleBuy}>
+                                {showCart && <ShoppingCart />}
+                                {/* <button className={styles.buttonCart} onClick={handleBuy}>
                                     Buy
-                                </button>
-                                {preferenceId && <Wallet initialization={{ preferenceId }} />}
+                                </button> */}
+                                {/* {preferenceId && <Wallet initialization={{ preferenceId }} />} */}
                             </div>
                         </div>
                     </div>
