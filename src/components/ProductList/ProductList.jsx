@@ -2,18 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { data } from '../../data'
 import style from './ProductList.module.css'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 export default function ProductList() {
 
-    const [category,setCategory]=useState([])
+    const [category, setCategory] = useState([])
 
     const initialState = {
         category: "Proteina",
         orderBy: "price",
         orderDirection: "",
     };
-
-
 
     const [datas, setDatas] = useState([])
     const [datasAux, setDatasAux] = useState([])
@@ -39,7 +38,7 @@ export default function ProductList() {
 
     const buildQueryParams = (filter) => {
         let queryParams = "?";
-        
+
         for (const [key, value] of Object.entries(filter)) {
             if (value !== null && value !== "") {
                 if (Array.isArray(value) && value.length > 0) {
@@ -57,7 +56,7 @@ export default function ProductList() {
             setDatas(data)
             //   dispatch(getAllAlojamientos(data));
         } catch (error) {
-            console.log(error); 
+            console.log(error);
         }
     };
 
@@ -162,22 +161,22 @@ export default function ProductList() {
                 <button onClick={nextPage} disabled={numberPage === totalPages}>❯</button>
             </div>
             <div className={style.newData}>
-
                 {newData.map(product => (
-                    <div className={style.item} key={product.id} onClick={() => { console.log(product); }}>
-                        <figure>
-                            <img className={style.image} src={product.image} alt={product.name} />
-                        </figure>
-                        <div className={style.info - product}>
-                            <div className={style.info}>
-                                <h4>{product.name}</h4>
+                    <Link to={`/detail/${product.id}`}>
+                        <div className={style.item} key={product.id} onClick={() => { console.log(product); }}>
+                            <figure>
+                                <img className={style.image} src={product.image} alt={product.name} />
+                            </figure>
+                            <div className={style.info - product}>
+                                <div className={style.info}>
+                                    <h4>{product.name}</h4>
+                                </div>
+                                <button className={style.btnAddToCart} onClick={() => onAddProduct(product)}>
                                 <p className={style.price}>${product.price}</p>
+                                </button>
                             </div>
-                            <button className={style.btnAddToCart} onClick={() => onAddProduct(product)}>
-                                Añadir al carrito
-                            </button>
                         </div>
-                    </div>
+                    </Link>
                 ))
                 }
             </div>
