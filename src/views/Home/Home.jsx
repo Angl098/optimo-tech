@@ -47,14 +47,14 @@ const Home = () => {
     return (
 
         <div className={style.container}>
-            <Header 
+            {/* <Header 
                 allProducts={allProducts}
                 setAllProducts={setAllProducts}
                 total={total}
                 setTotal={setTotal}
                 countProducts={countProducts}
-                setCountProducts={setCountProducts} />
-            <ProductList/>
+                setCountProducts={setCountProducts} /> */}
+            {/* <ProductList/> */}
             <NavBar handleSearch={handleSearch} handleSubmit={handleSubmit} />
             <div>
                 {loading ?(

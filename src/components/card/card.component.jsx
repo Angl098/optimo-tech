@@ -4,8 +4,15 @@ import { Link } from "react-router-dom";
 
 //Importo los estilos
 import styles from './card.module.css'
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../Redux/actions";
 
 const Card = ({suplement}) => {
+    const dispatch = useDispatch()
+    const onAddProduct=(product)=>{
+
+        dispatch(addToCart(product))
+    }
     return (
         <div>
 
@@ -34,7 +41,7 @@ const Card = ({suplement}) => {
                         )}
                     </div>
                 </Link>
-                <button className={styles.btnAddToCart} onClick={() => { console.log(); }}>
+                <button className={styles.btnAddToCart} onClick={() => onAddProduct(suplement)}>
                     Añadir al carrito
                 </button>
             </div>

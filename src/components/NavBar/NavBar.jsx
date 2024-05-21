@@ -2,9 +2,12 @@
 import { useState, useEffect  } from 'react';
 import style from './NavBar.module.css'
 import logo from '../../assets/logo.png'
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import PATHROURES from '../../helpers/PathRoutes';
+import { useDispatch, useSelector } from 'react-redux';
 // import SearchBar from '../SearchBar/SearchBar';
+import ShoppingCart from "../ShoppingCart/ShoppingCart";
+import { showShoppingCart } from "../../Redux/actions";
 
 const NavBar = (props) => {
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import style from './NavBarLanding.module.css'
-import logo from '../../../public/logo.png'
+import logo from '../../assets/logo.png'
 import { Link } from "react-router-dom";
 import PATHROURES from '../../helpers/PathRoutes';
 // import SearchBar from '../SearchBar/SearchBar';
