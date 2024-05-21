@@ -5,7 +5,7 @@ import Landing from "./views/Landing/Landing";
 import Home from './views/Home/Home';
 import Footer from './components/Footer/Footer';
 import CreateSuplement from './components/CreateSuplements/index';
-import Login from './components/Login/index';
+import Login from './views/Login/index';
 import Detail from './views/Detail/Detail';
 
 import './App.css'

@@ -1,7 +1,7 @@
 export default function Validation(inputs){
     const errors = {};
     
-    const regexLetras = /^[a-zñáéíóúü\s-]+$/i;
+    const regexLetras = /^[a-zñáéíóúü0-9\s-]+$/i;
     const regex3 = /.{3,}/;
     //validacion name
     if (!regexLetras.test(inputs.name)) {

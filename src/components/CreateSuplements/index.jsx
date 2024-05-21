@@ -68,7 +68,7 @@ function CreateSuplement() {
     // Manejar el cambio de las opciones seleccionadas category
     //array precargado
     const arrayCategory = [
-        { id: 1, category: 'Vitamina y Minerale' },
+        { id: 1, category: 'Vitaminas y Minerales' },
         { id: 2, category: 'Proteina' },
         { id: 3, category: 'Aminoacido' },
         { id: 4, category: 'Creatina' },
@@ -80,6 +80,7 @@ function CreateSuplement() {
         { id: 10, category: 'Salud Articular y Ósea' },
         { id: 11, category: 'Salud Cardiovascular' },
         { id: 12, category: 'Salud Cerebral y Cognitiva' },
+        { id: 13, category: 'Colageno' },
     ];
 
     const [opCategory, setOpCategory] = useState([]);

@@ -49,7 +49,7 @@ const NavBar = (props) => {
 
                 <div className={style.cartContainer}>
                     <div className={style.buttonContainerDesk}>
-                        <button className={style.buttonLog}>Log In</button>
+                        <button className={style.buttonLog}><a href="/login">Log In</a></button>
                         <button className={style.buttonSign}>Sign Up</button>
                     </div>
                     <button className={style.cartButton}>
