@@ -88,11 +88,11 @@ export function paymentGateway(cart, email) {
             }
 
 
-            // const postCart = axios.post("http://localhost:3001/cart", cartDB)
-            const postCart = axios.post("http://localhost:3001/cart", cartDB)
+            // const postCart = axios.post("/cart", cartDB)
+            const postCart = axios.post("/cart", cartDB)
 
-            // const response = await axios.post("http://localhost:3001/create_preference", {
-            const response = await axios.post("http://localhost:3001/create-order", {
+            // const response = await axios.post("/create_preference", {
+            const response = await axios.post("/create-order", {
                 items: items,
                 total: totalPrice,
                 email: email
@@ -148,7 +148,7 @@ export const injectCartData = (data) => {
 // export const getAllUsers = () => {
 //     return async function (dispatch) {
 //         try {
-//             const response = await axios.get("http://localhost:3001/users")
+//             const response = await axios.get("/users")
 //             dispatch({ type: GET_ALL_USERS, payload: response.data })
 //         } catch (error) {
 //             console.log(error);
@@ -159,7 +159,7 @@ export const injectCartData = (data) => {
 // export const getAllSuplement = () => {
 //     return async function (dispatch) {
 //         try {
-//             const response = await axios.get('http://localhost:3001/suplement?actives=true')
+//             const response = await axios.get('/suplement?actives=true')
 //             dispatch({ type: GET_ALL_PRODUCTS, payload: response.data.data })
 //         } catch (error) {
 //             console.log(error);
@@ -170,7 +170,7 @@ export const injectCartData = (data) => {
 // export const getUserByName = (name) => {
 //     return async function (dispatch) {
 //         try {
-//             const response = await axios.get(`http://localhost:3001/get/user/${name}`)
+//             const response = await axios.get(`/get/user/${name}`)
 //             console.log(response.data);
 //             dispatch({ type: GET_USER_BY_NAME, payload: response.data })
 //         } catch (error) {
