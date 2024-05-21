@@ -14,7 +14,7 @@ export const REMOVE_ALL_FROM_CART = 'REMOVE_ALL_FROM_CART,';
 // export const GET_ALL_USERS = 'GET_ALL_USERS'
 // export const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS';
 // export const GET_USER_BY_NAME = 'GET_USER_BY_NAME';
-
+export const POST_REGISTER_USER="POST_REGISTER_USER";
 
 export const postSuplements = (newSuplements) => {
 
@@ -178,3 +178,18 @@ export const injectCartData = (data) => {
 //         }
 //     }
 // }
+export const postRegisterUser = (user) => {
+    const endpoint = 'http://localhost:3001/users';
+    return async function (dispatch) {
+        try{
+                const response =await axios.post(endpoint, user);
+          return dispatch({
+             type: POST_REGISTER_USER,
+             payload: response.data
+          });  
+        }
+catch(error){
+console.log('error al registrar los datos de usuario', error);
+}
+    };
+ };

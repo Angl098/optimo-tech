@@ -8,7 +8,7 @@ import Footer from './components/Footer/Footer';
 import CreateSuplement from './components/CreateSuplements/index';
 import Login from './components/Login/index';
 import Detail from './views/Detail/Detail';
-
+import RegisterUser from './components/RegisterUser';
 
 function App() {
 
@@ -23,6 +23,7 @@ function App() {
         <Route path='createsuplements' element={<CreateSuplement/>}/>
         <Route path='login' element={<Login/>}/>
         <Route path={PATHROUTES.DETAIL} element={<Detail/>}/>
+        <Route path='registeruser' element={<RegisterUser/>}/>
       </Routes>
         <Footer />
       </div>
