@@ -38,10 +38,10 @@ const NavBar = (props) => {
                             <label>Tu Suplemento</label>
                         </div>
                         <div className={style.groupButton}>
-                            <button onClick={handleSubmit} className={style.cssbuttonsIo}>
-                                <span>
+                            <button type="submit" onClick={handleSubmit} className={style.cssbuttonsIo}>
+                                
                                     Buscar
-                                </span>
+                                
                             </button>
                         </div>
                     </form>

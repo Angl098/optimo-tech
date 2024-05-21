@@ -33,7 +33,7 @@ const rootReducer = (state = initialState, action) => {
     case GET_SUPLEMENTS_BY_NAME:
       return{
         ...state,
-
+        allSuplements: action.payload
       };
     case NOT_GET_SUPLEMENT_BY_NAME:
       return{
