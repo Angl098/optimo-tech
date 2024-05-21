@@ -1,4 +1,5 @@
 import axios from 'axios';
+import swal from 'sweetalert2';
 
 export const POST_SUPLEMENTS = "POST_SUPLEMENTS";
 export const GET_SUPLEMENT = "GET_SUPLEMENT";
@@ -21,6 +22,11 @@ export const postSuplements = (newSuplements) => {
     return async function (dispatch) {
         try {
             const response = await axios.post("/suplements", newSuplements);
+            swal.fire({
+                icon: "success",
+                title: "¡Registro Exitoso!",
+                text: "Los datos del alojamiento han sido registrados correctamente.",
+              });
             return dispatch({
                 type: POST_SUPLEMENTS,
                 payload: response.data

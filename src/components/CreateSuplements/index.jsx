@@ -130,7 +130,6 @@ function CreateSuplement() {
             {errors.amount !== '' && <p className={style.errors}>{errors.amount}</p>}
 
             {console.log('nuevo suplemento', newSuplements)}
-            {Object.keys(errors).length <= 0 && <button className={style.btn} type="submit">Registrar</button>}
 
             <div>
                 <input type="file" accept="image/*" name="images" id="images" onChange={handleChange} className="hidden" multiple />
@@ -169,11 +168,8 @@ function CreateSuplement() {
                     </div>
                 )}
             </div>
-            <button
-                type="submit"
-            >
-                Enviar
-            </button>
+            <button className={style.btn} type="submit">Registrar</button>
+
         </form>
     </>
 }

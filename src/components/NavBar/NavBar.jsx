@@ -47,6 +47,7 @@ const NavBar = () => {
                     <Link to={PATHROURES.LANDING} className={style.title}>ÓPTIMO</Link>
                     <Link to={PATHROURES.LANDING} className={style.linkDesk} onClick={toggleNav}>Home</Link>
                     <Link to={PATHROURES.HOME} className={style.linkDesk} onClick={toggleNav}>Products</Link>
+                    <Link to={"createsuplements"} className={style.linkDesk} >Crear Suplements</Link>
                 </div>
 
                 <div className={style.searchDeskContent}>
