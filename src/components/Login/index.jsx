@@ -1,8 +1,12 @@
 import {React, useState} from 'react';
+import { postLogin } from '../../Redux/actions';
+import { useDispatch } from 'react-redux';
 import validation from '../Validation/Login/Validation';
 import GoogleAuth from '../GoogleAuth';
 import style from './Login.module.css';
+
 function Login(){
+    const dispatch = useDispatch();
     const [login, setLogin] = useState({});
     const [errors, setErrors] = useState({});
 
@@ -21,9 +25,19 @@ function Login(){
         setPasswordVisible(!passwordVisible);
     }
 
+    //submit
+const handleSubmit = async (event)=>{
+    event.preventDefault();
+    console.log('submit');
+    const response = await dispatch(postLogin(login));
+    console.log(response.payload);
+    alert('Respuesta del servidor: ' + response.payload.message);
+};
+
     return <>
-    <form className={style.form}>
+    <form onSubmit={handleSubmit} className={style.form}>
         <h3 className={style.title}>Login</h3>
+
         <label>Email</label>
         <input type='text' name='email' value={login.email} onChange={handleChange} className={style.form_style} />
         {errors.email!==''&&<p className={style.errors}>{errors.email}</p>}
@@ -35,9 +49,10 @@ function Login(){
                     {passwordVisible ? '👁️' : '🔒'}
                 </button>
             </div>
+        {errors.password!==''&&<p className={style.errors}>{errors.password}</p>}
 
         <button className={style.btn} type="submit">Login</button>
-        <GoogleAuth/>
+        {console.log(login)}
     </form>
     </>
 }

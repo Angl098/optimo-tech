@@ -33,6 +33,7 @@ setErrors(validation({...newSuplements,image: image}))
 
 //submit
 const handleSubmit= (event)=>{
+    event.preventDefault();
     dispatch(postSuplements(newSuplements));
 
 };

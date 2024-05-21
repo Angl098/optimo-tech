@@ -43,9 +43,11 @@ function RegisterUser () {
      }
 
 //submit
-const handleSubmit= (event)=>{
+const handleSubmit= async (event)=>{
     event.preventDefault();
-    dispatch(postRegisterUser(user));
+    const response = await dispatch(postRegisterUser(user));
+    console.log(response);
+    alert("Respuesta servidor: " + response.payload.message);
 
 };
 
