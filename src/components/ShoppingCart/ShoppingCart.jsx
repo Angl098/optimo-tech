@@ -71,7 +71,7 @@ const ShoppingCart = () => {
                         </button>
                     </div>
                     <div className={style.secondSection}>
-                        {/* {cart.length === 0 ? (
+                        {cart.length === 0 ? (
                             <>
                                 <div className={style.cartEmpty}>
                                     
@@ -79,7 +79,7 @@ const ShoppingCart = () => {
                                 </div>
                             </>
                         ) : (
-                            <> */}
+                            <>
                                 <ItemShoppingCart />
                                 <div className={style.containerTotal}>
                                     <div className={style.totalPrice}>
@@ -94,8 +94,8 @@ const ShoppingCart = () => {
                                 {/* {user !== null && (
                                     paymentID && <Wallet initialization={{ preferenceId: paymentID }} />
                                 )} */}
-                            {/* </>
-                        )}  */}
+                            </>
+                        )}  
                     </div>
                 </div>
             </div>
