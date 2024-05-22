@@ -1,5 +1,5 @@
-import { React, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch} from "react-redux";
 import validation from '..//Validation//CreateSuplements//Validation';
 import { postSuplements } from "..//..//Redux/actions";
 import style from './CreateSuplement.module.css';
@@ -69,15 +69,18 @@ function CreateSuplement() {
     //array precargado
     const arrayCategory = [
         { id: 1, category: 'Vitaminas y Minerales' },
-        { id: 2, category: 'Proteinas y Aminoacidos' },
-        { id: 3, category: 'Acidos Grasos Esenciales' },
-        { id: 4, category: 'Antioxidantes' },
-        { id: 5, category: 'Probioticos y Prebioticos' },
-        { id: 6, category: 'Herbales y Botanicos' },
-        { id: 7, category: 'Rendimiento Deportivo' },
-        { id: 8, category: 'Salud Articular y Ósea' },
-        { id: 9, category: 'Salud Cardiovascular' },
-        { id: 10, category: 'Salud Cerebral y Cognitiva' },
+        { id: 2, category: 'Proteina' },
+        { id: 3, category: 'Aminoacido' },
+        { id: 4, category: 'Creatina' },
+        { id: 5, category: 'Acidos Grasos Esenciales' },
+        { id: 6, category: 'Antioxidante' },
+        { id: 7, category: 'Probiotico y Prebiotico' },
+        { id: 8, category: 'Herbales y Botanicos' },
+        { id: 9, category: 'Rendimiento Deportivo' },
+        { id: 10, category: 'Salud Articular y Ósea' },
+        { id: 11, category: 'Salud Cardiovascular' },
+        { id: 12, category: 'Salud Cerebral y Cognitiva' },
+        { id: 13, category: 'Colageno' },
     ];
 
     const [opCategory, setOpCategory] = useState([]);
@@ -129,11 +132,9 @@ function CreateSuplement() {
             <input type="text" className={style.form_style} name='amount' value={newSuplements.amount} onChange={handleChange} />
             {errors.amount !== '' && <p className={style.errors}>{errors.amount}</p>}
 
-            {console.log('nuevo suplemento', newSuplements)}
-            {Object.keys(errors).length <= 0 && <button className={style.btn} type="submit">Registrar</button>}
 
             <div>
-                <input type="file" accept="image/*" name="images" id="images" onChange={handleChange} className="hidden" multiple />
+                <input type="file" accept="image/*" name="images" id="images" onChange={handleChange}  multiple />
                 <label htmlFor="images">
                     <span className={style.subirfoto}>
                         Subir foto
@@ -169,11 +170,7 @@ function CreateSuplement() {
                     </div>
                 )}
             </div>
-            <button
-                type="submit"
-            >
-                Enviar
-            </button>
+            {Object.keys(errors).length <= 0 && <button className={style.btn} type="submit">Registrar</button>}
         </form>
     </>
 }
