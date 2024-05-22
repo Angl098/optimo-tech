@@ -3,9 +3,9 @@ import ItemShoppingCart from "../ItemShoppingCart/ItemShoppingCart";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 // import { IoMdCart } from "react-icons/io";
-import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
+//import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 import { paymentGateway, showShoppingCart } from '../../Redux/actions'
-import swal from 'sweetalert';
+//import swal from 'sweetalert';
 
 
 const ShoppingCart = () => {
@@ -23,18 +23,18 @@ const ShoppingCart = () => {
         }
     }, [cart])
 
-    const paymentID = useSelector(state => state.paymentID)
+    //const paymentID = useSelector(state => state.paymentID)
 
-    initMercadoPago('TEST-6dbf75c0-2c45-479d-bb78-b5cf38079c81', {
-        locale: "es-AR",
-    });
+    // initMercadoPago('TEST-6dbf75c0-2c45-479d-bb78-b5cf38079c81', {
+    //     locale: "es-AR",
+    // });
 
     const handleBuy = () => {
-        if (user === null) swal("Login first", "To make a purchase you need to register", "error");
-        dispatch(paymentGateway(
-            cart, 
-            user.email
-        ))
+         //if (user === null) swal("Login first", "To make a purchase you need to register", "error");
+         dispatch(paymentGateway(
+             cart, 
+             user.email
+         ))
     }
 
     const notShowShopping = () => {
