@@ -1,7 +1,7 @@
 import {React, useState} from 'react';
 import validation from '../Validation/Login/Validation';
 import style from './Login.module.css';
-import GoogleAuth from '../GoogleAuth';
+// import GoogleAuth from '../GoogleAuth';
 function Login(){
     const [login, setLogin] = useState({});
     const [errors, setErrors] = useState({});
