@@ -1,11 +1,19 @@
 import axios from 'axios';
 
-export const POST_SUPLEMENTS ="POST_SUPLEMENTS";
-export const GET_SUPLEMENT ="GET_SUPLEMENT";
-export const GET_SUPLEMENTS ="GET_SUPLEMENTS";
-export const CLEAN_PRODUCT_BY_ID ="CLEAN_PRODUCT_BY_ID";
 export const GET_SUPLEMENTS_BY_NAME = "GET_SUPLEMENTS_BY_NAME";
 export const NOT_GET_SUPLEMENT_BY_NAME = "NOT_GET_SUPLEMENT_BY_NAME";
+export const POST_SUPLEMENTS = "POST_SUPLEMENTS";
+export const GET_SUPLEMENT = "GET_SUPLEMENT";
+export const GET_SUPLEMENTS = "GET_SUPLEMENTS";
+export const CLEAN_PRODUCT_BY_ID = "CLEAN_PRODUCT_BY_ID";
+
+export const PAYMENT_ID = "PAYMENT_ID";
+export const ADD_TO_CART = 'ADD_TO_CART';
+export const INJECT_CART_DATA = 'INJECT_CART_DATA'
+export const SHOW_SHOPPING_CART = 'SHOW_SHOPPING_CART';
+export const REMOVE_ONE_FROM_CART = 'REMOVE_ONE_FROM_CART';
+export const REMOVE_ALL_FROM_CART = 'REMOVE_ALL_FROM_CART,';
+export const POST_REGISTER_USER="POST_REGISTER_USER";
 
 
 //Función que hace la peticion con axios al back-end
@@ -20,21 +28,6 @@ export const getSuplements = () => {
     }
 }
 
-export const POST_SUPLEMENTS = "POST_SUPLEMENTS";
-export const GET_SUPLEMENT = "GET_SUPLEMENT";
-export const GET_SUPLEMENTS = "GET_SUPLEMENTS";
-export const CLEAN_PRODUCT_BY_ID = "CLEAN_PRODUCT_BY_ID";
-
-export const PAYMENT_ID = "PAYMENT_ID";
-export const ADD_TO_CART = 'ADD_TO_CART';
-export const INJECT_CART_DATA = 'INJECT_CART_DATA'
-export const SHOW_SHOPPING_CART = 'SHOW_SHOPPING_CART';
-export const REMOVE_ONE_FROM_CART = 'REMOVE_ONE_FROM_CART';
-export const REMOVE_ALL_FROM_CART = 'REMOVE_ALL_FROM_CART,';
-// export const GET_ALL_USERS = 'GET_ALL_USERS'
-// export const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS';
-// export const GET_USER_BY_NAME = 'GET_USER_BY_NAME';
-export const POST_REGISTER_USER="POST_REGISTER_USER";
 
 export const postSuplements = (newSuplements) => {
 
@@ -52,27 +45,27 @@ export const postSuplements = (newSuplements) => {
     };
 };
 
-export const getSuplement = (id) => {
-    return async function (dispatch) {
-        try {
-            const { data } = await axios.get(`/suplements/${id}`);
-            console.log(data)
-            return dispatch({
-                type: GET_SUPLEMENT,
-                payload: data,
-            });
-        } catch (error) {
-            console.log(err)
-        }
-    };
-};
+// export const getSuplement = (id) => {
+//     return async function (dispatch) {
+//         try {
+//             const { data } = await axios.get(`/suplements/${id}`);
+//             console.log(data)
+//             return dispatch({
+//                 type: GET_SUPLEMENT,
+//                 payload: data,
+//             });
+//         } catch (error) {
+//             console.log(err)
+//         }
+//     };
+// };
 
-export const cleanProductById = () => {
-    return {
-        type: CLEAN_PRODUCT_BY_ID,
-        payload: {}
-    }
-}
+// export const cleanProductById = () => {
+//     return {
+//         type: CLEAN_PRODUCT_BY_ID,
+//         payload: {}
+//     }
+// }
 
 export function paymentGateway(cart, email) {
     console.log(`user email: ${email}`);
@@ -201,12 +194,6 @@ export const injectCartData = (data) => {
 export const postRegisterUser = (user) => {
     const endpoint = 'http://localhost:3001/users';
     return async function (dispatch) {
-        try {
-            const response = await axios.post(endpoint, newSuplements);
-            return dispatch({
-                type: POST_SUPLEMENTS,
-                payload: response.data
-            });
         try{
                 const response =await axios.post(endpoint, user);
           return dispatch({
@@ -217,11 +204,8 @@ export const postRegisterUser = (user) => {
         catch (error) {
             console.log('error al registrar los datos', error);
         }
-catch(error){
-console.log('error al registrar los datos de usuario', error);
-}
+        }
     };
-};
 
 export const getSuplement = (id) => {
     return async function (dispatch) {
@@ -264,4 +248,3 @@ export const getSuplementsByName = (queryParams) => {
         }
     }
 }
- };

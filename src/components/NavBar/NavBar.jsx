@@ -1,9 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
-import React, { useState, useEffect  } from 'react';
+import { useState, useEffect  } from 'react';
 import style from './NavBar.module.css'
-import logo from '../../../public/logo.png'
-import { Link } from "react-router-dom";
 import logo from '../../assets/logo.png'
 import { Link, useLocation } from "react-router-dom";
 import PATHROURES from '../../helpers/PathRoutes';
@@ -13,7 +10,7 @@ import { showShoppingCart } from "../../Redux/actions";
 
 const NavBar = (props) => {
 
-    const { handleSearch, handleSubmit } = props
+    const { handleSearch } = props
 
     const [showNav, setShowNav] = useState(null);
     const [quantityProductsCart, setQuantityProductsCart] = useState(0)
@@ -22,7 +19,7 @@ const NavBar = (props) => {
     const cart = useSelector(state => state.cart)
     const user = useSelector(state => state.user)
     const showShoppingCartState = useSelector((state) => state.showShoppingCart)
-
+    console.log('showShoppingCartState', showShoppingCartState)
 
     useEffect(() => {
         if (cart.length > 0) {
@@ -65,7 +62,7 @@ const NavBar = (props) => {
                             <label>Tu Suplemento</label>
                         </div>
                         <div className={style.groupButton}>
-                            <button type="submit" onClick={handleSubmit} className={style.cssbuttonsIo}>
+                            <button type="submit" onClick={()=>{}} className={style.cssbuttonsIo}>
                                 
                                     Buscar
                                 

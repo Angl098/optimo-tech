@@ -4,9 +4,10 @@
 import { useParams } from "react-router-dom"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 
 //importo las actions
-import { getSuplement, cleanProductById } from "../../redux/actions"
+import { getSuplement, cleanProductById,addToCart, showShoppingCart } from "../../Redux/actions"
 
 //importo los estilos
 import styles from "./detail.module.css"
@@ -23,6 +24,13 @@ const Detail = () => {
             dispatch(cleanProductById())
         }
     }, [dispatch, id])
+
+    const handleAddToCart = () => {
+         if (getSuplementById && getSuplementById.id) {
+             dispatch(addToCart(getSuplementById));
+             dispatch(showShoppingCart(true))
+         }
+     };
 
     return (
         <div className={styles.body1}>
@@ -46,10 +54,12 @@ const Detail = () => {
                         </div>
                     </div>
                 </div>
-                    <button className={styles.btnAddToCart}>
+                    <button className={styles.btnAddToCart} onClick={handleAddToCart}>
                         Añadir al carrito
                     </button>
-                <button><a href="/home">Volver</a></button>
+                <Link to="/home">
+                    <button>Volver</button>
+                </Link>
             </div>
         </div>
     )

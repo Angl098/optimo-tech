@@ -14,7 +14,7 @@ const ShoppingCart = () => {
     const showShoppingCartState = useSelector((state) => state.showShoppingCart);
 
     const dispatch = useDispatch();
-
+    console.log(cart)
     useEffect(() => { }, [showShoppingCartState]);
 
     useEffect(() => {
@@ -40,7 +40,7 @@ const ShoppingCart = () => {
     const notShowShopping = () => {
         dispatch(showShoppingCart(false))
     }
-
+    
     return (
         <>
             <div className={style.cartContainer}>

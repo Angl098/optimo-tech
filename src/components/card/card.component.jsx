@@ -1,11 +1,20 @@
 /* eslint-disable react/prop-types */
 //importo las dependencias o librerias
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux"
 
 //Importo los estilos
 import styles from './card.module.css'
+import { addToCart } from "../../Redux/actions";
 
 const Card = ({suplement}) => {
+
+    const dispatch = useDispatch();
+    const onAddProduct=(product)=>{
+
+        dispatch(addToCart(product))
+    }
+
     return (
         <div>
 
@@ -34,7 +43,7 @@ const Card = ({suplement}) => {
                         )}
                     </div>
                 </Link>
-                <button className={styles.btnAddToCart} onClick={() => { console.log(); }}>
+                <button className={styles.btnAddToCart} onClick={() => onAddProduct(suplement)}>
                     Añadir al carrito
                 </button>
             </div>

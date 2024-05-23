@@ -36,24 +36,20 @@ const Home = () => {
 
     function handleSearch(e) {
         e.preventDefault();
+        //console.log(e.target.value)
         setSearch(e.target.value);
-    }
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        dispatch(getSuplementsByName(search));
     }
     
     return (
 
         <div className={style.container}>
-            <NavBar handleSearch={handleSearch} handleSubmit={handleSubmit} />
+            <NavBar handleSearch={handleSearch}  />
             <div>
                 {loading ?(
                     <img src={loadingImg} alt="loading" />
                 ):(
                 <>
-                    <ProductList allSuplements={allSuplements}/>
+                    <ProductList allSuplements={allSuplements} search={search}/>
                 </>
                 )}
             </div>

@@ -4,6 +4,7 @@ import logo from '../../../public/logo.png'
 import { Link } from "react-router-dom";
 import PATHROURES from '../../helpers/PathRoutes';
 // import SearchBar from '../SearchBar/SearchBar';
+import { useSelector } from 'react-redux';
 
 const NavBarLanding = () => {
 
@@ -13,6 +14,7 @@ const NavBarLanding = () => {
         setShowNav(!showNav);
     };
 
+    const showShoppingCartState = useSelector((state) => state.showShoppingCart)
 
     return (
         <nav className={style.nav}>

@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react'
 import style from './ProductList.module.css'
 import axios from 'axios'
 
+
 import Card from '../card/card.component'
 
-export default function ProductList({allSuplements}) {
+export default function ProductList({search}) {
 
     const [category,setCategory]=useState([])
 
@@ -30,12 +31,14 @@ export default function ProductList({allSuplements}) {
         category: "",
         orderBy: "price",
         orderDirection: "",
-        // name: searchName
     });
 
+//merge con el back de royer
+
     const buildQueryParams = (filter) => {
+        filter.name = search
         let queryParams = "?";
-        
+        console.log(filter)
         for (const [key, value] of Object.entries(filter)) {
             if (value !== null && value !== "") {
                 if (Array.isArray(value) && value.length > 0) {
@@ -60,7 +63,7 @@ export default function ProductList({allSuplements}) {
     useEffect(() => {
         const queryParams = buildQueryParams(filter);
         fetchAlojamientos(queryParams);
-    }, [filter]);
+    }, [filter, search]);
 
 
     const [numberPage, setNumberPage] = useState(1);
@@ -132,9 +135,9 @@ export default function ProductList({allSuplements}) {
                 ))}
                 <button onClick={nextPage} disabled={numberPage === totalPages}>❯</button>
             </div>
-            {/* <div className={style.newData}>
+            <div className={style.newData}>
 
-                {newData.map(product => (
+                {/* {newData.map(product => (
                     <div className={style.item} key={product.id} onClick={() => { console.log(product); }}>
                         <figure>
                             <img className={style.image} src={product.image} alt={product.name} />
@@ -150,17 +153,17 @@ export default function ProductList({allSuplements}) {
                         </div>
                     </div>
                 ))
-                }
-            </div> */}
-
+            } */}
             <div className={style.contenedorCards}>
-            {allSuplements.map((suplement) => {
+            {newData.map((suplement) => {
                     //console.log(videogame);
                     return (
                         <Card key={suplement.id} suplement={suplement} />
                     );
                 })}
             </div>
+            </div>
+
         </div>
     )
 }
