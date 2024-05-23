@@ -54,7 +54,7 @@ function Login(){
       console.log(userObject); // Verificar el objeto antes de enviarlo
 
       // Enviar el objeto al backend usando axios
-      axios.post('http://localhost:3001/users', userObject)
+      axios.post('/users', userObject)
         .then((response) => {
           console.log('Usuario creado:', response.data);
         })

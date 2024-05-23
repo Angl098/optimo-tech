@@ -20,7 +20,7 @@ export const POST_REGISTER_USER="POST_REGISTER_USER";
 //para traer todos los suplementos
 export const getSuplements = () => {
     return async function(dispatch){
-        const response = await axios.get('http://localhost:3001/suplements')
+        const response = await axios.get('/suplements')
         return dispatch({
             type: GET_SUPLEMENTS,
             payload: response.data
@@ -192,7 +192,7 @@ export const injectCartData = (data) => {
 //     }
 // }
 export const postRegisterUser = (user) => {
-    const endpoint = 'http://localhost:3001/users';
+    const endpoint = '/users';
     return async function (dispatch) {
         try{
                 const response =await axios.post(endpoint, user);
@@ -210,7 +210,7 @@ export const postRegisterUser = (user) => {
 export const getSuplement = (id) => {
     return async function (dispatch) {
         try {
-            const { data } = await axios.get(`http://localhost:3001/suplements/${id}`);
+            const { data } = await axios.get(`/suplements/${id}`);
             console.log(data)
             return dispatch({
                 type: GET_SUPLEMENT,
@@ -233,7 +233,7 @@ export const cleanProductById = () => {
 //para traer suplementos por nombre
 export const getSuplementsByName = (queryParams) => {
     return async function(dispatch){
-        const response = await axios.get(`http://localhost:3001/suplements?name=${queryParams}`)
+        const response = await axios.get(`/suplements?name=${queryParams}`)
         //console.log(response.data)
         if (Array.isArray(response.data)) {
             return dispatch({
