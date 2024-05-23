@@ -42,6 +42,12 @@ function RegisterUser () {
     setPasswordVisible(!passwordVisible);
      }
 
+         // Función para alternar la visibilidad de la contraseña confimada
+    const [passwordConfirmVisible, setPasswordConfirmVisible] = useState(false);
+    function togglePasswordConfirmVisibility() {
+    setPasswordConfirmVisible(!passwordConfirmVisible);
+     }
+
 //submit
 const handleSubmit= async (event)=>{
     event.preventDefault();
@@ -93,7 +99,10 @@ const handleSubmit= async (event)=>{
 
         <label>Confirm Password</label>
             <div className={style.password_input_container}>
-                <input name='confirmPassword' type='password' value={user.confirmPassword || ''} onChange={handleChange} className={style.form_style} />
+                <input name='confirmPassword' type={passwordConfirmVisible ? 'text' : 'password'} value={user.confirmPassword || ''} onChange={handleChange} className={style.form_style} />
+                <button type="button" onClick={togglePasswordConfirmVisibility} className={style.show_hide_btn}>
+                    {passwordConfirmVisible ? '👁️' : '🔒'}
+                </button>
             </div>
         {errors.confirmPassword!==''&&<p className={style.errors}>{errors.confirmPassword}</p>}
 
