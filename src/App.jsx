@@ -12,6 +12,7 @@ import NavBar from './components/NavBarLanding/NavBarLanding';
 
 
 import './App.css'
+import UpdateSuplement from './components/UpdateSuplement';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
         <Route path={PATHROUTES.LANDING} element={<Landing/>} />
         <Route path={PATHROUTES.HOME} element={<Home/>} />
         <Route path='createsuplements' element={<CreateSuplement/>}/>
+        <Route path='updatesuplement/:id' element={<UpdateSuplement/>}/>
         <Route path='login' element={<Login/>}/>
         <Route path='/home/:id' element={<Detail/>}/>
         {/* <Route path={PATHROUTES.DETAIL} element={<Detail/>}/> */}

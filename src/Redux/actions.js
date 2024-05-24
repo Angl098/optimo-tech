@@ -207,3 +207,22 @@ export const getSuplementsByName = (queryParams) => {
         }
     }
 }
+
+export const fetchSuplementById = (id) => async dispatch => {
+    try {
+        const response = await axios.get(`/suplements/${id}`);
+        dispatch({ type: 'FETCH_SUPLEMENT_BY_ID_SUCCESS', payload: response.data });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const updateSuplement = (id, formData) => async dispatch => {
+    try {
+        const response = await axios.put(`/suplements/${id}`, formData);
+        dispatch({ type: 'UPDATE_SUPLEMENT_SUCCESS', payload: response.data });
+    } catch (error) {
+        console.log(error);
+    }
+};
+``
