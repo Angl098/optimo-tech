@@ -3,8 +3,9 @@ import ItemShoppingCart from "../ItemShoppingCart/ItemShoppingCart";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 // import { IoMdCart } from "react-icons/io";
-//import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 import { paymentGateway, showShoppingCart } from '../../Redux/actions'
+import axios from "axios";
 //import swal from 'sweetalert';
 
 
@@ -12,6 +13,29 @@ const ShoppingCart = () => {
     const cart = useSelector((state) => state.cart);
     const user = useSelector(state => state.user)
     const showShoppingCartState = useSelector((state) => state.showShoppingCart);
+    const [preferenceId, setPreferenceId] = useState(null)
+
+    initMercadoPago('TEST-6dbf75c0-2c45-479d-bb78-b5cf38079c81', {
+        locale: "es-AR",
+    });
+
+    const createPreference = async () => {
+        try {
+            const response = await axios.post("/payment/create_preference", {
+                
+                title: 'Suplemento',
+                price: 100,
+                quantity: 1,
+            })
+
+
+            const { id } = response.data
+            return id;
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
 
     const dispatch = useDispatch();
     console.log(cart)
@@ -23,24 +47,26 @@ const ShoppingCart = () => {
         }
     }, [cart])
 
-    //const paymentID = useSelector(state => state.paymentID)
 
-    // initMercadoPago('TEST-6dbf75c0-2c45-479d-bb78-b5cf38079c81', {
-    //     locale: "es-AR",
-    // });
+    const handleBuy = async () => {
+        const id = await createPreference();
 
-    const handleBuy = () => {
-         //if (user === null) swal("Login first", "To make a purchase you need to register", "error");
-         dispatch(paymentGateway(
-             cart, 
-             user.email
-         ))
+        if (id) {
+            setPreferenceId(id)
+        }
+
+
+        //if (user === null) swal("Login first", "To make a purchase you need to register", "error");
+        // dispatch(paymentGateway(
+        //     cart,
+        //     user.email
+        // ))
     }
 
     const notShowShopping = () => {
         dispatch(showShoppingCart(false))
     }
-    
+
     return (
         <>
             <div className={style.cartContainer}>
@@ -74,7 +100,7 @@ const ShoppingCart = () => {
                         {cart.length === 0 ? (
                             <>
                                 <div className={style.cartEmpty}>
-                                    
+
                                     <h2>El carrito está vacio</h2>
                                 </div>
                             </>
@@ -91,11 +117,12 @@ const ShoppingCart = () => {
                                 <button className={style.buttonCleanCart} onClick={handleBuy}>
                                     Proceed to Checkout
                                 </button>
+                                {preferenceId && <Wallet initialization={{ preferenceId: preferenceId }} />}
                                 {/* {user !== null && (
                                     paymentID && <Wallet initialization={{ preferenceId: paymentID }} />
                                 )} */}
                             </>
-                        )}  
+                        )}
                     </div>
                 </div>
             </div>
