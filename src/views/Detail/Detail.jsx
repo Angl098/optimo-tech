@@ -10,7 +10,7 @@ import { Link } from "react-router-dom"
 import { getSuplement, cleanProductById,addToCart, showShoppingCart } from "../../Redux/actions"
 
 //importo los estilos
-import styles from "./detail.module.css"
+import styles from "./Detail.module.css"
 
 const Detail = () => {
 
