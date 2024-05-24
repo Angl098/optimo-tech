@@ -15,29 +15,38 @@ const ShoppingCart = () => {
     const showShoppingCartState = useSelector((state) => state.showShoppingCart);
     const [preferenceId, setPreferenceId] = useState(null)
 
-    initMercadoPago('TEST-6dbf75c0-2c45-479d-bb78-b5cf38079c81', {
+    
+    // useEffect(() => {
+        initMercadoPago('TEST-6dbf75c0-2c45-479d-bb78-b5cf38079c81', {
         locale: "es-AR",
     });
+    // }, [])
 
-    const createPreference = async () => {
-        try {
-            const response = await axios.post("/payment/create_preference", {
-                
-                title: 'Suplemento',
-                price: 100,
-                quantity: 1,
-            })
+    // NO USAR 
+    // const createPreference = async () => {
+    //     try {
+    //         // const response = await axios.post("/payment/create_preference", {
+    //         //     title: 'Suplemento',
+    //         //     price: 100,
+    //         //     quantity: 1,
+    //         // })
+    //         const response = await axios.post('/payment/create_preference', {
+    //             items: cart.map((prod) => ({
+    //                 title: prod.name,
+    //                 price: parseFloat(prod.price),
+    //                 quantity: parseInt(prod.quantity)
+    //             }))
+    //         });
 
-
-            const { id } = response.data
-            return id;
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
+    //         const { id } = response.data
+    //         return id;
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     const dispatch = useDispatch();
+
     console.log(cart)
     useEffect(() => { }, [showShoppingCartState]);
 
@@ -47,20 +56,22 @@ const ShoppingCart = () => {
         }
     }, [cart])
 
+    const paymentID = useSelector(state => state.paymentID)
 
     const handleBuy = async () => {
-        const id = await createPreference();
+        //NO USAR
+        //     const id = await createPreference();
 
-        if (id) {
-            setPreferenceId(id)
-        }
+        //     if (id) {
+        //         setPreferenceId(id)
+        //     }
 
 
-        //if (user === null) swal("Login first", "To make a purchase you need to register", "error");
-        // dispatch(paymentGateway(
-        //     cart,
-        //     user.email
-        // ))
+        // if (user === null) swal("Login first", "To make a purchase you need to register", "error");
+        dispatch(paymentGateway(
+            cart,
+
+        ))
     }
 
     const notShowShopping = () => {
@@ -117,10 +128,10 @@ const ShoppingCart = () => {
                                 <button className={style.buttonCleanCart} onClick={handleBuy}>
                                     Proceed to Checkout
                                 </button>
-                                {preferenceId && <Wallet initialization={{ preferenceId: preferenceId }} />}
-                                {/* {user !== null && (
-                                    paymentID && <Wallet initialization={{ preferenceId: paymentID }} />
-                                )} */}
+                                {/* {preferenceId && <Wallet initialization={{ preferenceId}} />} */}
+                                {paymentID && <Wallet initialization={{ preferenceId: paymentID }} />}
+                                {/* <Wallet initialization={{preferenceId: paymentID}}/> */}
+                                
                             </>
                         )}
                     </div>
