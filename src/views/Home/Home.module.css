@@ -61,6 +61,27 @@
     padding: 5px;
 }
 
+.backButton {
+    width: 10rem;
+    background-color: #c9dbcc; 
+    border: 1px solid #9292923a;
+    color: #000; 
+    padding: 10px 20px; 
+    text-align: center; 
+    text-decoration: none; 
+    display: inline-block; 
+    font-size: 16px; 
+    margin: 10px 2px; 
+    cursor: pointer; 
+    border-radius: 4px; 
+    transition: background-color 0.2s ease; 
+}
+
+.backButton:hover {
+    background-color: white; /* Color de fondo al pasar el mouse */
+    color: #000;
+}
+
 @media screen and (min-width: 768px){
     .section{
         flex-direction: row;

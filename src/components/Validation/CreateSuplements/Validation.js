@@ -1,12 +1,9 @@
 export default function Validation(inputs){
     const errors = {};
     
-    const regexLetras = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/i;
+    const regexLetras = /^[a-zñáéíóúü0-9\s-]+$/i;
     const regex3 = /.{3,}/;
     //validacion name
-    if (!regexLetras.test(inputs.name)) {
-        errors.name = 'Debe ser un nombre'
-    }
     if (!inputs.name) {
         errors.name = 'El nombre no puede estar vacio'}
     if (!regex3.test(inputs.name)) {
@@ -14,7 +11,7 @@ export default function Validation(inputs){
 
 
     //validation description
-    const regexMasDeTresPalabras = /^(\S+\s+){3,}\S+$/i;
+    const regexMasDeTresPalabras = /^\s*(\S+\s+){3,}\S+\s*$/;
     if(!regexMasDeTresPalabras.test(inputs.description))
         {errors.description = 'La descripcion debe ser mas de tres palabras';}
 

@@ -3,26 +3,25 @@
      background-color: #f6EC72;
     font-family: cursive;
 
-}  
+}   
 
 label {
 
-    font-size: 18px; /* Tamaño de fuente */
-    /*color: #333; /* Color del texto */
+    font-size: 18px; 
     color: #555;
     font-weight: bold;
     margin-bottom: 10px;
     transition: color 0.3s ease;
-    background-color: #49cbc1; /* Cambia el color de fondo */
+    background-color: #49cbc1; 
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agrega una sombra */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 .form {
     width: 500px;
-    height: auto;
+    gap: 5px;
    
-    background-color: #4e54c8; /* Color de fondo */
+    background-color: #4e54c8; 
     background-image: linear-gradient(to right, #1684A7, #09A599); 
 
     display: flex;
@@ -69,4 +68,10 @@ label {
     border-radius: 4px;
     font-size: 15px;
   }
-  
+  .subirfoto{
+    background-color: white;
+  }
+  .subirfoto:hover{
+    background-color: grey;
+    cursor: pointer;
+  }
