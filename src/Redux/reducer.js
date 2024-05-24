@@ -18,6 +18,7 @@ const initialState = {
   paymentID: null,
   user: null,
   showShoppingCart: false,
+  suplemento:{}
 };
 
 
@@ -99,6 +100,16 @@ const rootReducer = (state = initialState, action) => {
         return {
             ...state,
             paymentID: payload
+        }
+      case "FETCH_SUPLEMENT_BY_ID_SUCCESS":
+        return {
+            ...state,
+            suplemento: payload
+        }
+      case "UPDATE_SUPLEMENT_SUCCESS":
+        return {
+            ...state,
+            suplemento: payload
         }
 
     default:

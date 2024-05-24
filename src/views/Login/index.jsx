@@ -65,10 +65,16 @@ function Login(){
       console.error('Error al decodificar el token:', error);
     }
   };
+  const onSubmit=(e)=>{
+    e.preventDefault()
+    axios.post("/login",login ).then(({data})=>{
+      console.log(data);
+    })
+  }
 
   return (
     <>
-      <form className={style.form}>
+      <form className={style.form} onSubmit={onSubmit}>
         <h3 className={style.title}>Login</h3>
         <label>Email</label>
         <input
