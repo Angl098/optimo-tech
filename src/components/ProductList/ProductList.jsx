@@ -7,10 +7,10 @@ import axios from 'axios'
 
 import Card from '../card/card.component'
 
-export default function ProductList({search}) {
+export default function ProductList({ search }) {
 
-    const [category,setCategory]=useState([])
-
+    const [category, setCategory] = useState([])
+    const [totalPages, setTotalPages] = useState(0)
     const [datas, setDatas] = useState([])
     const [datasAux, setDatasAux] = useState([])
     useEffect(() => {
@@ -18,10 +18,10 @@ export default function ProductList({search}) {
             setDatas([...datas, ...data])
             setDatasAux([...datas, ...data])
         })
-        
+
         axios.get("/category/").then(({ data }) => {
             //console.log(data);
-            setCategory([ ...data])
+            setCategory([...data])
         })
 
 
@@ -29,11 +29,13 @@ export default function ProductList({search}) {
 
     const [filter, setFilter] = useState({
         category: "",
-        orderBy: "price",
+        orderBy: "",
         orderDirection: "",
+        page: 1,
+        pageSize: 4
     });
 
-//merge con el back de royer
+    //merge con el back de royer
 
     const buildQueryParams = (filter) => {
         filter.name = search
@@ -52,11 +54,13 @@ export default function ProductList({search}) {
     };
     const fetchAlojamientos = async (queryParams) => {
         try {
-            const { data } = await axios.get("/suplements/filter/" + queryParams);
-            setDatas(data)
+            const { data } = await axios.get("/suplements/filter" + queryParams);
+            console.log(data);
+            setDatas(data.items)
+            setTotalPages(data.totalPages)
             //   dispatch(getAllAlojamientos(data));
         } catch (error) {
-            console.log(error); 
+            console.log(error);
         }
     };
 
@@ -72,11 +76,6 @@ export default function ProductList({search}) {
         setNumberPage(1)
     }, [datas.length])
 
-    const NumAlojamientosPage = 6;
-    const lastIndex = numberPage * NumAlojamientosPage;
-    const firstIndex = lastIndex - NumAlojamientosPage;
-    const newData = datas.slice(firstIndex, lastIndex);
-    const totalPages = Math.ceil(datas.length / NumAlojamientosPage);
 
     const nextPage = () => {
         setNumberPage(numberPage + 1);
@@ -87,9 +86,9 @@ export default function ProductList({search}) {
     }
 
     const goToPage = (page) => {
-        setNumberPage(page);
+        setFilter({...filter,page});
     };
-    
+
 
     const handleFilterChange = async (e) => {
         const changeFilter = { ...filter, [e.target.name]: e.target.value };
@@ -103,15 +102,20 @@ export default function ProductList({search}) {
         <div>
             <div>
                 <select
+                    name="orderBy"
+                    onChange={handleFilterChange}
+                    className=" bg-transparent focus:outline-none text-chocolate-100 mb-1"
+                >
+                    <option value="price">Por precio</option>
+                    <option value="name">Alfebeticamente</option>
+                </select>
+                <select
                     name="orderDirection"
                     onChange={handleFilterChange}
                     className=" bg-transparent focus:outline-none text-chocolate-100 mb-1"
                 >
-                    <option value="" className="">
-                        Más relevantes
-                    </option>
-                    <option value="ASC">Menor precio</option>
-                    <option value="DESC">Mayor precio</option>
+                    <option value="ASC">Asc</option>
+                    <option value="DESC">Desc</option>
                 </select>
             </div>
             <div>
@@ -135,33 +139,16 @@ export default function ProductList({search}) {
                 ))}
                 <button onClick={nextPage} disabled={numberPage === totalPages}>❯</button>
             </div>
+
             <div className={style.newData}>
 
-                {/* {newData.map(product => (
-                    <div className={style.item} key={product.id} onClick={() => { console.log(product); }}>
-                        <figure>
-                            <img className={style.image} src={product.image} alt={product.name} />
-                        </figure>
-                        <div className={style.info}>
-                            <div className={style.info}>
-                                <h4>{product.name}</h4>
-                                <p>${product.price}</p>
-                            </div>
-                            <button className={style.btnAddToCart} onClick={() => { console.log(product); }}>
-                                Añadir al carrito
-                            </button>
-                        </div>
-                    </div>
-                ))
-            } */}
-            <div className={style.contenedorCards}>
-            {newData.map((suplement) => {
-                    //console.log(videogame);
-                    return (
-                        <Card key={suplement.id} suplement={suplement} />
-                    );
-                })}
-            </div>
+                <div className={style.contenedorCards}>
+                    {datas.map((suplement) => {
+                        return (
+                            <Card key={suplement.id} suplement={suplement} />
+                        );
+                    })}
+                </div>
             </div>
 
         </div>

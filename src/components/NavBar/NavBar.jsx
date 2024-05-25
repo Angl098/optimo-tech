@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect  } from 'react';
+import { useState, useEffect } from 'react';
 import style from './NavBar.module.css'
 import logo from '../../assets/logo.png'
 import { Link, useLocation } from "react-router-dom";
@@ -51,6 +51,8 @@ const NavBar = (props) => {
                     <Link to={PATHROURES.LANDING} className={style.title}>ÓPTIMO</Link>
                     <Link to={PATHROURES.LANDING} className={style.linkDesk} onClick={toggleNav}>Home</Link>
                     <Link to={PATHROURES.HOME} className={style.linkDesk} onClick={toggleNav}>Products</Link>
+                    <Link to={"/dashboard"} className={style.linkDesk} onClick={toggleNav}>Dashboard</Link>
+                    
                 </div>
 
                 <div className={style.searchDeskContent}>
@@ -62,10 +64,10 @@ const NavBar = (props) => {
                             <label>Tu Suplemento</label>
                         </div>
                         <div className={style.groupButton}>
-                            <button type="submit" onClick={()=>{}} className={style.cssbuttonsIo}>
-                                
-                                    Buscar
-                                
+                            <button type="submit" onClick={() => { }} className={style.cssbuttonsIo}>
+
+                                Buscar
+
                             </button>
                         </div>
                     </form>
@@ -73,15 +75,14 @@ const NavBar = (props) => {
 
                 <div className={style.cartContainer}>
                     <div className={style.buttonContainerDesk}>
-                        <button className={style.buttonLog}><a href="/login">Log In</a></button>
                         <Link to={"/login"}>
-                        <button className={style.buttonLog}>Log In</button>
+                            <button className={style.buttonLog}>Log In</button>
                         </Link>
-                        <Link to={"registeruser"}>
-                        <button className={style.buttonSign}>Sign Up</button>
+                        <Link to={"/registeruser"}>
+                            <button className={style.buttonSign}>Sign Up</button>
                         </Link>
                     </div>
-                    
+
                     <button className={style.cartButton} onClick={() => shoppingCart()}>
                         <svg
                             className={style.cartSvg}
