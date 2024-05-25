@@ -78,15 +78,15 @@ export default function ProductList({ search }) {
 
 
     const nextPage = () => {
-        setNumberPage(numberPage + 1);
+        setFilter({ ...filter, page: filter.page + 1 });
     }
 
     const prevPage = () => {
-        setNumberPage(numberPage - 1);
+        setFilter({ ...filter, page: filter.page - 1 });
     }
 
     const goToPage = (page) => {
-        setFilter({...filter,page});
+        setFilter({ ...filter, page });
     };
 
 
@@ -97,57 +97,89 @@ export default function ProductList({ search }) {
         fetchAlojamientos();
     }
 
+    const handleCategoryFilter = (category) => {
+        if (category) {
+
+            const changeFilter = { ...filter, category ,page:1};
+            setFilter(changeFilter);
+            buildQueryParams();
+            fetchAlojamientos();
+        } else {
+            const changeFilter = {
+                category: "",
+                orderBy: filter.orderBy,
+                orderDirection: filter.orderDirection,
+                page: 1,
+                pageSize: filter.pageSize
+            };
+            setFilter(changeFilter);
+            buildQueryParams();
+            fetchAlojamientos();
+
+        }
+    }
 
     return (
-        <div>
-            <div>
-                <select
-                    name="orderBy"
-                    onChange={handleFilterChange}
-                    className=" bg-transparent focus:outline-none text-chocolate-100 mb-1"
-                >
-                    <option value="price">Por precio</option>
-                    <option value="name">Alfebeticamente</option>
-                </select>
-                <select
-                    name="orderDirection"
-                    onChange={handleFilterChange}
-                    className=" bg-transparent focus:outline-none text-chocolate-100 mb-1"
-                >
-                    <option value="ASC">Asc</option>
-                    <option value="DESC">Desc</option>
-                </select>
+        <div className={style.productList}>
+            |<div className={style.categories}>
+
+                <p className={style.category} key={category.id} onClick={() => handleCategoryFilter(category.id)} value=" ">Todos</p>
+                {category.map((category) => {
+                    return <p className={style.category} key={category.id} name="category" value={category.id} onClick={() => handleCategoryFilter(category.id)}>{category.name}</p>
+                })}
+
             </div>
             <div>
 
-                <select onChange={handleFilterChange} name="category" id="">
-                    <option value="">Todos</option>
-                    {category.map((category) => {
-                        return <option key={category.id} value={category.id}>{category.name}</option>
-                    })}
-                </select>
-            </div>
-            <div >
-                <button onClick={prevPage} disabled={numberPage === 1} >❮</button>
-                {[...Array(totalPages)].map((_, index) => (
-                    <button
-                        key={index + 1}
-                        onClick={() => goToPage(index + 1)}
+                <div>
+                    <select
+                        name="orderBy"
+                        onChange={handleFilterChange}
+                        className=" bg-transparent focus:outline-none text-chocolate-100 mb-1"
                     >
-                        {index + 1}
-                    </button>
-                ))}
-                <button onClick={nextPage} disabled={numberPage === totalPages}>❯</button>
-            </div>
+                        <option value="price">Por precio</option>
+                        <option value="name">Alfebeticamente</option>
+                    </select>
+                    <select
+                        name="orderDirection"
+                        onChange={handleFilterChange}
+                        className=" bg-transparent focus:outline-none text-chocolate-100 mb-1"
+                    >
+                        <option value="ASC">Asc</option>
+                        <option value="DESC">Desc</option>
+                    </select>
+                </div>
+                <div>
 
-            <div className={style.newData}>
+                    {/* <select onChange={handleFilterChange} name="category" id="">
+                        <option value="">Todos</option>
+                        {category.map((category) => {
+                            return <option key={category.id} value={category.id}>{category.name}</option>
+                        })}
+                    </select> */}
+                </div>
 
-                <div className={style.contenedorCards}>
-                    {datas.map((suplement) => {
-                        return (
-                            <Card key={suplement.id} suplement={suplement} />
-                        );
-                    })}
+                <div className={style.newData}>
+
+                    <div className={style.contenedorCards}>
+                        {datas.map((suplement) => {
+                            return (
+                                <Card key={suplement.id} suplement={suplement} />
+                            );
+                        })}
+                    </div>
+                </div>
+                <div >
+                    <button onClick={prevPage} disabled={filter.page === 1} >❮</button>
+                    {[...Array(totalPages)].map((_, index) => (
+                        <button
+                            key={index + 1}
+                            onClick={() => goToPage(index + 1)}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+                    <button onClick={nextPage} disabled={filter.page === totalPages}>❯</button>
                 </div>
             </div>
 

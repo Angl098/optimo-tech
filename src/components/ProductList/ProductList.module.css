@@ -1,4 +1,17 @@
-
+.productList{
+    display: flex;
+}
+.categories{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    color: black;
+    margin: 15px;
+}
+.category:hover{
+    cursor: pointer;
+    color: #807f7f;
+}
 .item{
     width: 250px;
     height: 400px;
