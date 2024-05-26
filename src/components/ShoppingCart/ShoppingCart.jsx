@@ -17,7 +17,7 @@ const ShoppingCart = () => {
 
     
     // useEffect(() => {
-        initMercadoPago('TEST-6dbf75c0-2c45-479d-bb78-b5cf38079c81', {
+        initMercadoPago('TEST-61fad3db-d8b0-4542-98a8-7efab456c656', {
         locale: "es-AR",
     });
     // }, [])
