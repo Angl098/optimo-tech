@@ -1,7 +1,7 @@
 //Importo las librerias o dependencias
 import {useState} from 'react';
 import axios from 'axios';
-
+import Swal from "sweetalert2";
 //para autorizacion de terceros
 import { GoogleLogin } from '@react-oauth/google';
 //para decodificar el token
@@ -13,8 +13,9 @@ import validation from '../../components/Validation/Login/Validation';
 //Importo los estilos
 import style from './Login.module.css';
 
-import { postLogin, user } from '..//..//Redux/actions';
+import { postLogin } from '..//..//Redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 //const userLogin = useSelector(state => state.user);
 
 function Login(){
@@ -86,7 +87,14 @@ const handleSubmit = async (event)=>{
   const onSubmit=(e)=>{
     e.preventDefault()
     axios.post("/login",login ).then(({data})=>{
-      console.log(data);
+      localStorage.setItem("user", JSON.stringify(data));
+      Navigate("home")
+    }).catch((response)=>{
+      Swal.fire({
+        icon: "success",
+        title: "¡Registro Exitoso!",
+        text: "Los datos del alojamiento han sido registrados correctamente.",
+      });
     })
   }
 
@@ -109,7 +117,6 @@ const handleSubmit = async (event)=>{
         {errors.password!==''&&<p className={style.errors}>{errors.password}</p>}
 
         <button className={style.btn} type="submit">Login</button>
-        {console.log(login)}
 {/* auth terceros */}
         <GoogleLogin
           onSuccess={handleGoogleSuccess}

@@ -13,6 +13,7 @@ const NavBar = (props) => {
 
     const { handleSearch } = props
     const [search, setSearch] = useState("")
+    const [logeado, setLogeado] = useState(false)
     const [showNav, setShowNav] = useState(null);
     const [quantityProductsCart, setQuantityProductsCart] = useState(0)
     const location = useLocation()
@@ -20,7 +21,19 @@ const NavBar = (props) => {
     const cart = useSelector(state => state.cart)
     const user = useSelector(state => state.user)
     const showShoppingCartState = useSelector((state) => state.showShoppingCart)
+    useEffect(() => {
+        const nameUsuario = JSON.parse(localStorage.getItem("user"));
 
+        if (JSON.parse(localStorage.getItem("user"))) {
+            if (JSON.parse(localStorage.getItem("user")).userId) {
+
+                setLogeado(true)
+            }
+        } else {
+            setLogeado(false)
+        }
+
+    }, [user])
     useEffect(() => {
         if (cart.length > 0) {
             const quantityProducts = cart.reduce((total, product) => (
@@ -43,17 +56,11 @@ const NavBar = (props) => {
     const handleChange = (e) => {
         setSearch(e.target.value);
     };
-    //user
-    useEffect(()=>{
-        const dataUserJSON = window.localStorage.getItem('notLogin');
-        if(dataUserJSON)
-        {
-            const dataUser = JSON.parse(dataUserJSON);
-            dispatch(user(dataUser));
-            
-        }
-    }, []);
 
+    const cerrarSesion=()=>{
+        console.log("cerrado sesion");
+        localStorage.clear();
+    }
 
     return (
         <nav className={style.nav}>
@@ -65,8 +72,11 @@ const NavBar = (props) => {
                     <Link to={PATHROURES.LANDING} className={style.title}>ÓPTIMO</Link>
                     <Link to={PATHROURES.LANDING} className={style.linkDesk} onClick={toggleNav}>Home</Link>
                     <Link to={PATHROURES.HOME} className={style.linkDesk} onClick={toggleNav}>Products</Link>
-                    <Link to={"/dashboard"} className={style.linkDesk} onClick={toggleNav}>Dashboard</Link>
 
+                    {
+                        logeado &&
+                        <Link to={"/dashboard"} className={style.linkDesk} onClick={toggleNav}>Dashboard</Link>
+                    }
                 </div>
 
                 <div className={style.searchDeskContent}>
@@ -77,7 +87,7 @@ const NavBar = (props) => {
                         <label>Tu Suplemento</label>
                     </div>
                     <div className={style.groupButton}>
-                        <button type="submit" className={style.cssbuttonsIo} onClick={()=>handleSearch(search)}>
+                        <button type="submit" className={style.cssbuttonsIo} onClick={() => handleSearch(search)}>
 
                             Buscar
 
@@ -86,14 +96,19 @@ const NavBar = (props) => {
                 </div>
 
                 <div className={style.cartContainer}>
-                    <div className={style.buttonContainerDesk}>
+                    {!logeado ? <div className={style.buttonContainerDesk}>
                         <Link to={"/login"}>
-                            <button className={style.buttonLog}>Log In</button>
+                            <button className={style.buttonLog}>Iniciar Sesion</button>
                         </Link>
                         <Link to={"/registeruser"}>
-                            <button className={style.buttonSign}>Sign Up</button>
+                            <button className={style.buttonSign}>Registrar</button>
                         </Link>
-                    </div>
+                    </div>:
+                        <Link to={"/home"}>
+                            <button onClick={cerrarSesion} className={style.buttonSign}>Cerrar sesion</button>
+                        </Link>
+                        
+                    }
 
                     <button className={style.cartButton} onClick={() => shoppingCart()}>
                         <svg

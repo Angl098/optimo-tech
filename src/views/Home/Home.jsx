@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 //Importo las actions
-import {getSuplements, getSuplementsByName} from '../../Redux/actions'
+import {getSuplements, getSuplementsByName, setUser} from '../../Redux/actions'
 
 //Importo los componentes
 
@@ -25,7 +25,16 @@ const Home = () => {
 
     //Filtrar por nombre con el back-end
     const [search, setSearch] = useState('');
+    useEffect(()=>{
+        const user=window.localStorage.getItem("user")
+        if (user) {
+            console.log("Logeado");
+            dispatch(setUser(user))
+        }else{
 
+            console.log("No Logeado");
+        }
+    },[])
     useEffect(() => {
         setLoading(true);// Establecer el estado de carga como verdadero al iniciar la solicitud de datos
         dispatch(getSuplements())
