@@ -13,24 +13,42 @@ import validation from '../../components/Validation/Login/Validation';
 //Importo los estilos
 import style from './Login.module.css';
 
+import { postLogin, user } from '..//..//Redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+const userLogin = useSelector(state => state.user);
+
 function Login(){
-    const [login, setLogin] = useState({});
-    const [errors, setErrors] = useState({});
+  const dispatch = useDispatch();
+  const [login, setLogin] = useState({});
+  const [errors, setErrors] = useState({});
 
-    //manejador del estado principal login
-    function handleChange(event){
-        event.preventDefault();
-        setErrors(validation({...login,[event.target.name] : event.target.value
-            })
-        );
-    setLogin({...login,[event.target.name]:event.target.value});
-    }
+  //manejador del estado principal login
+  function handleChange(event){
+      event.preventDefault();
+      setErrors(validation({...login,[event.target.name] : event.target.value
+          })
+      );
+  setLogin({...login,[event.target.name]:event.target.value});
+  }
 
-    // Función para alternar la visibilidad de la contraseña
-    const [passwordVisible, setPasswordVisible] = useState(false);
-    function togglePasswordVisibility() {
-        setPasswordVisible(!passwordVisible);
-    }
+      // Función para alternar la visibilidad de la contraseña
+      const [passwordVisible, setPasswordVisible] = useState(false);
+   function togglePasswordVisibility() {
+      setPasswordVisible(!passwordVisible);
+  }
+
+  //submit
+const handleSubmit = async (event)=>{
+  event.preventDefault();
+  console.log('submit');
+  const response = await dispatch(postLogin(login));
+  //Guardar en el storage
+  window.localStorage.setItem('Optimo', JSON.stringify(response.payload.dataUser));
+  console.log(response.payload);
+  dispatch(user(response.payload.dataUser));
+  await console.log('estado global user', userLogin);
+  alert('Respuesta del servidor: ' + response.payload.message);
+};
 
     // Manejador del éxito en el inicio de sesión con Google
     const handleGoogleSuccess = (credentialResponse) => {
@@ -68,39 +86,25 @@ function Login(){
 
   return (
     <>
-      <form className={style.form}>
+    <form onSubmit={handleSubmit} className={style.form}>
         <h3 className={style.title}>Login</h3>
+
         <label>Email</label>
-        <input
-          type='text'
-          name='email'
-          value={login.email || ''}
-          onChange={handleChange}
-          className={style.form_style}
-        />
-        {errors.email !== '' && <p className={style.errors}>{errors.email}</p>}
+        <input type='text' name='email' value={login.email} onChange={handleChange} className={style.form_style} />
+        {errors.email!==''&&<p className={style.errors}>{errors.email}</p>}
 
         <label>Password</label>
-        <div className={style.password_input_container}>
-          <input
-            name='password'
-            type={passwordVisible ? 'text' : 'password'}
-            value={login.password || ''}
-            onChange={handleChange}
-            className={style.form_style}
-          />
-          <button
-            type='button'
-            onClick={togglePasswordVisibility}
-            className={style.show_hide_btn}
-          >
-            {passwordVisible ? '👁️' : '🔒'}
-          </button>
-        </div>
+            <div className={style.password_input_container}>
+                <input name='password' type={passwordVisible ? 'text' : 'password'} value={login.password || ''} onChange={handleChange} className={style.form_style} />
+                <button type="button" onClick={togglePasswordVisibility} className={style.show_hide_btn}>
+                    {passwordVisible ? '👁️' : '🔒'}
+                </button>
+            </div>
+        {errors.password!==''&&<p className={style.errors}>{errors.password}</p>}
 
-        <button className={style.btn} type='submit'>
-          Login
-        </button>
+        <button className={style.btn} type="submit">Login</button>
+        {console.log(login)}
+{/* auth terceros */}
         <GoogleLogin
           onSuccess={handleGoogleSuccess}
           onError={() => {

@@ -14,7 +14,8 @@ export const SHOW_SHOPPING_CART = 'SHOW_SHOPPING_CART';
 export const REMOVE_ONE_FROM_CART = 'REMOVE_ONE_FROM_CART';
 export const REMOVE_ALL_FROM_CART = 'REMOVE_ALL_FROM_CART,';
 export const POST_REGISTER_USER="POST_REGISTER_USER";
-
+export const POST_LOGIN="POST_LOGIN";
+export const USER="USER";
 
 //Función que hace la peticion con axios al back-end
 //para traer todos los suplementos
@@ -28,9 +29,7 @@ export const getSuplements = () => {
     }
 }
 
-export const POST_SUPLEMENTS='POST_SUPLEMENTS';
-export const POST_REGISTER_USER="POST_REGISTER_USER";
-export const POST_LOGIN="POST_LOGIN";
+
 
 export const postSuplements = (newSuplements) => {
 
@@ -194,23 +193,6 @@ export const injectCartData = (data) => {
 //         }
 //     }
 // }
-export const postRegisterUser = (user) => {
-    const endpoint = '/users';
-    const endpointSuplements = 'http://localhost:3001/suplements';
-    return async function (dispatch) {
-        try{
-                const response =await axios.post(endpoint, user);
-                const response =await axios.post(endpointSuplements, newSuplements);
-          return dispatch({
-             type: POST_REGISTER_USER,
-             payload: response.data
-          });  
-        }
-        catch (error) {
-            console.log('error al registrar los datos', error);
-        }
-        }
-    };
 
 export const getSuplement = (id) => {
     return async function (dispatch) {
@@ -240,6 +222,7 @@ export const getSuplementsByName = (queryParams) => {
     return async function(dispatch){
         const response = await axios.get(`/suplements?name=${queryParams}`)
         //console.log(response.data)
+        
         if (Array.isArray(response.data)) {
             return dispatch({
                 type: GET_SUPLEMENTS_BY_NAME,
@@ -253,14 +236,10 @@ export const getSuplementsByName = (queryParams) => {
         }
     }
 }
-catch(error){
-console.log('error al registrar suplemento', error);
-}
-    };
- };
+
 
  export const postRegisterUser = (user) => {
-    const endpointRegisterUser = 'http://localhost:3001/users';
+    const endpointRegisterUser = '/users';
     return async function (dispatch) {
         try{
                 const response =await axios.post(endpointRegisterUser, user);
@@ -276,7 +255,7 @@ console.log('error al registrar los datos de usuario', error);
  };
 
  export const postLogin = (login) => {
-   const endpointRegisterUser = 'http://localhost:3001/login';
+   const endpointRegisterUser = '/login';
    return async function (dispatch) {
        try{
                const response =await axios.post(endpointRegisterUser, login);
@@ -292,3 +271,7 @@ alert("error" + error);
    };
 };
 
+export const user = (user) => ({
+    type: USER,
+    payload: user,
+});

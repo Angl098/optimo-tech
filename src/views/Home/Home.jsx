@@ -43,7 +43,7 @@ const Home = () => {
     return (
 
         <div className={style.container}>
-            <NavBar handleSearch={handleSearch}  />
+            <NavBar handleSearch={handleSearch}  /> 
             <div>
                 {loading ?(
                     <img src={loadingImg} alt="loading" />

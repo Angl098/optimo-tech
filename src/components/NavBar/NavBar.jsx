@@ -3,8 +3,7 @@ import { useState, useEffect  } from 'react';
 import style from './NavBar.module.css'
 import logo from '../../assets/logo.png'
 import { Link, useLocation } from "react-router-dom";
-import logo from '../../../public/logo.png'
-import { Link, useLocation} from "react-router-dom";
+//import logo from '../../../public/logo.png'
 import PATHROURES from '../../helpers/PathRoutes';
 import ShoppingCart from "../ShoppingCart/ShoppingCart";
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,13 +41,16 @@ const NavBar = (props) => {
         setShowNav(!showNav);
     };
 
-    //funcionalidad butoon login redirigir
-    const redirectLogin = () => {
-      window.location.href = '/login';}
-
-    //funcionalidad butoon registerUser redirigir
-        const redirectRegisterUser = () => {
-            window.location.href = '/registeruser';}
+    //user
+    useEffect(()=>{
+        const dataUserJSON = window.localStorage.getItem('notLogin');
+        if(dataUserJSON)
+        {
+            const dataUser = JSON.parse(dataUserJSON);
+            dispatch(user(dataUser));
+            
+        }
+    }, []);
 
 
     return (
@@ -83,19 +85,16 @@ const NavBar = (props) => {
 
                 <div className={style.cartContainer}>
                     <div className={style.buttonContainerDesk}>
-                        <button className={style.buttonLog}><a href="/login">Log In</a></button>
                         <Link to={"/login"}>
                         <button className={style.buttonLog}>Log In</button>
                         </Link>
-                        <Link to={"registeruser"}>
+                        <Link to={"/registeruser"}>
                         <button className={style.buttonSign}>Sign Up</button>
                         </Link>
-
-                        <button onClick={redirectLogin} className={style.buttonLog}>Log In</button>
-                        <button onClick={redirectRegisterUser} className={style.buttonSign}>Sign Up</button>
-
                     </div>
+
                     
+
                     <button className={style.cartButton} onClick={() => shoppingCart()}>
                         <svg
                             className={style.cartSvg}

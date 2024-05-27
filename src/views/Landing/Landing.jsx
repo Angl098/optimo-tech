@@ -8,7 +8,8 @@ import axios from 'axios';
 const Home = () => {
     const [randomSuplement,setRandomSuplement]=useState([])
     useEffect(()=>{
-        axios("/suplements/randomSuplementes").then(({data})=>{
+       // axios("/suplements/randomSuplementes").then(({data})=>{
+            axios("/suplements/").then(({data})=>{
             setRandomSuplement(data)
         })
     },[])

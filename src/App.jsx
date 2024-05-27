@@ -19,7 +19,7 @@ function App() {
   return (
     
       <div>
-        {/* <NavBar /> */}
+        {/* <NavBar />  */}
       <Routes>
         <Route path={PATHROUTES.LANDING} element={<Landing/>} />
         <Route path={PATHROUTES.HOME} element={<Home/>} />

@@ -5,6 +5,8 @@ import { GET_SUPLEMENTS, GET_SUPLEMENT, CLEAN_PRODUCT_BY_ID, POST_SUPLEMENTS, GE
   //INJECT_CART_DATA,
   SHOW_SHOPPING_CART,
   //POST_REGISTER_USER 
+  POST_LOGIN, POST_REGISTER_USER,
+  USER
 } from "./actions"
 
 
@@ -32,12 +34,6 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         allSuplements: payload,
       };
-import { POST_LOGIN, POST_REGISTER_USER, POST_SUPLEMENTS, postLogin} from "./actions"; 
-const initialState={postSuplements:''}
-const rootReducer=(state=initialState,action)=>{
-const {type,payload}=action;
-
-switch (type) {
     case POST_SUPLEMENTS:
       return {
         ...state,
@@ -106,6 +102,15 @@ switch (type) {
             ...state,
             paymentID: payload
         }
+
+        case POST_REGISTER_USER:
+          return {...state, postRegisterUser: payload}
+    
+        case POST_LOGIN:
+          return {...state, postLogin: payload}
+
+        case USER:
+          return {...state, user: payload}
 
     default:
       return state;
@@ -226,15 +231,9 @@ switch (type) {
 //   }
 // };
 
-      return { ...state, postSuplements: payload};
 
-    case POST_REGISTER_USER:
-      return {...state, postRegisterUser: payload}
 
-    case POST_LOGIN:
-      return {...state, postLogin: payload}
 
-    default: return {...state};
-}
-}
+
+
 export default rootReducer;
