@@ -136,7 +136,7 @@ function CreateSuplement() {
             <div>
                 <input type="file" accept="image/*" name="images" id="images" onChange={handleChange}  multiple />
                 <label htmlFor="images">
-                    <span className={style.subirfoto}>
+                    <span >
                         Subir foto
                     </span>
                 </label>
