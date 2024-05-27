@@ -3,7 +3,7 @@ import ItemShoppingCart from "../ItemShoppingCart/ItemShoppingCart";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 // import { IoMdCart } from "react-icons/io";
-import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
+// import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 import { paymentGateway, showShoppingCart } from '../../Redux/actions'
 import axios from "axios";
 //import swal from 'sweetalert';
@@ -13,37 +13,35 @@ const ShoppingCart = () => {
     const cart = useSelector((state) => state.cart);
     const user = useSelector(state => state.user)
     const showShoppingCartState = useSelector((state) => state.showShoppingCart);
-    const [preferenceId, setPreferenceId] = useState(null)
 
-    
-    // useEffect(() => {
-        initMercadoPago('TEST-61fad3db-d8b0-4542-98a8-7efab456c656', {
-        locale: "es-AR",
-    });
-    // }, [])
+    const createPreference = async () => {
+        try {
+            const items = cart.map((prod) => ({
+                title: prod.name,
+                price: parseFloat(prod.price),
+                quantity: parseInt(prod.quantity),
+                productId: prod.id,
+            }));
+            console.log(items);
+            const total = cart.map((prod) => prod.total)
+            let totalPrice = 0;
 
-    // NO USAR 
-    // const createPreference = async () => {
-    //     try {
-    //         // const response = await axios.post("/payment/create_preference", {
-    //         //     title: 'Suplemento',
-    //         //     price: 100,
-    //         //     quantity: 1,
-    //         // })
-    //         const response = await axios.post('/payment/create_preference', {
-    //             items: cart.map((prod) => ({
-    //                 title: prod.name,
-    //                 price: parseFloat(prod.price),
-    //                 quantity: parseInt(prod.quantity)
-    //             }))
-    //         });
+            for (let i = 0; i < total.length; i++) {
+                totalPrice += total[i];
+            }
 
-    //         const { id } = response.data
-    //         return id;
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
+            const response = await axios.post("/payment/create_preference", {
+                items: items,
+                total: totalPrice,
+            })
+
+            const { point } = response.data;
+
+            window.location.href=point
+        } catch (error) {
+            console.log('error obteniendo la orden de pago', error);
+        }
+    }
 
     const dispatch = useDispatch();
 
@@ -55,24 +53,6 @@ const ShoppingCart = () => {
             window.localStorage.setItem('cart', JSON.stringify(cart))
         }
     }, [cart])
-
-    const paymentID = useSelector(state => state.paymentID)
-
-    const handleBuy = async () => {
-        //NO USAR
-        //     const id = await createPreference();
-
-        //     if (id) {
-        //         setPreferenceId(id)
-        //     }
-
-
-        // if (user === null) swal("Login first", "To make a purchase you need to register", "error");
-        dispatch(paymentGateway(
-            cart,
-
-        ))
-    }
 
     const notShowShopping = () => {
         dispatch(showShoppingCart(false))
@@ -125,13 +105,9 @@ const ShoppingCart = () => {
                                     </div>
                                     <hr />
                                 </div>
-                                <button className={style.buttonCleanCart} onClick={handleBuy}>
+                                <button className={style.buttonCleanCart} onClick={createPreference}>
                                     Proceed to Checkout
                                 </button>
-                                {/* {preferenceId && <Wallet initialization={{ preferenceId}} />} */}
-                                {paymentID && <Wallet initialization={{ preferenceId: paymentID }} />}
-                                {/* <Wallet initialization={{preferenceId: paymentID}}/> */}
-                                
                             </>
                         )}
                     </div>

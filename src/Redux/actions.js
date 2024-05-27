@@ -61,6 +61,7 @@ export const postSuplements = (newSuplements) => {
 // };
 
 
+// NO ESTA EN USO 
 export function paymentGateway(cart) {
     // console.log();
     return async function (dispatch) {
@@ -103,7 +104,8 @@ export function paymentGateway(cart) {
             })
 
             const { id } = response.data;
-            dispatch({ type: PAYMENT_ID, payload: id })
+            return id;
+            // dispatch({ type: PAYMENT_ID, payload: id })
             //eliminando los prod del carrito en el localStor cuando la compra se completa con exito
             window.localStorage.removeItem('cart')
         } catch (error) {
