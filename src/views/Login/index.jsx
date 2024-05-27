@@ -15,7 +15,7 @@ import style from './Login.module.css';
 
 import { postLogin, user } from '..//..//Redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
-const userLogin = useSelector(state => state.user);
+//const userLogin = useSelector(state => state.user);
 
 function Login(){
   const dispatch = useDispatch();
@@ -45,8 +45,8 @@ const handleSubmit = async (event)=>{
   //Guardar en el storage
   window.localStorage.setItem('Optimo', JSON.stringify(response.payload.dataUser));
   console.log(response.payload);
-  dispatch(user(response.payload.dataUser));
-  await console.log('estado global user', userLogin);
+  //const userDispatch = response.payload.dataUser
+  //dispatch(userLogin(userDispatch));
   alert('Respuesta del servidor: ' + response.payload.message);
 };
 
