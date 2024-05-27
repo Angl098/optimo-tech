@@ -14,7 +14,8 @@ export const SHOW_SHOPPING_CART = 'SHOW_SHOPPING_CART';
 export const REMOVE_ONE_FROM_CART = 'REMOVE_ONE_FROM_CART';
 export const REMOVE_ALL_FROM_CART = 'REMOVE_ALL_FROM_CART,';
 export const POST_REGISTER_USER = "POST_REGISTER_USER";
-
+export const POST_LOGIN="POST_LOGIN";
+export const USER="USER";
 
 //Función que hace la peticion con axios al back-end
 //para traer todos los suplementos
@@ -27,6 +28,7 @@ export const getSuplements = () => {
         })
     }
 }
+
 
 
 export const postSuplements = (newSuplements) => {
@@ -150,21 +152,54 @@ export const injectCartData = (data) => {
     }
 }
 
+// export const getAllUsers = () => {
+//     return async function (dispatch) {
+//         try {
+//             const response = await axios.get("/users")
+//             dispatch({ type: GET_ALL_USERS, payload: response.data })
+//         } catch (error) {
+//             console.log(error);
+//         }
+//     }
+// }
+
+// export const getAllSuplement = () => {
+//     return async function (dispatch) {
+//         try {
+//             const response = await axios.get('/suplement?actives=true')
+//             dispatch({ type: GET_ALL_PRODUCTS, payload: response.data.data })
+//         } catch (error) {
+//             console.log(error);
+//         }
+//     };
+// };
+
+// export const getUserByName = (name) => {
+//     return async function (dispatch) {
+//         try {
+//             const response = await axios.get(`/get/user/${name}`)
+//             console.log(response.data);
+//             dispatch({ type: GET_USER_BY_NAME, payload: response.data })
+//         } catch (error) {
+//             console.log(error);
+//         }
+//     }
+// }
 export const postRegisterUser = (user) => {
     const endpoint = '/users';
     return async function (dispatch) {
-        try {
-            const response = await axios.post(endpoint, user);
-            return dispatch({
-                type: POST_REGISTER_USER,
-                payload: response.data
-            });
+        try{
+                const response =await axios.post(endpoint, user);
+          return dispatch({
+             type: POST_REGISTER_USER,
+             payload: response.data
+          });  
         }
         catch (error) {
             console.log('error al registrar los datos', error);
         }
-    }
-};
+        }
+    };
 
 export const getSuplement = (id) => {
     return async function (dispatch) {
@@ -194,6 +229,7 @@ export const getSuplementsByName = (queryParams) => {
     return async function (dispatch) {
         const response = await axios.get(`/suplements?name=${queryParams}`)
         //console.log(response.data)
+        
         if (Array.isArray(response.data)) {
             return dispatch({
                 type: GET_SUPLEMENTS_BY_NAME,
@@ -207,22 +243,3 @@ export const getSuplementsByName = (queryParams) => {
         }
     }
 }
-
-export const fetchSuplementById = (id) => async dispatch => {
-    try {
-        const response = await axios.get(`/suplements/${id}`);
-        dispatch({ type: 'FETCH_SUPLEMENT_BY_ID_SUCCESS', payload: response.data });
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-export const updateSuplement = (id, formData) => async dispatch => {
-    try {
-        const response = await axios.put(`/suplements/${id}`, formData);
-        dispatch({ type: 'UPDATE_SUPLEMENT_SUCCESS', payload: response.data });
-    } catch (error) {
-        console.log(error);
-    }
-};
-``

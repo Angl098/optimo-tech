@@ -6,6 +6,8 @@ import {
   //INJECT_CART_DATA,
   SHOW_SHOPPING_CART,
   //POST_REGISTER_USER 
+  POST_LOGIN, POST_REGISTER_USER,
+  USER
 } from "./actions"
 
 
@@ -151,6 +153,15 @@ const rootReducer = (state = initialState, action) => {
             suplemento: payload
         }
 
+        case POST_REGISTER_USER:
+          return {...state, postRegisterUser: payload}
+    
+        case POST_LOGIN:
+          return {...state, postLogin: payload}
+
+        case USER:
+          return {...state, user: payload}
+
     default:
       return state;
   }
@@ -205,5 +216,10 @@ const rootReducer = (state = initialState, action) => {
 //       return state;
 //   }
 // };
+
+
+
+
+
 
 export default rootReducer;

@@ -8,5 +8,8 @@ export default function Validation(inputs){
     if (!inputs.email) {
         errors.email = 'El Email no puede estar vacio'}
 
+    //validacion password
+        if (!inputs.password) {
+            errors.password = 'password vacio'}
     return errors;
 }

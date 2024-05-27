@@ -42,10 +42,18 @@ function RegisterUser () {
     setPasswordVisible(!passwordVisible);
      }
 
+         // Función para alternar la visibilidad de la contraseña confimada
+    const [passwordConfirmVisible, setPasswordConfirmVisible] = useState(false);
+    function togglePasswordConfirmVisibility() {
+    setPasswordConfirmVisible(!passwordConfirmVisible);
+     }
+
 //submit
-const handleSubmit= (event)=>{
+const handleSubmit= async (event)=>{
     event.preventDefault();
-    dispatch(postRegisterUser(user));
+    const response = await dispatch(postRegisterUser(user));
+    console.log(response);
+    alert("Respuesta servidor: " + response.payload.message);
 
 };
 
@@ -91,11 +99,14 @@ const handleSubmit= (event)=>{
 
         <label>Confirm Password</label>
             <div className={style.password_input_container}>
-                <input name='confirmPassword' type='password' value={user.confirmPassword || ''} onChange={handleChange} className={style.form_style} />
+                <input name='confirmPassword' type={passwordConfirmVisible ? 'text' : 'password'} value={user.confirmPassword || ''} onChange={handleChange} className={style.form_style} />
+                <button type="button" onClick={togglePasswordConfirmVisibility} className={style.show_hide_btn}>
+                    {passwordConfirmVisible ? '👁️' : '🔒'}
+                </button>
             </div>
         {errors.confirmPassword!==''&&<p className={style.errors}>{errors.confirmPassword}</p>}
 
-        <button className={style.btn} type="submit">Registrar</button>
+        {Object.keys(errors).length <= 0 && <button className={style.btn} type="submit">Registrar</button>}
 
         {console.log(user)}
 </form>

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import style from './NavBar.module.css'
 import logo from '../../assets/logo.png'
 import { Link, useLocation } from "react-router-dom";
+//import logo from '../../../public/logo.png'
 import PATHROURES from '../../helpers/PathRoutes';
 import ShoppingCart from "../ShoppingCart/ShoppingCart";
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,6 +43,17 @@ const NavBar = (props) => {
     const handleChange = (e) => {
         setSearch(e.target.value);
     };
+    //user
+    useEffect(()=>{
+        const dataUserJSON = window.localStorage.getItem('notLogin');
+        if(dataUserJSON)
+        {
+            const dataUser = JSON.parse(dataUserJSON);
+            dispatch(user(dataUser));
+            
+        }
+    }, []);
+
 
     return (
         <nav className={style.nav}>
@@ -106,4 +118,4 @@ const NavBar = (props) => {
     )
 }
 
-export default NavBar
+export default NavBar;
