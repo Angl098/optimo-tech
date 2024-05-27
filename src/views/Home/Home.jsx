@@ -34,16 +34,15 @@ const Home = () => {
     }, [dispatch]);
 
 
-    function handleSearch(e) {
-        e.preventDefault();
+    function handleSearch(search) {
         //console.log(e.target.value)
-        setSearch(e.target.value);
+        setSearch(search);
     }
     
     return (
 
         <div className={style.container}>
-            <NavBar handleSearch={handleSearch}  />
+            <NavBar handleSearch={handleSearch} search={search} setSearch={setSearch} />
             <div>
                 {loading ?(
                     <img src={loadingImg} alt="loading" />

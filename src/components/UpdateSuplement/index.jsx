@@ -4,27 +4,63 @@ import validation from '../Validation/CreateSuplements/Validation';
 import { updateSuplement, fetchSuplementById } from "../../Redux/actions";
 import style from './CreateSuplement.module.css';
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 function UpdateSuplement() {
-    const [disableSubmit, setDisableSubmit] = useState(true);
-    const dispatch = useDispatch();
+
+    const [suplemento, setSuplement] = useState({
+        amount: 0,
+        description: "",
+        image: "",
+        categorie: "",
+        price: 0
+    })
     const { id } = useParams();
-    const suplemento = useSelector(state => state.suplemento);
+    const [opCategory, setOpCategory] = useState([]);
 
     const [updatedSuplements, setUpdatedSuplements] = useState({
         images: []
     });
 
+    useEffect(() => {
+        axios.get(`/suplements/${id}`).then(({ data }) => {
+            if (data.categories.length > 0) {
+                console.log(data);
+                
+                setSuplement({ ...suplemento, ...data ,categories:data.categories[0].name })
+                
+            } else {
+                console.log("hola");
+
+                setSuplement({ ...suplemento, ...data, categories: "" })
+            }
+
+            console.log(data);
+        })
+        setOpCategory([])
+        setUpdatedSuplements({
+            ...updateSuplement,
+            categories: []
+        })
+    }, [id])
+
+    const dispatch = useDispatch();
+    // const suplemento = useSelector(state => state.suplemento);
+
+
     const [errors, setErrors] = useState({ name: 'Completa todos los datos' });
 
-    useEffect(() => {
-        dispatch(fetchSuplementById(id));
-    }, [dispatch, id]);
 
     useEffect(() => {
+
         if (suplemento) {
+            console.log(opCategory);
             setUpdatedSuplements(suplemento);
-            console.log(suplemento);
+            if (suplemento.categories?.length > 0) {
+
+                setOpCategory(suplemento.categories[0])
+            }
+
         }
     }, [suplemento]);
 
@@ -38,9 +74,9 @@ function UpdateSuplement() {
             ];
         }
         event.preventDefault();
-        setErrors(validation({
-            ...updatedSuplements, [event.target.name]: event.target.value
-        }));
+        // setErrors(validation({
+        //     ...updatedSuplements, [event.target.name]: event.target.value
+        // }));
         setUpdatedSuplements({ ...updatedSuplements, [name]: newValue });
     }
 
@@ -82,16 +118,15 @@ function UpdateSuplement() {
         { id: 13, category: 'Colageno' },
     ];
 
-    const [opCategory, setOpCategory] = useState([]);
 
-    const handleChangeCategory = (event) => {
-        event.preventDefault();
-        const option = Array.from(event.target.selectedOptions, (option) => option.value);
-        setOpCategory(option);
-        const atrCategory = option[0];
-        setUpdatedSuplements({ ...updatedSuplements, category: atrCategory });
-        setErrors(validation({ ...updatedSuplements, category: atrCategory }));
-    };
+    // const handleChangeCategory = (event) => {
+    //     event.preventDefault();
+    //     const option = Array.from(event.target.selectedOptions, (option) => option.value);
+    //     setOpCategory(option);
+    //     const atrCategory = option[0];
+    //     setUpdatedSuplements({ ...updatedSuplements, category: atrCategory });
+    //     setErrors(validation({ ...updatedSuplements, category: atrCategory }));
+    // };
 
     return (
         <form onSubmit={handleSubmit} className={style.form}>
@@ -109,10 +144,11 @@ function UpdateSuplement() {
             <label>Categoria </label>
             <select
                 className={style.form_style}
-                value={opCategory}
-                onChange={handleChangeCategory}
+                value={suplemento.categories}
+                onChange={handleChange}
+                defaultValue={[]}
             >
-                <option value='' disabled hidden>Selecciona una Opcion</option>
+                <option value='' >Selecciona una Opcion</option>
                 {arrayCategory.map((objeto) => (
                     <option key={objeto.id} value={objeto.category}>
                         {objeto.category}
@@ -165,7 +201,7 @@ function UpdateSuplement() {
                     <span className={style.subirfoto}>Subir foto</span>
                 </label>
             </div>
-                <img src={updatedSuplements.image} alt="" />
+            <img src={updatedSuplements.image} alt="" />
             <div>
                 {updatedSuplements.images > 0 && (
                     <div>
@@ -188,7 +224,7 @@ function UpdateSuplement() {
                     </div>
                 )}
             </div>
-             <button className={style.btn} type="submit">Actualizar</button>
+            <button className={style.btn} type="submit">Actualizar</button>
         </form>
     );
 }

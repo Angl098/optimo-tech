@@ -11,7 +11,7 @@ import { showShoppingCart } from "../../Redux/actions";
 const NavBar = (props) => {
 
     const { handleSearch } = props
-
+    const [search, setSearch] = useState("")
     const [showNav, setShowNav] = useState(null);
     const [quantityProductsCart, setQuantityProductsCart] = useState(0)
     const location = useLocation()
@@ -19,7 +19,6 @@ const NavBar = (props) => {
     const cart = useSelector(state => state.cart)
     const user = useSelector(state => state.user)
     const showShoppingCartState = useSelector((state) => state.showShoppingCart)
-    console.log('showShoppingCartState', showShoppingCartState)
 
     useEffect(() => {
         if (cart.length > 0) {
@@ -40,6 +39,9 @@ const NavBar = (props) => {
         setShowNav(!showNav);
     };
 
+    const handleChange = (e) => {
+        setSearch(e.target.value);
+    };
 
     return (
         <nav className={style.nav}>
@@ -52,25 +54,23 @@ const NavBar = (props) => {
                     <Link to={PATHROURES.LANDING} className={style.linkDesk} onClick={toggleNav}>Home</Link>
                     <Link to={PATHROURES.HOME} className={style.linkDesk} onClick={toggleNav}>Products</Link>
                     <Link to={"/dashboard"} className={style.linkDesk} onClick={toggleNav}>Dashboard</Link>
-                    
+
                 </div>
 
                 <div className={style.searchDeskContent}>
-                    <form onChange={handleSearch} action="" className={style.form1}>
-                        <div className={style.group}>
-                            <input required type="text" className={style.input} />
-                            <span className={style.highlight}></span>
-                            <span className={style.bar}></span>
-                            <label>Tu Suplemento</label>
-                        </div>
-                        <div className={style.groupButton}>
-                            <button type="submit" onClick={() => { }} className={style.cssbuttonsIo}>
+                    <div className={style.group}>
+                        <input required type="text" className={style.input} value={search} onChange={handleChange} />
+                        <span className={style.highlight}></span>
+                        <span className={style.bar}></span>
+                        <label>Tu Suplemento</label>
+                    </div>
+                    <div className={style.groupButton}>
+                        <button type="submit" className={style.cssbuttonsIo} onClick={()=>handleSearch(search)}>
 
-                                Buscar
+                            Buscar
 
-                            </button>
-                        </div>
-                    </form>
+                        </button>
+                    </div>
                 </div>
 
                 <div className={style.cartContainer}>

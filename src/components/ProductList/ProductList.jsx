@@ -14,21 +14,14 @@ export default function ProductList({ search }) {
     const [datas, setDatas] = useState([])
     const [datasAux, setDatasAux] = useState([])
     useEffect(() => {
-        axios.get("/suplements/").then(({ data }) => {
-            setDatas([...datas, ...data])
-            setDatasAux([...datas, ...data])
-        })
-
         axios.get("/category/").then(({ data }) => {
-            //console.log(data);
             setCategory([...data])
         })
-
-
     }, [])
 
     const [filter, setFilter] = useState({
         category: "",
+        name:search,
         orderBy: "",
         orderDirection: "",
         page: 1,
@@ -40,7 +33,6 @@ export default function ProductList({ search }) {
     const buildQueryParams = (filter) => {
         filter.name = search
         let queryParams = "?";
-        console.log(filter)
         for (const [key, value] of Object.entries(filter)) {
             if (value !== null && value !== "") {
                 if (Array.isArray(value) && value.length > 0) {
@@ -121,7 +113,7 @@ export default function ProductList({ search }) {
 
     return (
         <div className={style.productList}>
-            |<div className={style.categories}>
+            <div className={style.categories}>
 
                 <p className={style.category} key={category.id} onClick={() => handleCategoryFilter(category.id)} value=" ">Todos</p>
                 {category.map((category) => {
@@ -129,7 +121,7 @@ export default function ProductList({ search }) {
                 })}
 
             </div>
-            <div>
+            <div className={style.catalogo}>
 
                 <div>
                     <select
