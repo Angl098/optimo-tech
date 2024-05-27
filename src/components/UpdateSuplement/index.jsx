@@ -12,7 +12,7 @@ function UpdateSuplement() {
         amount: 0,
         description: "",
         image: "",
-        categorie: "",
+        categories: "",
         price: 0
     })
     const { id } = useParams();
@@ -25,7 +25,7 @@ function UpdateSuplement() {
     useEffect(() => {
         axios.get(`/suplements/${id}`).then(({ data }) => {
             if (data.categories.length > 0) {
-                console.log(data);
+                console.log(data.categories[0]);
                 
                 setSuplement({ ...suplemento, ...data ,categories:data.categories[0].name })
                 
@@ -37,7 +37,6 @@ function UpdateSuplement() {
 
             console.log(data);
         })
-        setOpCategory([])
         setUpdatedSuplements({
             ...updateSuplement,
             categories: []
@@ -56,11 +55,6 @@ function UpdateSuplement() {
         if (suplemento) {
             console.log(opCategory);
             setUpdatedSuplements(suplemento);
-            if (suplemento.categories?.length > 0) {
-
-                setOpCategory(suplemento.categories[0])
-            }
-
         }
     }, [suplemento]);
 
@@ -92,6 +86,7 @@ function UpdateSuplement() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const formDataToSend = new FormData();
+        console.log(suplemento);
         Object.entries(updatedSuplements).forEach(([key, value]) => {
             if (key === "images") {
                 value.forEach((image) => formDataToSend.append("images", image));

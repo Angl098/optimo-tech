@@ -6,6 +6,7 @@ import NavBar from "../NavBar/NavBar"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import buildQueryParams from "../../Utils/QueryFilterPath"
+import FormCategories from "../Categorias/FormCategories"
 const Dashboard = (props) => {
 
     const [filter, setFilter] = useState({
@@ -30,17 +31,20 @@ const Dashboard = (props) => {
             <div className={style.dashboard}>
                 <div className={style.options}>
 
+                    <Link  to={"categorias"}>
+                        <p>
+                            Categorias
+                        </p>
+                    </Link>
                     <Link to={"createsuplements"} >
                         <p>
                             Crear Suplementos
                         </p>
                     </Link>
 
-                    <Link  >
                         <p>
                             Actualizar Suplementos
                         </p>
-                    </Link>
                     <div className={style.list}>
 
                     {suplements.map((s)=>{
@@ -59,6 +63,7 @@ const Dashboard = (props) => {
 
                     <Routes>
                         <Route path='createsuplements' element={<CreateSuplement />} />
+                        <Route path='categorias' element={<FormCategories />} />
 
                         <Route path='updatesuplement/:id' element={<UpdateSuplement />} />
                     </Routes>
