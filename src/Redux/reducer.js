@@ -69,7 +69,7 @@ const rootReducer = (state = initialState, action) => {
       }
     case ADD_TO_CART:
       const productExists = state.cart.find(product => product.id === payload.id);
-      console.log(productExists)
+      // console.log(productExists)
       if (productExists) {
         const updatedCart = state.cart.map(product =>
           product.id === payload.id
@@ -89,7 +89,8 @@ const rootReducer = (state = initialState, action) => {
           ...payload,
           quantity: 1,
           total: payload.price,
-        }; console.log(productToAdd)
+        }; 
+        // console.log(productToAdd)
         const newProduct = [...state.cart]
         newProduct.push(productToAdd)
         return {

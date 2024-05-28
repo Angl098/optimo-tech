@@ -73,7 +73,7 @@ export function paymentGateway(cart) {
                 quantity: parseInt(prod.quantity),
                 productId: prod.id,
             }));
-            console.log(items);
+            // console.log(items);
             const total = cart.map((prod) => prod.total)
             let totalPrice = 0;
 
@@ -122,7 +122,7 @@ export const showShoppingCart = (data) => {
 }
 
 export const addToCart = (id) => {
-    console.log('add to cart', id)
+    // console.log('add to cart', id)
     return {
         type: ADD_TO_CART,
         payload: id
