@@ -49,11 +49,11 @@
     outline: none;
    }
 
-   label {
+   .nav label {
     color: #FAF0E6;
     font-size: 18px;
     font-weight: normal;
-    position: absolute;
+    /* position: absolute; */
     pointer-events: none;
     left: 5px;
     top: 10px;
@@ -61,7 +61,7 @@
     -moz-transition: 0.2s ease all;
     -webkit-transition: 0.2s ease all;
    }
-   .input:focus ~ label, .input:valid ~ label {
+   .input:focus ~ label, .input:valid ~ .nav label {
     top: -20px;
     font-size: 14px;
     color: #FAF0E6;
@@ -120,9 +120,7 @@
     padding-top: 1em;
 }
 
-.searchDeskContent {
-    display: none;
-}
+
 
 .form1 {
     display: flex;
@@ -243,10 +241,7 @@
         border-bottom: 1px solid #000;
     }
 
-    .searchDeskContent{
-        display: block;
-        width: 400px;
-    }
+    
 
     .buttonContainerDesk{
         display: block;

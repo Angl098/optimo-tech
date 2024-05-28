@@ -27,15 +27,18 @@ const NavBar = (props) => {
         const nameUsuario = JSON.parse(localStorage.getItem("user"));
 
         if (JSON.parse(localStorage.getItem("user"))) {
+            console.log(JSON.parse(localStorage.getItem("user")).email);
             if (JSON.parse(localStorage.getItem("user")).userId) {
                 
                 setLogeado(true)
+                console.log("setLogeado");
             }else{
                 setLogeado(false)
-
+                console.log("setNotLogeado");
+                
             }
-
-
+            
+            
             if (JSON.parse(localStorage.getItem("user")).email==="admin@gmail.com") {
                 console.log("navbar");
                 console.log(JSON.parse(localStorage.getItem("user")).email);
@@ -51,7 +54,6 @@ const NavBar = (props) => {
 
     }, [user])
     useEffect(() => {
-        console.log(JSON.parse(localStorage.getItem("user")));
         if (cart.length > 0) {
             const quantityProducts = cart.reduce((total, product) => (
                 total + product.quantity

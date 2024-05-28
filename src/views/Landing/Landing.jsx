@@ -15,7 +15,6 @@ const Home = () => {
     },[])
     return(
         <div className={style.container}>
-            <NavBarLanding />
             <div className={style.section}>
                 <Link to={'/detail'} className={style.productOne} onClick={scroll}>
                     <img className={style.productsFirst} src={randomSuplement[0]?.image} alt="" />

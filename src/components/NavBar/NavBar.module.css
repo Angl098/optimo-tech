@@ -49,11 +49,11 @@
     outline: none;
    }
 
-   label {
+   .nav label {
     color: #FAF0E6;
     font-size: 18px;
     font-weight: normal;
-    position: absolute;
+    /* position: absolute; */
     pointer-events: none;
     left: 5px;
     top: 10px;
@@ -61,7 +61,7 @@
     -moz-transition: 0.2s ease all;
     -webkit-transition: 0.2s ease all;
    }
-   .input:focus ~ label, .input:valid ~ label {
+   .input:focus ~ label, .input:valid ~ .nav label {
     top: -20px;
     font-size: 14px;
     color: #FAF0E6;
@@ -120,9 +120,6 @@
     padding-top: 1em;
 }
 
-.searchDeskContent {
-    display: none;
-}
 
 .form1 {
     display: flex;
@@ -169,7 +166,7 @@
     height: 50px;
     margin: 10px 0px 0px 0px;
     width: 150px;
-    background: #333;
+    background: #c9dbcc;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
@@ -179,25 +176,23 @@
     align-items: center;
     font-family: 'Open-Sans', sans-serif;
     font-weight: 400;
-    border: solid #404c5d 1px;
+    border: none;
     font-size: 20px;
-    color: #ffffff;
+    color: #000000;
     -webkit-transition: 500ms;
     transition: 500ms;
     border-radius: 5px;
-    background: linear-gradient(145deg, #0766AD, #C5E898);
+    /* background: linear-gradient(145deg, #0766AD, #C5E898);
     -webkit-box-shadow: -1px -5px 15px #41465b, 5px 5px 15px #41465b,
       inset 5px 5px 10px #61f5a9, inset -5px -5px 10px #61f5a9;
     box-shadow: -1px -5px 15px #41465b, 5px 5px 15px #41465b,
-      inset 5px 5px 10px #61f5a9, inset -5px -5px 10px #61f5a9;
+      inset 5px 5px 10px #61f5a9, inset -5px -5px 10px #61f5a9; */
     }
     
     .cssbuttonsIo:hover {
-      -webkit-box-shadow: 1px 1px 13px #20232e, -1px -1px 13px #545b78;
-      box-shadow: 1px 1px 13px #20232e, -1px -1px 13px #545b78;
-      color: rgb(197, 240, 192);
-      -webkit-transition: 500ms;
-      transition: 500ms
+      color: rgb(0, 0, 0);
+      background: #c4c4c4;
+      border: ;
     }
     
     .cssbuttonsIo:active {
@@ -243,10 +238,7 @@
         border-bottom: 1px solid #000;
     }
 
-    .searchDeskContent{
-        display: block;
-        width: 400px;
-    }
+
 
     .buttonContainerDesk{
         display: block;
@@ -261,7 +253,10 @@
         font-size: .9em;
     }
 }
-
+.searchDeskContent{
+    display: flex;
+    flex-direction: row;
+}
 
 
 @media screen and (max-width: 1024px) and (min-width: 768px){

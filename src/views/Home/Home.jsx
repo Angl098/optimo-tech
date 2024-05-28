@@ -14,8 +14,8 @@ import ProductList from '../../components/ProductList/ProductList';
 import style from './Home.module.css'
 import loadingImg from '../../assets/loading.gif';
 
-const Home = () => {
-
+const Home = (props) => {
+    const {search}=props
     const dispatch = useDispatch();
 
     const allSuplements = useSelector((state) => state.allSuplements);
@@ -24,15 +24,13 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
 
     //Filtrar por nombre con el back-end
-    const [search, setSearch] = useState('');
+   
     useEffect(()=>{
         const user=window.localStorage.getItem("user")
         if (user) {
-            console.log("Logeado");
             dispatch(setUser(user))
         }else{
 
-            console.log("No Logeado");
         }
     },[])
     useEffect(() => {
@@ -43,15 +41,12 @@ const Home = () => {
     }, [dispatch]);
 
 
-    function handleSearch(search) {
-        //console.log(e.target.value)
-        setSearch(search);
-    }
+   
     
     return (
 
         <div className={style.container}>
-            <NavBar handleSearch={handleSearch} search={search} setSearch={setSearch} />
+            {/* <NavBar handleSearch={handleSearch} search={search} setSearch={setSearch} /> */}
             <div>
                 {loading ?(
                     <img src={loadingImg} alt="loading" />
