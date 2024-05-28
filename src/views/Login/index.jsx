@@ -15,13 +15,14 @@ import style from './Login.module.css';
 
 import { postLogin } from '..//..//Redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Link, useNavigate, } from 'react-router-dom';
 //const userLogin = useSelector(state => state.user);
 
 function Login(){
   const dispatch = useDispatch();
   const [login, setLogin] = useState({});
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   //manejador del estado principal login
   function handleChange(event){
@@ -87,14 +88,14 @@ const handleSubmit = async (event)=>{
   const onSubmit=(e)=>{
     e.preventDefault()
     axios.post("/login",login ).then(({data})=>{
+      console.log(data);
       localStorage.setItem("user", JSON.stringify(data));
-      Navigate("home")
-    }).catch((response)=>{
       Swal.fire({
         icon: "success",
-        title: "¡Registro Exitoso!",
-        text: "Los datos del alojamiento han sido registrados correctamente.",
+        title: "¡Usuario registrado!",
+        text: "",
       });
+      navigate("/")
     })
   }
 
@@ -115,7 +116,6 @@ const handleSubmit = async (event)=>{
                 </button>
             </div>
         {errors.password!==''&&<p className={style.errors}>{errors.password}</p>}
-
         <button className={style.btn} type="submit">Login</button>
 {/* auth terceros */}
         <GoogleLogin

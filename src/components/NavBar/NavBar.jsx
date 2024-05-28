@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import style from './NavBar.module.css'
 import logo from '../../assets/logo.png'
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 //import logo from '../../../public/logo.png'
 import PATHROURES from '../../helpers/PathRoutes';
 import ShoppingCart from "../ShoppingCart/ShoppingCart";
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showShoppingCart } from "../../Redux/actions";
 
 const NavBar = (props) => {
+    const navigate = useNavigate();
 
     const { handleSearch } = props
     const [search, setSearch] = useState("")
@@ -60,6 +61,7 @@ const NavBar = (props) => {
     const cerrarSesion=()=>{
         console.log("cerrado sesion");
         localStorage.clear();
+        navigate("/")
     }
 
     return (
@@ -104,9 +106,7 @@ const NavBar = (props) => {
                             <button className={style.buttonSign}>Registrar</button>
                         </Link>
                     </div>:
-                        <Link to={"/home"}>
                             <button onClick={cerrarSesion} className={style.buttonSign}>Cerrar sesion</button>
-                        </Link>
                         
                     }
 

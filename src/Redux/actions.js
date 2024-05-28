@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import Swal from "sweetalert2";
 export const GET_SUPLEMENTS_BY_NAME = "GET_SUPLEMENTS_BY_NAME";
 export const NOT_GET_SUPLEMENT_BY_NAME = "NOT_GET_SUPLEMENT_BY_NAME";
 export const POST_SUPLEMENTS = "POST_SUPLEMENTS";
@@ -36,10 +36,19 @@ export const postSuplements = (newSuplements) => {
 
     return async function (dispatch) {
         try {
-            const response = await axios.post("/suplements", newSuplements);
-            return dispatch({
-                type: POST_SUPLEMENTS,
-                payload: response.data
+            await axios.post("/suplements", newSuplements).then(({data})=>{
+                Swal.fire({
+                    icon: "success",
+                    title: "Suplemento registrado!",
+                    text: "registrado correctamente",
+                  });
+                return dispatch({
+                    type: POST_SUPLEMENTS,
+                    payload: response.data
+                });
+            }).catch((response)=>{
+
+                console.log('error al registrar los datos', error);
             });
         }
         catch (error) {
