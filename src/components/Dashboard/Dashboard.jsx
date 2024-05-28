@@ -2,12 +2,11 @@ import { Link, Route, Routes } from "react-router-dom"
 import CreateSuplement from "../CreateSuplements"
 import UpdateSuplement from "../UpdateSuplement"
 import style from './Dashboard.module.css'
-import NavBar from "../NavBar/NavBar"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import buildQueryParams from "../../Utils/QueryFilterPath"
 import FormCategories from "../Categorias/FormCategories"
-const Dashboard = (props) => {
+const Dashboard = () => {
 
     const [filter, setFilter] = useState({
         category: "",
@@ -17,16 +16,9 @@ const Dashboard = (props) => {
         page: 1,
         pageSize: 6
     });
-    const [suplements,setSuplements]=useState([])
-    useEffect(() => {
-        const query = buildQueryParams(filter)
-        axios.get("/suplements/filter" + query).then(({ data }) => {
-            setSuplements(data.items)
-        })
-    }, [])
+
     return (
         <div>
-            <NavBar></NavBar>
 
             <div className={style.dashboard}>
                 <div className={style.options}>
@@ -41,20 +33,13 @@ const Dashboard = (props) => {
                             Crear Suplementos
                         </p>
                     </Link>
-
+                    <Link to={`updatesuplement`}>
                         <p>
                             Actualizar Suplementos
                         </p>
+                    </Link>
                     <div className={style.list}>
 
-                    {suplements.map((s)=>{
-                        return(<>
-                            <Link  to={`updatesuplement/${s.id}`}>
-                                <span>{s.name}</span>
-                            </Link>
-                        </>
-                        )
-                    })}
                     </div>
 
                 </div>
@@ -65,7 +50,7 @@ const Dashboard = (props) => {
                         <Route path='createsuplements' element={<CreateSuplement />} />
                         <Route path='categorias' element={<FormCategories />} />
 
-                        <Route path='updatesuplement/:id' element={<UpdateSuplement />} />
+                        <Route path='updatesuplement' element={<UpdateSuplement />} />
                     </Routes>
                 </div>
             </div>

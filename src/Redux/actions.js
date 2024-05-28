@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import Swal from "sweetalert2";
 export const GET_SUPLEMENTS_BY_NAME = "GET_SUPLEMENTS_BY_NAME";
 export const NOT_GET_SUPLEMENT_BY_NAME = "NOT_GET_SUPLEMENT_BY_NAME";
 export const POST_SUPLEMENTS = "POST_SUPLEMENTS";
@@ -15,6 +15,8 @@ export const REMOVE_ONE_FROM_CART = 'REMOVE_ONE_FROM_CART';
 export const REMOVE_ALL_FROM_CART = 'REMOVE_ALL_FROM_CART,';
 export const POST_REGISTER_USER = "POST_REGISTER_USER";
 
+export const POST_LOGIN = "POST_LOGIN";
+export const USER = "USER";
 
 //Función que hace la peticion con axios al back-end
 //para traer todos los suplementos
@@ -29,14 +31,24 @@ export const getSuplements = () => {
 }
 
 
+
 export const postSuplements = (newSuplements) => {
 
     return async function (dispatch) {
         try {
-            const response = await axios.post("/suplements", newSuplements);
-            return dispatch({
-                type: POST_SUPLEMENTS,
-                payload: response.data
+            await axios.post("/suplements", newSuplements).then(({data})=>{
+                Swal.fire({
+                    icon: "success",
+                    title: "Suplemento registrado!",
+                    text: "registrado correctamente",
+                  });
+                return dispatch({
+                    type: POST_SUPLEMENTS,
+                    payload: response.data
+                });
+            }).catch((response)=>{
+
+                console.log('error al registrar los datos', error);
             });
         }
         catch (error) {
@@ -44,21 +56,6 @@ export const postSuplements = (newSuplements) => {
         }
     };
 };
-
-// export const getSuplement = (id) => {
-//     return async function (dispatch) {
-//         try {
-//             const { data } = await axios.get(`/suplements/${id}`);
-//             console.log(data)
-//             return dispatch({
-//                 type: GET_SUPLEMENT,
-//                 payload: data,
-//             });
-//         } catch (error) {
-//             console.log(err)
-//         }
-//     };
-// };
 
 
 // NO ESTA EN USO 
@@ -94,7 +91,7 @@ export function paymentGateway(cart) {
             //     total: totalPrice,
             //     paymentMethod: "mercadopago"
             // }
-            
+
             //  ALMACENANDO EL CARRITO EN LA BDD
             // const postCart = axios.post("/cart", cartDB)
 
@@ -196,6 +193,7 @@ export const getSuplementsByName = (queryParams) => {
     return async function (dispatch) {
         const response = await axios.get(`/suplements?name=${queryParams}`)
         //console.log(response.data)
+
         if (Array.isArray(response.data)) {
             return dispatch({
                 type: GET_SUPLEMENTS_BY_NAME,
@@ -228,3 +226,24 @@ export const updateSuplement = (id, formData) => async dispatch => {
     }
 };
 ``
+export const postLogin = (login) => {
+    const endpointRegisterUser = '/login';
+    return async function (dispatch) {
+        try {
+            const response = await axios.post(endpointRegisterUser, login);
+            return dispatch({
+                type: POST_LOGIN,
+                payload: response.data
+            });
+        }
+        catch (error) {
+            console.log('error al log in', error);
+            alert("error" + error);
+        }
+    };
+};
+
+export const setUser = (user) => ({
+    type: USER,
+    payload: user,
+});

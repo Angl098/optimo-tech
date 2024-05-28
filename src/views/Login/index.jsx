@@ -1,7 +1,7 @@
 //Importo las librerias o dependencias
 import {useState} from 'react';
 import axios from 'axios';
-
+import Swal from "sweetalert2";
 //para autorizacion de terceros
 import { GoogleLogin } from '@react-oauth/google';
 //para decodificar el token
@@ -13,24 +13,44 @@ import validation from '../../components/Validation/Login/Validation';
 //Importo los estilos
 import style from './Login.module.css';
 
+import { postLogin } from '..//..//Redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate, } from 'react-router-dom';
+//const userLogin = useSelector(state => state.user);
+
 function Login(){
-    const [login, setLogin] = useState({});
-    const [errors, setErrors] = useState({});
+  const dispatch = useDispatch();
+  const [login, setLogin] = useState({});
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
-    //manejador del estado principal login
-    function handleChange(event){
-        event.preventDefault();
-        setErrors(validation({...login,[event.target.name] : event.target.value
-            })
-        );
-    setLogin({...login,[event.target.name]:event.target.value});
-    }
+  //manejador del estado principal login
+  function handleChange(event){
+      event.preventDefault();
+      setErrors(validation({...login,[event.target.name] : event.target.value
+          })
+      );
+  setLogin({...login,[event.target.name]:event.target.value});
+  }
 
-    // Función para alternar la visibilidad de la contraseña
-    const [passwordVisible, setPasswordVisible] = useState(false);
-    function togglePasswordVisibility() {
-        setPasswordVisible(!passwordVisible);
-    }
+      // Función para alternar la visibilidad de la contraseña
+      const [passwordVisible, setPasswordVisible] = useState(false);
+   function togglePasswordVisibility() {
+      setPasswordVisible(!passwordVisible);
+  }
+
+  //submit
+const handleSubmit = async (event)=>{
+  event.preventDefault();
+  console.log('submit');
+  const response = await dispatch(postLogin(login));
+  //Guardar en el storage
+  window.localStorage.setItem('Optimo', JSON.stringify(response.payload.dataUser));
+  console.log(response.payload);
+  //const userDispatch = response.payload.dataUser
+  //dispatch(userLogin(userDispatch));
+  alert('Respuesta del servidor: ' + response.payload.message);
+};
 
     // Manejador del éxito en el inicio de sesión con Google
     const handleGoogleSuccess = (credentialResponse) => {
@@ -69,6 +89,13 @@ function Login(){
     e.preventDefault()
     axios.post("/login",login ).then(({data})=>{
       console.log(data);
+      localStorage.setItem("user", JSON.stringify(data));
+      Swal.fire({
+        icon: "success",
+        title: "¡Usuario registrado!",
+        text: "",
+      });
+      navigate("/")
     })
   }
 
@@ -76,37 +103,21 @@ function Login(){
     <>
       <form className={style.form} onSubmit={onSubmit}>
         <h3 className={style.title}>Login</h3>
+
         <label>Email</label>
-        <input
-          type='text'
-          name='email'
-          value={login.email || ''}
-          onChange={handleChange}
-          className={style.form_style}
-        />
-        {errors.email !== '' && <p className={style.errors}>{errors.email}</p>}
+        <input type='text' name='email' value={login.email} onChange={handleChange} className={style.form_style} />
+        {errors.email!==''&&<p className={style.errors}>{errors.email}</p>}
 
         <label>Password</label>
-        <div className={style.password_input_container}>
-          <input
-            name='password'
-            type={passwordVisible ? 'text' : 'password'}
-            value={login.password || ''}
-            onChange={handleChange}
-            className={style.form_style}
-          />
-          <button
-            type='button'
-            onClick={togglePasswordVisibility}
-            className={style.show_hide_btn}
-          >
-            {passwordVisible ? '👁️' : '🔒'}
-          </button>
-        </div>
-
-        <button className={style.btn} type='submit'>
-          Login
-        </button>
+            <div className={style.password_input_container}>
+                <input name='password' type={passwordVisible ? 'text' : 'password'} value={login.password || ''} onChange={handleChange} className={style.form_style} />
+                <button type="button" onClick={togglePasswordVisibility} className={style.show_hide_btn}>
+                    {passwordVisible ? '👁️' : '🔒'}
+                </button>
+            </div>
+        {errors.password!==''&&<p className={style.errors}>{errors.password}</p>}
+        <button className={style.btn} type="submit">Login</button>
+{/* auth terceros */}
         <GoogleLogin
           onSuccess={handleGoogleSuccess}
           onError={() => {

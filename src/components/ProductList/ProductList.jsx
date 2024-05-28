@@ -66,7 +66,7 @@ export default function ProductList({ search }) {
 
     useEffect(() => {
         setNumberPage(1)
-    }, [datas])
+    }, [])
 
 
     const nextPage = () => {

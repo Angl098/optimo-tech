@@ -8,13 +8,13 @@ import axios from 'axios';
 const Home = () => {
     const [randomSuplement,setRandomSuplement]=useState([])
     useEffect(()=>{
-        axios("/suplements/randomSuplementes").then(({data})=>{
+       // axios("/suplements/randomSuplementes").then(({data})=>{
+            axios("/suplements/").then(({data})=>{
             setRandomSuplement(data)
         })
     },[])
     return(
         <div className={style.container}>
-            <NavBarLanding />
             <div className={style.section}>
                 <Link to={'/detail'} className={style.productOne} onClick={scroll}>
                     <img className={style.productsFirst} src={randomSuplement[0]?.image} alt="" />

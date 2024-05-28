@@ -1,4 +1,4 @@
-.errors {
+/* .errors {
     color: rgb(241, 16, 16);
      background-color: #f6EC72;
     font-family: cursive;
@@ -77,3 +77,116 @@ label {
     background-color: grey;
     cursor: pointer;
   }
+   */
+
+
+   .form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.form_style {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.form_style:focus {
+    border-color: #007bff;
+}
+
+.errors {
+    color: red;
+    font-size: 0.875em;
+}
+
+.file_label {
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.image_preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.image_item {
+    position: relative;
+}
+
+.image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.image_remove_btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.image_placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+}
+
+.btn {
+    background: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn:hover {
+    background: #0056b3;
+}

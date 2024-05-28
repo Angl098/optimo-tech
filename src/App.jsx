@@ -1,4 +1,4 @@
-import {Routes, Route} from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 
 import PATHROUTES from "./helpers/PathRoutes";
 import Landing from "./views/Landing/Landing";
@@ -8,33 +8,37 @@ import CreateSuplement from './components/CreateSuplements/index';
 import Detail from './views/Detail/Detail';
 import RegisterUser from './components/RegisterUser';
 import Login from './views/Login/index';
-import NavBar from './components/NavBarLanding/NavBarLanding';
 
 
 import './App.css'
-import UpdateSuplement from './components/UpdateSuplement';
 import Dashboard from './components/Dashboard/Dashboard';
+import NavBar from './components/NavBar/NavBar';
+import { useState } from 'react';
 
 function App() {
-
-
+  const [search, setSearch] = useState('');
+  const navigate=useNavigate()
+  function handleSearch(search) {
+    setSearch(search);
+    navigate("/home")
+  }
   return (
-    
-      <div>
-        {/* <NavBar /> */}
+
+    <div>
+      <NavBar handleSearch={handleSearch} search={search} setSearch={setSearch} />
       <Routes>
-        <Route path={PATHROUTES.LANDING} element={<Landing/>} />
-        <Route path={PATHROUTES.HOME} element={<Home/>} />
+        <Route path={PATHROUTES.LANDING} element={<Landing />} />
+        <Route path={PATHROUTES.HOME} element={<Home  search={search}/>} />
 
-        <Route path='/dashboard/*' element={<Dashboard/>}/>
+        <Route path='/dashboard/*' element={<Dashboard />} />
 
-        <Route path='login' element={<Login/>}/>
-        <Route path='/home/:id' element={<Detail/>}/>
+        <Route path='login' element={<Login />} />
+        <Route path='/home/:id' element={<Detail />} />
         {/* <Route path={PATHROUTES.DETAIL} element={<Detail/>}/> */}
-        <Route path='registeruser' element={<RegisterUser/>}/>
+        <Route path='registeruser' element={<RegisterUser />} />
       </Routes>
-        <Footer />
-      </div>
+      <Footer />
+    </div>
   )
 }
 

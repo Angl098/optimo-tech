@@ -6,6 +6,8 @@ import {
   //INJECT_CART_DATA,
   SHOW_SHOPPING_CART,
   //POST_REGISTER_USER 
+  POST_LOGIN, POST_REGISTER_USER,
+  USER
 } from "./actions"
 
 
@@ -69,7 +71,6 @@ const rootReducer = (state = initialState, action) => {
       }
     case ADD_TO_CART:
       const productExists = state.cart.find(product => product.id === payload.id);
-      // console.log(productExists)
       if (productExists) {
         const updatedCart = state.cart.map(product =>
           product.id === payload.id
@@ -90,7 +91,6 @@ const rootReducer = (state = initialState, action) => {
           quantity: 1,
           total: payload.price,
         }; 
-        // console.log(productToAdd)
         const newProduct = [...state.cart]
         newProduct.push(productToAdd)
         return {
@@ -152,6 +152,15 @@ const rootReducer = (state = initialState, action) => {
             suplemento: payload
         }
 
+        case POST_REGISTER_USER:
+          return {...state, postRegisterUser: payload}
+    
+        case POST_LOGIN:
+          return {...state, postLogin: payload}
+
+        case USER:
+          return {...state, user: payload}
+
     default:
       return state;
   }
@@ -206,5 +215,10 @@ const rootReducer = (state = initialState, action) => {
 //       return state;
 //   }
 // };
+
+
+
+
+
 
 export default rootReducer;
