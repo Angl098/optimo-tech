@@ -46,10 +46,7 @@ export const postSuplements = (newSuplements) => {
                     type: POST_SUPLEMENTS,
                     payload: response.data
                 });
-            }).catch((response)=>{
-
-                console.log('error al registrar los datos', error);
-            });
+            })
         }
         catch (error) {
             console.log('error al registrar los datos', error);
