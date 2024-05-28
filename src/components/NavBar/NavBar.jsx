@@ -15,6 +15,7 @@ const NavBar = (props) => {
     const { handleSearch } = props
     const [search, setSearch] = useState("")
     const [logeado, setLogeado] = useState(false)
+    const [admin, setAdmin] = useState(false)
     const [showNav, setShowNav] = useState(null);
     const [quantityProductsCart, setQuantityProductsCart] = useState(0)
     const location = useLocation()
@@ -27,15 +28,30 @@ const NavBar = (props) => {
 
         if (JSON.parse(localStorage.getItem("user"))) {
             if (JSON.parse(localStorage.getItem("user")).userId) {
-
+                
                 setLogeado(true)
+            }else{
+                setLogeado(false)
+
+            }
+
+
+            if (JSON.parse(localStorage.getItem("user")).email==="admin@gmail.com") {
+                console.log("navbar");
+                console.log(JSON.parse(localStorage.getItem("user")).email);
+                setAdmin(true)
+            }else{
+                
+                setAdmin(false)
             }
         } else {
+            setAdmin(false)
             setLogeado(false)
         }
 
     }, [user])
     useEffect(() => {
+        console.log(JSON.parse(localStorage.getItem("user")));
         if (cart.length > 0) {
             const quantityProducts = cart.reduce((total, product) => (
                 total + product.quantity
@@ -61,6 +77,7 @@ const NavBar = (props) => {
     const cerrarSesion=()=>{
         console.log("cerrado sesion");
         localStorage.clear();
+        
         navigate("/")
     }
 
@@ -76,8 +93,9 @@ const NavBar = (props) => {
                     <Link to={PATHROURES.HOME} className={style.linkDesk} onClick={toggleNav}>Products</Link>
 
                     {
-                        logeado &&
+                        admin ?
                         <Link to={"/dashboard"} className={style.linkDesk} onClick={toggleNav}>Dashboard</Link>
+                        :<></>
                     }
                 </div>
 

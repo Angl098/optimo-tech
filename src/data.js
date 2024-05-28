@@ -59,7 +59,7 @@ export const data = [
         "name": "Gold Standard Whey Protein",
         "category": "Proteinas y Aminoacidos",
         "description": "Es un alimento de alta calidad que contiene una mezcla de aislado de proteína de suero, concentrado de proteína de suero y proteína de suero hidrolizada.",
-        "price": 122.499,
+        "price": 122499,
         "image": "https://acdn.mitiendanube.com/stores/002/268/228/products/suplemento-en-polvo-optimum-nutrition-gold-standard-100-whey-proteina-sabor-cookies-cream-en-pote-de-2-27kg-5a29832d221178e4fb16988446352517-1024-1024.jpg",
         "amount": 10
     },
@@ -83,7 +83,7 @@ export const data = [
         "name": "Omega 3",
         "category": "Acidos Grasos Esenciales",
         "description": "El Omega 3 favorece la reducción del colesterol, triglicéridos y el riesgo cardiovascular. Los tres ácidos grasos omega-3 principales son el ácido alfa-linolénico (ALA), el ácido eicosapentaenoico (EPA) y el ácido docosahexaenoico (DHA).",
-        "price": 22.800,
+        "price": 22800,
         "image": "https://tienda.ysonut.com.ar/3155-product_image/omega-3-dha.jpg",
         "amount": 10
     },
