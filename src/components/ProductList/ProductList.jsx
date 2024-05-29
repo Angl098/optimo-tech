@@ -22,12 +22,23 @@ export default function ProductList({ search }) {
     const [filter, setFilter] = useState({
         category: "",
         name:search,
+        tags: [], // Array de nombres de etiquetas
+        provider: '',
         orderBy: "",
         orderDirection: "",
         page: 1,
         pageSize: 4
     });
-
+    const params = {
+        category: 'aaad4ed5-17d5-47a4-8698-93abaa6a8a76', // ID de la categoría
+        tags: ['Proteina', '5kg'], // Array de nombres de etiquetas
+        provider: 'Mass Gainer', // Nombre del proveedor
+        orderBy: 'price',
+        orderDirection: 'DESC',
+        name: 'Mass',
+        page: 1,
+        pageSize: 10
+    };
     //merge con el back de royer
 
     const buildQueryParams = (filter) => {

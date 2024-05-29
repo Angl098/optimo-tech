@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import validation from '../Validation/CreateSuplements/Validation';
-import { updateSuplement, fetchSuplementById } from "../../Redux/actions";
+import { updateSuplement } from "../../Redux/actions";
 import style from './CreateSuplement.module.css';
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import buildQueryParams from "../../Utils/QueryFilterPath";
-
 function UpdateSuplement() {
+    const listCategorias=useSelector((state)=>state.categorias)
     const [suplements, setSuplements] = useState([]);
     const [filter, setFilter] = useState({
         category: "",
@@ -17,7 +16,6 @@ function UpdateSuplement() {
         page: 1,
         pageSize: 4
     });
-
     useEffect(() => {
         const query = buildQueryParams(filter);
         axios.get("/suplements/filter" + query).then(({ data }) => {
@@ -45,11 +43,8 @@ function UpdateSuplement() {
     const handleUpdate = (sup) => {
         setSuplement({ ...suplemento, sup });
         axios.get(`/suplements/${sup.id}`).then(({ data }) => {
-            if (data.categories.length > 0) {
-                setSuplement({ ...suplemento, ...data, categories: data.categories[0].name });
-            } else {
-                setSuplement({ ...suplemento, ...data, categories: "" });
-            }
+            console.log(data);
+            setSuplement(data);
         });
         setUpdatedSuplements({
             ...updateSuplement,
@@ -95,24 +90,13 @@ function UpdateSuplement() {
                 formDataToSend.append(key, value);
             }
         });
-        dispatch(updateSuplement(id, formDataToSend));
+        dispatch(updateSuplement(id, formDataToSend)).then(() => {
+            // Después de la actualización, obtener de nuevo la lista de suplementos
+            axios.get("/suplements/filter" + buildQueryParams(filter)).then(({ data }) => {
+                setSuplements(data.items);
+            });
+        });
     };
-
-    const arrayCategory = [
-        { id: 1, category: 'Vitaminas y Minerales' },
-        { id: 2, category: 'Proteina' },
-        { id: 3, category: 'Aminoacido' },
-        { id: 4, category: 'Creatina' },
-        { id: 5, category: 'Acidos Grasos Esenciales' },
-        { id: 6, category: 'Antioxidante' },
-        { id: 7, category: 'Probiotico y Prebiotico' },
-        { id: 8, category: 'Herbales y Botanicos' },
-        { id: 9, category: 'Rendimiento Deportivo' },
-        { id: 10, category: 'Salud Articular y Ósea' },
-        { id: 11, category: 'Salud Cardiovascular' },
-        { id: 12, category: 'Salud Cerebral y Cognitiva' },
-        { id: 13, category: 'Colageno' },
-    ];
 
     const handlePageChange = (newPage) => {
         setFilter((prevFilter) => ({
@@ -146,25 +130,19 @@ function UpdateSuplement() {
                     type="text"
                     className={style.form_style}
                     name='name'
-                    value={updatedSuplements.name}
+                    value={suplemento.name}
                     onChange={handleChange}
                 />
                 {errors.name && <p className={style.errors}>{errors.name}</p>}
 
                 <label>Categoria </label>
-                <select
+                <input
+                    type="text"
                     className={style.form_style}
-                    name="categories"
-                    value={suplemento.categories}
+                    name="category"
+                    value={suplemento.category}
                     onChange={handleChange}
-                >
-                    <option value=''>Selecciona una Opcion</option>
-                    {arrayCategory.map((objeto) => (
-                        <option key={objeto.id} value={objeto.category}>
-                            {objeto.category}
-                        </option>
-                    ))}
-                </select>
+                />
                 {errors.category && <p className={style.errors}>{errors.category}</p>}
 
                 <label>Descripcion</label>
@@ -173,7 +151,7 @@ function UpdateSuplement() {
                     cols='35'
                     name="description"
                     className={style.form_style}
-                    value={updatedSuplements.description}
+                    value={suplemento.description}
                     onChange={handleChange}
                 />
                 {errors.description && <p className={style.errors}>{errors.description}</p>}
@@ -183,7 +161,7 @@ function UpdateSuplement() {
                     type="text"
                     className={style.form_style}
                     name='price'
-                    value={updatedSuplements.price}
+                    value={suplemento.price}
                     onChange={handleChange}
                 />
                 {errors.price && <p className={style.errors}>{errors.price}</p>}
@@ -193,10 +171,20 @@ function UpdateSuplement() {
                     type="text"
                     className={style.form_style}
                     name='amount'
-                    value={updatedSuplements.amount}
+                    value={suplemento.amount}
                     onChange={handleChange}
                 />
                 {errors.amount && <p className={style.errors}>{errors.amount}</p>}
+
+                <label>Etiquetas</label>
+                <input
+                    type="text"
+                    className={style.form_style}
+                    name='tags'
+                    value={suplemento.tags && suplemento.tags.join(", ")}
+                    onChange={handleChange}
+                />
+                {errors.tags && <p className={style.errors}>{errors.tags}</p>}
 
                 <div>
                     <input
@@ -211,29 +199,7 @@ function UpdateSuplement() {
                         <span className={style.subirfoto}>Subir foto</span>
                     </label>
                 </div>
-                <img src={updatedSuplements.image} alt="" />
-                <div>
-                    {/* {updatedSuplements?.images.length > 0 && (
-                        <div>
-                            <p>Previsualización de imágenes:</p>
-                            <div>
-                                {updatedSuplements.images.map((image, index) => (
-                                    <div key={index}>
-                                        <div>
-                                            <img src={URL.createObjectURL(image)} alt={`Imagen ${index + 1}`} />
-                                            <button type="button" onClick={() => handleImageRemove(index)}>X</button>
-                                        </div>
-                                    </div>
-                                ))}
-                                {[...Array(3 - updatedSuplements.images.length)].map((_, index) => (
-                                    <div key={index}>
-                                        <span>Imagen {updatedSuplements.images.length + index + 1}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )} */}
-                </div>
+                <img src={suplemento.image} alt="" />
                 <button className={style.btn} type="submit">Actualizar</button>
             </form>
         </div>

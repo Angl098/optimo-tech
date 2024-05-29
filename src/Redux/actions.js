@@ -17,9 +17,20 @@ export const POST_REGISTER_USER = "POST_REGISTER_USER";
 
 export const POST_LOGIN = "POST_LOGIN";
 export const USER = "USER";
+export const GET_CATEGORIES = "GET_CATEGORIES";
 
 //Función que hace la peticion con axios al back-end
 //para traer todos los suplementos
+export const getCategorias = () => {
+    return async function (dispatch) {
+        const response = await axios.get('/category')
+        return dispatch({
+            type: GET_CATEGORIES,
+            payload: response.data
+        })
+    }
+}
+
 export const getSuplements = () => {
     return async function (dispatch) {
         const response = await axios.get('/suplements')

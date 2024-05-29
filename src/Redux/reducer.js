@@ -7,7 +7,8 @@ import {
   SHOW_SHOPPING_CART,
   //POST_REGISTER_USER 
   POST_LOGIN, POST_REGISTER_USER,
-  USER
+  USER,
+  GET_CATEGORIES
 } from "./actions"
 
 
@@ -21,7 +22,8 @@ const initialState = {
   paymentID: null,
   user: null,
   showShoppingCart: false,
-  suplemento:{}
+  suplemento:{},
+  categorias:[]
 };
 
 
@@ -31,6 +33,11 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case GET_CATEGORIES:
+      return {
+        ...state,
+        categorias: payload,
+      };
     case GET_SUPLEMENTS:
       return {
         ...state,
