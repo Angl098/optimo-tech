@@ -9,7 +9,7 @@ const ItemShoppingCart = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        console.log('Cart updated:', itemProduct);
+        // console.log('Cart updated:', itemProduct);
         window.localStorage.setItem('cart', JSON.stringify(itemProduct))
     },[itemProduct])
 
@@ -28,7 +28,7 @@ const ItemShoppingCart = () => {
             <div className={style.containerItem}>
                 <ul className={style.listUL}>
                     {itemProduct?.map((product) => {
-                        console.log(product);
+                        // console.log(product);
                         return (
                         <>
                             <li key={product.id} className={style.listLi}>

@@ -58,7 +58,7 @@ export default function ProductList({ search }) {
     const fetchAlojamientos = async (queryParams) => {
         try {
             const { data } = await axios.get("/suplements/filter" + queryParams);
-            console.log(data);
+            // console.log(data);
             setDatas(data.items)
             setTotalPages(data.totalPages)
             //   dispatch(getAllAlojamientos(data));

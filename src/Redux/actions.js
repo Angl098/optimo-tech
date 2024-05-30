@@ -66,6 +66,7 @@ export const postSuplements = (newSuplements) => {
 };
 
 
+// NO ESTA EN USO 
 export function paymentGateway(cart) {
     // console.log();
     return async function (dispatch) {
@@ -77,7 +78,7 @@ export function paymentGateway(cart) {
                 quantity: parseInt(prod.quantity),
                 productId: prod.id,
             }));
-            console.log(items);
+            // console.log(items);
             const total = cart.map((prod) => prod.total)
             let totalPrice = 0;
 
@@ -108,7 +109,8 @@ export function paymentGateway(cart) {
             })
 
             const { id } = response.data;
-            dispatch({ type: PAYMENT_ID, payload: id })
+            return id;
+            // dispatch({ type: PAYMENT_ID, payload: id })
             //eliminando los prod del carrito en el localStor cuando la compra se completa con exito
             window.localStorage.removeItem('cart')
         } catch (error) {
@@ -125,7 +127,7 @@ export const showShoppingCart = (data) => {
 }
 
 export const addToCart = (id) => {
-    console.log('add to cart', id)
+    // console.log('add to cart', id)
     return {
         type: ADD_TO_CART,
         payload: id
