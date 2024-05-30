@@ -22,13 +22,25 @@ const ShoppingCart = () => {
                 quantity: parseInt(prod.quantity),
                 productId: prod.id,
             }));
-            console.log(items);
+            // console.log(items);
             const total = cart.map((prod) => prod.total)
             let totalPrice = 0;
 
             for (let i = 0; i < total.length; i++) {
                 totalPrice += total[i];
             }
+
+            const cartDB = {
+                cartItems: cart.map((prod) => ({
+                    price: parseFloat(prod.price),
+                    quantity: parseInt(prod.quantity),
+                    productId: prod.id,
+                })),
+                total: totalPrice,
+                paymentMethod: "mercadopago"
+            }
+            // const postCart = axios.post("/orden/crear-orden", cartDB)
+            // console.log("Orden creada:", postCart.data); // Añade este log
 
             const response = await axios.post("/payment/create_preference", {
                 items: items,
@@ -37,7 +49,7 @@ const ShoppingCart = () => {
 
             const { point } = response.data;
 
-            window.location.href=point
+            window.location.href = point;
         } catch (error) {
             console.log('error obteniendo la orden de pago', error);
         }
