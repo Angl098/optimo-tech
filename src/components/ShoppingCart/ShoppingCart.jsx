@@ -2,8 +2,6 @@ import style from "../ShoppingCart/ShoppingCart.module.css";
 import ItemShoppingCart from "../ItemShoppingCart/ItemShoppingCart";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-// import { IoMdCart } from "react-icons/io";
-// import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 import { paymentGateway, showShoppingCart } from '../../Redux/actions'
 import axios from "axios";
 //import swal from 'sweetalert';
@@ -29,18 +27,6 @@ const ShoppingCart = () => {
             for (let i = 0; i < total.length; i++) {
                 totalPrice += total[i];
             }
-
-            const cartDB = {
-                cartItems: cart.map((prod) => ({
-                    price: parseFloat(prod.price),
-                    quantity: parseInt(prod.quantity),
-                    productId: prod.id,
-                })),
-                total: totalPrice,
-                paymentMethod: "mercadopago"
-            }
-            // const postCart = axios.post("/orden/crear-orden", cartDB)
-            // console.log("Orden creada:", postCart.data); // Añade este log
 
             const response = await axios.post("/payment/create_preference", {
                 items: items,
@@ -113,7 +99,7 @@ const ShoppingCart = () => {
                                 <div className={style.containerTotal}>
                                     <div className={style.totalPrice}>
                                         <p>Total</p>
-                                        <span>$ {cart?.reduce((total, product) => total + product.total, 0)},00 USD</span>
+                                        <span>$ {cart?.reduce((total, product) => total + product.total, 0)} ARS</span>
                                     </div>
                                     <hr />
                                 </div>
