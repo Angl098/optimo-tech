@@ -2,8 +2,6 @@ import style from "../ShoppingCart/ShoppingCart.module.css";
 import ItemShoppingCart from "../ItemShoppingCart/ItemShoppingCart";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-// import { IoMdCart } from "react-icons/io";
-// import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 import { paymentGateway, showShoppingCart } from '../../Redux/actions'
 import axios from "axios";
 //import swal from 'sweetalert';
@@ -22,7 +20,7 @@ const ShoppingCart = () => {
                 quantity: parseInt(prod.quantity),
                 productId: prod.id,
             }));
-            console.log(items);
+            // console.log(items);
             const total = cart.map((prod) => prod.total)
             let totalPrice = 0;
 
@@ -37,7 +35,7 @@ const ShoppingCart = () => {
 
             const { point } = response.data;
 
-            window.location.href=point
+            window.location.href = point;
         } catch (error) {
             console.log('error obteniendo la orden de pago', error);
         }
@@ -101,7 +99,7 @@ const ShoppingCart = () => {
                                 <div className={style.containerTotal}>
                                     <div className={style.totalPrice}>
                                         <p>Total</p>
-                                        <span>$ {cart?.reduce((total, product) => total + product.total, 0)},00 USD</span>
+                                        <span>$ {cart?.reduce((total, product) => total + product.total, 0)} ARS</span>
                                     </div>
                                     <hr />
                                 </div>

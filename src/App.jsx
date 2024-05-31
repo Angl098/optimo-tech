@@ -8,6 +8,7 @@ import CreateSuplement from './components/CreateSuplements/index';
 import Detail from './views/Detail/Detail';
 import RegisterUser from './components/RegisterUser';
 import Login from './views/Login/index';
+import Orders from './components/Ordenes/Ordenes'
 
 
 import './App.css'
@@ -40,6 +41,7 @@ function App() {
         <Route path='/home/:id' element={<Detail />} />
         {/* <Route path={PATHROUTES.DETAIL} element={<Detail/>}/> */}
         <Route path='registeruser' element={<RegisterUser />} />
+        <Route path="/orders" element={<Orders />} />
       </Routes>
       <Footer />
     </div>
