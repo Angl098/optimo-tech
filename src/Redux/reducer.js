@@ -8,7 +8,9 @@ import {
   //POST_REGISTER_USER 
   POST_LOGIN, POST_REGISTER_USER,
   USER,
-  GET_CATEGORIES
+  GET_CATEGORIES,
+  GET_PROVIDERS,
+  GET_TAGS
 } from "./actions"
 
 
@@ -23,7 +25,9 @@ const initialState = {
   user: null,
   showShoppingCart: false,
   suplemento:{},
-  categorias:[]
+  categorias:[],
+  provedores:[],
+  tags:[]
 };
 
 
@@ -37,6 +41,16 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         categorias: payload,
+      };
+    case GET_PROVIDERS:
+      return {
+        ...state,
+        provedores: payload,
+      };
+    case GET_TAGS:
+      return {
+        ...state,
+        tags: payload,
       };
     case GET_SUPLEMENTS:
       return {

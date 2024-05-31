@@ -18,6 +18,8 @@ export const POST_REGISTER_USER = "POST_REGISTER_USER";
 export const POST_LOGIN = "POST_LOGIN";
 export const USER = "USER";
 export const GET_CATEGORIES = "GET_CATEGORIES";
+export const GET_PROVIDERS = "GET_PROVIDERS";
+export const GET_TAGS = "GET_TAGS";
 
 //Función que hace la peticion con axios al back-end
 //para traer todos los suplementos
@@ -26,6 +28,24 @@ export const getCategorias = () => {
         const response = await axios.get('/category')
         return dispatch({
             type: GET_CATEGORIES,
+            payload: response.data
+        })
+    }
+}
+export const getProviders = () => {
+    return async function (dispatch) {
+        const response = await axios.get('/provider')
+        return dispatch({
+            type: GET_PROVIDERS,
+            payload: response.data
+        })
+    }
+}
+export const getTags = () => {
+    return async function (dispatch) {
+        const response = await axios.get('/tags')
+        return dispatch({
+            type: GET_TAGS,
             payload: response.data
         })
     }

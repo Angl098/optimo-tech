@@ -6,7 +6,9 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import buildQueryParams from "../../Utils/QueryFilterPath";
 function UpdateSuplement() {
-    const listCategorias=useSelector((state)=>state.categorias)
+    const arrayCategory = useSelector((state) => state.categorias)
+    const arrayProviders = useSelector((state) => state.provedores)
+    const arrayTags = useSelector((state) => state.tags)
     const [suplements, setSuplements] = useState([]);
     const [filter, setFilter] = useState({
         category: "",
@@ -27,10 +29,16 @@ function UpdateSuplement() {
         amount: 0,
         description: "",
         image: "",
-        categories: "",
+        category: "",
         price: 0
     });
-
+    const [actualización,setActualizacion]=useState(false)
+    useEffect(()=>{
+        if (suplemento.name) {
+            
+            setActualizacion(true)
+        }
+    },[suplemento])
     const [updatedSuplements, setUpdatedSuplements] = useState({
         images: []
     });
@@ -44,7 +52,10 @@ function UpdateSuplement() {
         setSuplement({ ...suplemento, sup });
         axios.get(`/suplements/${sup.id}`).then(({ data }) => {
             console.log(data);
-            setSuplement(data);
+            setSuplement({
+                ...data,
+                category:data.category.name
+            });
         });
         setUpdatedSuplements({
             ...updateSuplement,
@@ -70,7 +81,14 @@ function UpdateSuplement() {
         event.preventDefault();
         setUpdatedSuplements({ ...updatedSuplements, [name]: newValue });
     }
+    // const [opCategory, setOpCategory] = useState('');
 
+    // const handleChangeCategory = (event) => {
+    //     event.preventDefault();
+    //     const category = event.target.value;
+    //     setOpCategory(category);
+    //     setUpdatedSuplements({ ...updatedSuplements, category });
+    // };
     const handleImageRemove = (index) => {
         const updatedImages = [...updatedSuplements.images];
         updatedImages.splice(index, 1);
@@ -123,7 +141,7 @@ function UpdateSuplement() {
                     </button>
                 </div>
             </div>
-            <form onSubmit={handleSubmit} className={style.form}>
+            {actualización && <form onSubmit={handleSubmit} className={style.form}>
                 <h3 className={style.title}>Actualizar Suplemento</h3>
                 <label>Nombre</label>
                 <input
@@ -136,6 +154,19 @@ function UpdateSuplement() {
                 {errors.name && <p className={style.errors}>{errors.name}</p>}
 
                 <label>Categoria </label>
+                <select
+                    className={style.form_style}
+                    value={suplemento.category}
+                    name="category"
+                    onChange={handleChange}
+                >
+                    <option value='' disabled>Selecciona una Opción</option>
+                    {arrayCategory.map((objeto) => (
+                        <option key={objeto.id} value={objeto.name}>
+                            {objeto.name}
+                        </option>
+                    ))}
+                </select>
                 <input
                     type="text"
                     className={style.form_style}
@@ -201,7 +232,7 @@ function UpdateSuplement() {
                 </div>
                 <img src={suplemento.image} alt="" />
                 <button className={style.btn} type="submit">Actualizar</button>
-            </form>
+            </form>}
         </div>
     );
 }

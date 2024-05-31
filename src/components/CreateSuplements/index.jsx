@@ -1,16 +1,25 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import validation from '../Validation/CreateSuplements/Validation';
 import { postSuplements } from "../../Redux/actions";
 import styles from './CreateSuplement.module.css';
 
 function CreateSuplement() {
+    const arrayCategory = useSelector((state) => state.categorias)
+    const arrayProviders = useSelector((state) => state.provedores)
+    const arrayTags = useSelector((state) => state.tags)
+
     const [disableSubmit, setDisableSubmit] = useState(true);
     const dispatch = useDispatch();
-    
+    const [create, setCreate] = useState({
+        category: false,
+        provider: false,
+        tags: false
+    })
     // Estado principal 
     const [newSuplements, setNewSuplements] = useState({
         images: [],
+        provider: "",
         tags: []
     });
 
@@ -69,23 +78,6 @@ function CreateSuplement() {
         dispatch(postSuplements(formDataToSend));
     };
 
-    // Array precargado de categorías
-    const arrayCategory = [
-        { id: 1, category: 'Vitaminas y Minerales' },
-        { id: 2, category: 'Proteina' },
-        { id: 3, category: 'Aminoacido' },
-        { id: 4, category: 'Creatina' },
-        { id: 5, category: 'Acidos Grasos Esenciales' },
-        { id: 6, category: 'Antioxidante' },
-        { id: 7, category: 'Probiotico y Prebiotico' },
-        { id: 8, category: 'Herbales y Botanicos' },
-        { id: 9, category: 'Rendimiento Deportivo' },
-        { id: 10, category: 'Salud Articular y Ósea' },
-        { id: 11, category: 'Salud Cardiovascular' },
-        { id: 12, category: 'Salud Cerebral y Cognitiva' },
-        { id: 13, category: 'Colageno' },
-    ];
-
     const [opCategory, setOpCategory] = useState('');
 
     const handleChangeCategory = (event) => {
@@ -95,7 +87,17 @@ function CreateSuplement() {
         setNewSuplements({ ...newSuplements, category });
         setErrors(validation({ ...newSuplements, category }));
     };
-
+    const handleTagClick = (tagName) => {
+        if (!newSuplements.tags.includes(tagName) && tagName.trim() !== '') {
+            setNewSuplements((prevState) => ({
+                ...prevState,
+                tags: [...prevState.tags, tagName]
+            }));
+            setErrors(validation({
+                ...newSuplements, tags: [...newSuplements.tags, tagName]
+            }));
+        }
+    };
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
             <h3 className={styles.title}>Nuevo Suplemento</h3>
@@ -110,22 +112,31 @@ function CreateSuplement() {
                 />
                 {errors.name && <p className={styles.errors}>{errors.name}</p>}
             </div>
-
             <div className={styles.field}>
-                <label>Categoria</label>
-                <select
-                    className={styles.form_style}
-                    value={opCategory}
-                    onChange={handleChangeCategory}
-                >
-                    <option value='' disabled hidden>Selecciona una Opción</option>
-                    {arrayCategory.map((objeto) => (
-                        <option key={objeto.id} value={objeto.category}>
-                            {objeto.category}
-                        </option>
-                    ))}
-                </select>
-                {errors.category && <p className={styles.errors}>{errors.category}</p>}
+
+                <div >
+                    <label>Categoria</label>
+                    <select
+                        className={styles.form_style}
+                        value={opCategory}
+                        onChange={handleChangeCategory}
+                    >
+                        <option value='' disabled hidden>Selecciona una Opción</option>
+                        {arrayCategory.map((objeto) => (
+                            <option key={objeto.id} value={objeto.name}>
+                                {objeto.name}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.category && <p className={styles.errors}>{errors.category}</p>}
+                </div>
+                <span>o</span>
+                <div >
+
+                    <input onChange={handleChangeCategory} className={styles.form_style} value={opCategory} type="text" />
+
+                </div>
+
             </div>
 
             <div className={styles.field}>
@@ -168,27 +179,60 @@ function CreateSuplement() {
             </div>
 
             <div className={styles.field}>
-                <label>Proveedor</label>
-                <input
-                    type="text"
-                    className={styles.form_style}
-                    name='provider'
-                    value={newSuplements.provider}
-                    onChange={handleChange}
-                />
-                {errors.provider && <p className={styles.errors}>{errors.provider}</p>}
+                <div >
+                    <label>Proveedor</label>
+                    <select
+                        className={styles.form_style}
+                        name="provider"
+                        value={newSuplements.provider}
+                        onChange={handleChange}
+                    >
+                        <option value='' disabled hidden>Selecciona una Opción</option>
+                        {arrayProviders.map((objeto) => (
+                            <option key={objeto.id} value={objeto.name}>
+                                {objeto.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+
+                    <input
+                        type="text"
+                        className={styles.form_style}
+                        name='provider'
+                        value={newSuplements.provider}
+                        onChange={handleChange}
+                    />
+                    {errors.provider && <p className={styles.errors}>{errors.provider}</p>}
+                </div>
+
+
             </div>
 
+
             <div className={styles.field}>
-                <label>Etiquetas (separadas por comas)</label>
-                <input
-                    type="text"
-                    className={styles.form_style}
-                    name='tags'
-                    value={newSuplements.tags.join(', ')}
-                    onChange={handleChange}
-                />
-                {errors.tags && <p className={styles.errors}>{errors.tags}</p>}
+                <div>
+
+                    <option value='' disabled hidden>Selecciona una Opción</option>
+                    {arrayTags.map((objeto) => (
+                        <span key={objeto.id} value={objeto.name}  onClick={() => handleTagClick(objeto.name)}>
+                            {objeto.name}
+                        </span>
+                    ))}
+                </div>
+                <div>
+
+                    <label>Etiquetas (separadas por comas)</label>
+                    <input
+                        type="text"
+                        className={styles.form_style}
+                        name='tags'
+                        value={newSuplements.tags.join(', ')}
+                        onChange={handleChange}
+                    />
+                    {errors.tags && <p className={styles.errors}>{errors.tags}</p>}
+                </div>
             </div>
 
             <div className={styles.field}>

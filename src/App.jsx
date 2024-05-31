@@ -16,11 +16,13 @@ import Dashboard from './components/Dashboard/Dashboard';
 import NavBar from './components/NavBar/NavBar';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getCategorias } from './Redux/actions';
+import { getCategorias, getProviders, getTags } from './Redux/actions';
 
 function App() {
   const dispatch=useDispatch()
   dispatch(getCategorias())
+  dispatch(getProviders())
+  dispatch(getTags())
   const [search, setSearch] = useState('');
   const navigate=useNavigate()
   function handleSearch(search) {

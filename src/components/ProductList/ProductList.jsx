@@ -6,10 +6,13 @@ import axios from 'axios'
 
 
 import Card from '../card/card.component'
+import { useSelector } from 'react-redux'
 
 export default function ProductList({ search }) {
+    const arrayCategory=useSelector((state)=>state.categorias)
 
     const [category, setCategory] = useState([])
+   
     const [totalPages, setTotalPages] = useState(0)
     const [datas, setDatas] = useState([])
     const [datasAux, setDatasAux] = useState([])
@@ -127,7 +130,7 @@ export default function ProductList({ search }) {
             <div className={style.categories}>
 
                 <p className={style.category} key={category.id} onClick={() => handleCategoryFilter(category.id)} value=" ">Todos</p>
-                {category.map((category) => {
+                {arrayCategory.map((category) => {
                     return <p className={style.category} key={category.id} name="category" value={category.id} onClick={() => handleCategoryFilter(category.id)}>{category.name}</p>
                 })}
 
@@ -152,16 +155,6 @@ export default function ProductList({ search }) {
                         <option value="DESC">Desc</option>
                     </select>
                 </div>
-                <div>
-
-                    {/* <select onChange={handleFilterChange} name="category" id="">
-                        <option value="">Todos</option>
-                        {category.map((category) => {
-                            return <option key={category.id} value={category.id}>{category.name}</option>
-                        })}
-                    </select> */}
-                </div>
-
                 <div className={style.newData}>
 
                     <div className={style.contenedorCards}>
