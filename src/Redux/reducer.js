@@ -3,11 +3,12 @@ import {
   ADD_TO_CART,
   REMOVE_ONE_FROM_CART,
   REMOVE_ALL_FROM_CART,
-  //INJECT_CART_DATA,
+  INJECT_CART_DATA,
   SHOW_SHOPPING_CART,
   //POST_REGISTER_USER 
   POST_LOGIN, POST_REGISTER_USER,
-  USER
+  USER,
+  INJECT_USER
 } from "./actions"
 
 
@@ -21,10 +22,9 @@ const initialState = {
   paymentID: null,
   user: null,
   showShoppingCart: false,
-  suplemento:{}
+  suplemento: {},
+  user: null,
 };
-
-
 
 
 
@@ -90,7 +90,7 @@ const rootReducer = (state = initialState, action) => {
           ...payload,
           quantity: 1,
           total: payload.price,
-        }; 
+        };
         const newProduct = [...state.cart]
         newProduct.push(productToAdd)
         return {
@@ -141,72 +141,44 @@ const rootReducer = (state = initialState, action) => {
           cart: updatedCart,
         };
       }
-      case "FETCH_SUPLEMENT_BY_ID_SUCCESS":
-        return {
-            ...state,
-            suplemento: payload
-        }
-      case "UPDATE_SUPLEMENT_SUCCESS":
-        return {
-            ...state,
-            suplemento: payload
-        }
+    case "FETCH_SUPLEMENT_BY_ID_SUCCESS":
+      return {
+        ...state,
+        suplemento: payload
+      }
+    case "UPDATE_SUPLEMENT_SUCCESS":
+      return {
+        ...state,
+        suplemento: payload
+      }
 
-        case POST_REGISTER_USER:
-          return {...state, postRegisterUser: payload}
-    
-        case POST_LOGIN:
-          return {...state, postLogin: payload}
+    case POST_REGISTER_USER:
+      return { ...state, postRegisterUser: payload }
 
-        case USER:
-          return {...state, user: payload}
+    case POST_LOGIN:
+      return { ...state, postLogin: payload }
+
+    case USER:
+      return { ...state, user: payload }
+
+    case INJECT_CART_DATA:
+      return {
+        ...state,
+        cart: payload
+      }
+
+    case INJECT_USER:
+      return {
+        ...state,
+        user: payload
+      }
 
     default:
       return state;
   }
 };
 
-
-//       // console.log('ADD_TO_CART action dispatched with payload:', payload);
-//       // const productFound = state.cart.find(
-//       //   (product) => product.id == payload)
-//       // if (productFound) {
-//       //   const updatedCart = state.cart.map((product) =>
-//       //     product.id == payload
-//       //       ? {
-//       //         ...product,
-//       //         quantity: product.quantity + 1,
-//       //         total: product.price * (product.quantity + 1),
-//       //       }
-//       //       : product
-//       //   )
-//       //   console.log('Product already in cart. Updated cart:', updatedCart);
-//       //   return {
-//       //     ...state,
-//       //     cart: updatedCart,
-//       //   };
-//       // }
-//       // const productToAdd = state.cart.find(
-//       //   (cart) => cart.id == payload
-//       // );
-//       // if (productToAdd) {
-//       //   const updatedProduct = {
-//       //     ...productToAdd,
-//       //     quantity: 1,
-//       //     total: productToAdd.price,
-//       //   }
-//       //   console.log('Product not in cart. Adding to cart:', updatedProduct);
-//       //   return {
-//       //     ...state,
-//       //     cart: [...state.cart, updatedProduct],
-//       //   };
-//       // }
-
-//     case INJECT_CART_DATA:
-//       return {
-//         ...state,
-//         cart: payload
-//       }
+//     
 //       case POST_REGISTER_USER:
 //         return {...state, postRegisterUser: payload}
 

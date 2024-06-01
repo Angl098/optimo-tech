@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { paymentGateway, showShoppingCart } from '../../Redux/actions'
 import axios from "axios";
-//import swal from 'sweetalert';
+import swal from 'sweetalert';
 
 
 const ShoppingCart = () => {
@@ -36,12 +36,27 @@ const ShoppingCart = () => {
             const { point } = response.data;
 
             window.location.href = point;
+            window.localStorage.removeItem('cart')
         } catch (error) {
             console.log('error obteniendo la orden de pago', error);
         }
     }
 
     const dispatch = useDispatch();
+
+    const handleBuy = () => {
+        if (user === null) {
+            swal("Login first", "To make a purchase you need to register", "error");
+            return false;
+        }
+        return true;
+    }
+
+    const handleCheckout = () => {
+        if (handleBuy()) {
+            createPreference();
+        }
+    }
 
     console.log(cart)
     useEffect(() => { }, [showShoppingCartState]);
@@ -103,7 +118,7 @@ const ShoppingCart = () => {
                                     </div>
                                     <hr />
                                 </div>
-                                <button className={style.buttonCleanCart} onClick={createPreference}>
+                                <button className={style.buttonCleanCart} onClick={handleCheckout}>
                                     Proceed to Checkout
                                 </button>
                             </>
