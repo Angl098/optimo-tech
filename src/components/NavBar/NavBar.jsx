@@ -7,7 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import PATHROURES from '../../helpers/PathRoutes';
 import ShoppingCart from "../ShoppingCart/ShoppingCart";
 import { useDispatch, useSelector } from 'react-redux';
-import { showShoppingCart } from "../../Redux/actions";
+import { showShoppingCart, user } from "../../Redux/actions";
 
 const NavBar = (props) => {
 
@@ -18,7 +18,7 @@ const NavBar = (props) => {
     const location = useLocation()
     const dispatch = useDispatch();
     const cart = useSelector(state => state.cart)
-    const user = useSelector(state => state.user)
+    const userState = useSelector(state => state.user)
     const showShoppingCartState = useSelector((state) => state.showShoppingCart)
     console.log('showShoppingCartState', showShoppingCartState)
 
@@ -43,14 +43,16 @@ const NavBar = (props) => {
 
     //user
     useEffect(()=>{
-        const dataUserJSON = window.localStorage.getItem('notLogin');
+        const dataUserJSON = window.localStorage.getItem('User');
+        console.log('dataUserJSON', dataUserJSON);
         if(dataUserJSON)
         {
             const dataUser = JSON.parse(dataUserJSON);
             dispatch(user(dataUser));
+            console.log('usuario en storage', dataUser);
             
         }
-    }, []);
+    }, [user]);
 
 
     return (
@@ -83,7 +85,8 @@ const NavBar = (props) => {
                     </form>
                 </div>
 
-                <div className={style.cartContainer}>
+                {userState===null && 
+                    
                     <div className={style.buttonContainerDesk}>
                         <Link to={"/login"}>
                         <button className={style.buttonLog}>Log In</button>
@@ -92,8 +95,11 @@ const NavBar = (props) => {
                         <button className={style.buttonSign}>Sign Up</button>
                         </Link>
                     </div>
+                }
+                
 
-                    
+                 <div className={style.cartContainer}>
+                    {userState !== null && <p>{userState.name}</p>}
 
                     <button className={style.cartButton} onClick={() => shoppingCart()}>
                         <svg

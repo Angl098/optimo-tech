@@ -3,11 +3,13 @@ import { useDispatch } from 'react-redux';
 import { postRegisterUser } from '../../Redux/actions';
 import validation from '../Validation/RegisterUser/Validation';
 import style from './RegisterUser.module.css';
+import { useNavigate } from 'react-router-dom';
 
 function RegisterUser () {
     const dispatch = useDispatch();
     const [user, setUser] = useState({});
     const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
 
         //manejador del estado principal user
         function handleChange(event){
@@ -54,7 +56,7 @@ const handleSubmit= async (event)=>{
     const response = await dispatch(postRegisterUser(user));
     console.log(response);
     alert("Respuesta servidor: " + response.payload.message);
-
+    navigate("/login")
 };
 
 

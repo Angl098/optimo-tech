@@ -271,7 +271,8 @@ alert("error" + error);
    };
 };
 
-export const user = (user) => ({
+export const user = (user) => {
+    return {
     type: USER,
-    payload: user,
-});
+    payload: user
+}};

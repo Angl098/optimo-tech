@@ -13,14 +13,17 @@ import validation from '../../components/Validation/Login/Validation';
 //Importo los estilos
 import style from './Login.module.css';
 
-import { postLogin, user } from '..//..//Redux/actions';
+import { postLogin, user, postRegisterUser } from '..//..//Redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
-//const userLogin = useSelector(state => state.user);
+import { useNavigate } from 'react-router-dom';
+
 
 function Login(){
   const dispatch = useDispatch();
   const [login, setLogin] = useState({});
   const [errors, setErrors] = useState({});
+  const userState = useSelector(state => state.user);
+  const navigate = useNavigate();
 
   //manejador del estado principal login
   function handleChange(event){
@@ -42,16 +45,22 @@ const handleSubmit = async (event)=>{
   event.preventDefault();
   console.log('submit');
   const response = await dispatch(postLogin(login));
-  //Guardar en el storage
-  window.localStorage.setItem('Optimo', JSON.stringify(response.payload.dataUser));
-  console.log(response.payload);
-  //const userDispatch = response.payload.dataUser
-  //dispatch(userLogin(userDispatch));
   alert('Respuesta del servidor: ' + response.payload.message);
+  console.log(response.payload);
+
+  //Guardar en el storage
+  if(response.payload.dataUser){
+  window.localStorage.setItem('User', JSON.stringify(response.payload.dataUser));
+  const userDispatch = response.payload.dataUser
+  dispatch(user(userDispatch));
+  navigate("/home")
+  }
+
+  console.log('estado global user', userState);
 };
 
     // Manejador del éxito en el inicio de sesión con Google
-    const handleGoogleSuccess = (credentialResponse) => {
+    const handleGoogleSuccess = async(credentialResponse) => {
         //console.log(credentialResponse); // credencial encryptada
     try {
       const credentialResponseDecode = jwtDecode(credentialResponse.credential);
@@ -71,14 +80,35 @@ const handleSubmit = async (event)=>{
 
       console.log(userObject); // Verificar el objeto antes de enviarlo
 
+      //intento de inicio de sesion
+      const {email, password} = userObject;
+      let login = {email, password};
+          const responseAuth = await dispatch(postLogin(login));
+          console.log('responseAuth',responseAuth.payload);
+            //Guardar en el storage
+    if(responseAuth.payload.dataUser){
+    window.localStorage.setItem('User', JSON.stringify(responseAuth.payload.dataUser));
+    navigate("/home")
+  }else{
+    const resAuth =  await dispatch(postRegisterUser(userObject));
+    window.localStorage.setItem('User', JSON.stringify(userObject));
+    console.log('usuario registrado con Auth', resAuth.payload);
+    navigate("/home")
+  }
+
+    
+
       // Enviar el objeto al backend usando axios
-      axios.post('/users', userObject)
+/*       axios.post('/users', userObject)
         .then((response) => {
           console.log('Usuario creado:', response.data);
         })
         .catch((error) => {
           console.error('Error al crear el usuario:', error);
-        });
+        }); */
+    
+
+
     } catch (error) {
       console.error('Error al decodificar el token:', error);
     }
