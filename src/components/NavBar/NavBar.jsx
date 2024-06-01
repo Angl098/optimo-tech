@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import style from './NavBar.module.css'
 import logo from '../../assets/logo.png'
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 //import logo from '../../../public/logo.png'
 import PATHROURES from '../../helpers/PathRoutes';
 import ShoppingCart from "../ShoppingCart/ShoppingCart";
@@ -23,28 +23,28 @@ const NavBar = (props) => {
     const cart = useSelector(state => state.cart)
     const user = useSelector(state => state.user)
     const showShoppingCartState = useSelector((state) => state.showShoppingCart)
+    const { id } = useParams()
     useEffect(() => {
         const nameUsuario = JSON.parse(localStorage.getItem("user"));
-
         if (JSON.parse(localStorage.getItem("user"))) {
             console.log(JSON.parse(localStorage.getItem("user")).email);
             if (JSON.parse(localStorage.getItem("user")).userId) {
-                
+
                 setLogeado(true)
                 console.log("setLogeado");
-            }else{
+            } else {
                 setLogeado(false)
                 console.log("setNotLogeado");
-                
+
             }
-            
-            
-            if (JSON.parse(localStorage.getItem("user")).email==="admin@gmail.com") {
+
+            ///Condicion de admin
+            if (JSON.parse(localStorage.getItem("user")).email === "admin@gmail.com") {
                 console.log("navbar");
                 console.log(JSON.parse(localStorage.getItem("user")).email);
                 setAdmin(true)
-            }else{
-                
+            } else {    
+
                 setAdmin(false)
             }
         } else {
@@ -52,7 +52,7 @@ const NavBar = (props) => {
             setLogeado(false)
         }
 
-    }, [user])
+    }, [user,location])
     useEffect(() => {
         if (cart.length > 0) {
             const quantityProducts = cart.reduce((total, product) => (
@@ -76,10 +76,10 @@ const NavBar = (props) => {
         setSearch(e.target.value);
     };
 
-    const cerrarSesion=()=>{
-        console.log("cerrado sesion");
+    const cerrarSesion = () => {
         localStorage.clear();
-        
+        setAdmin(false)
+        setLogeado(false)
         navigate("/")
     }
 
@@ -97,8 +97,8 @@ const NavBar = (props) => {
 
                     {
                         admin ?
-                        <Link to={"/dashboard"} className={style.linkDesk} onClick={toggleNav}>Dashboard</Link>
-                        :<></>
+                            <Link to={"/dashboard"} className={style.linkDesk} onClick={toggleNav}>Dashboard</Link>
+                            : <></>
                     }
                 </div>
 
@@ -126,9 +126,9 @@ const NavBar = (props) => {
                         <Link to={"/registeruser"}>
                             <button className={style.buttonSign}>Registrar</button>
                         </Link>
-                    </div>:
-                            <button onClick={cerrarSesion} className={style.buttonSign}>Cerrar sesion</button>
-                        
+                    </div> :
+                        <button onClick={cerrarSesion} className={style.buttonSign}>Cerrar sesion</button>
+
                     }
 
                     <button className={style.cartButton} onClick={() => shoppingCart()}>

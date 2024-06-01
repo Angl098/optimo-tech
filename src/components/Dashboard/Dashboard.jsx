@@ -5,7 +5,10 @@ import style from './Dashboard.module.css'
 import { useEffect, useState } from "react"
 import axios from "axios"
 import buildQueryParams from "../../Utils/QueryFilterPath"
-import FormCategories from "../Categorias/FormCategories"
+import FormCategories from "./Categorias/FormCategories"
+import Provedores from "./Providers/Providers"
+import Tags from "./Tags/Tags"
+import Users from "./Users/Users"
 const Dashboard = () => {
 
     const [filter, setFilter] = useState({
@@ -23,9 +26,24 @@ const Dashboard = () => {
             <div className={style.dashboard}>
                 <div className={style.options}>
 
+                    <Link  to={"users"}>
+                        <p>
+                            Usuarios
+                        </p>
+                    </Link>
                     <Link  to={"categorias"}>
                         <p>
                             Categorias
+                        </p>
+                    </Link>
+                    <Link  to={"provedores"}>
+                        <p>
+                            Provedores
+                        </p>
+                    </Link>
+                    <Link  to={"tags"}>
+                        <p>
+                            Etiquetas
                         </p>
                     </Link>
                     <Link to={"createsuplements"} >
@@ -48,7 +66,11 @@ const Dashboard = () => {
 
                     <Routes>
                         <Route path='createsuplements' element={<CreateSuplement />} />
+
                         <Route path='categorias' element={<FormCategories />} />
+                        <Route path='provedores' element={<Provedores />} />
+                        <Route path='tags' element={<Tags />} />
+                        <Route path='users' element={<Users />} />
 
                         <Route path='updatesuplement' element={<UpdateSuplement />} />
                     </Routes>

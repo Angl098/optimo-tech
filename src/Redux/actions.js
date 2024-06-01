@@ -245,9 +245,9 @@ export const fetchSuplementById = (id) => async dispatch => {
     }
 };
 
-export const updateSuplement = (id, formData) => async dispatch => {
+export const updateSuplement = (formData) => async dispatch => {
     try {
-        const response = await axios.put(`/suplements/${id}`, formData);
+        const response = await axios.put(`/suplements`, formData);
         dispatch({ type: 'UPDATE_SUPLEMENT_SUCCESS', payload: response.data });
     } catch (error) {
         console.log(error);

@@ -9,10 +9,12 @@ import Card from '../card/card.component'
 import { useSelector } from 'react-redux'
 
 export default function ProductList({ search }) {
-    const arrayCategory=useSelector((state)=>state.categorias)
+    const arrayCategory = useSelector((state) => state.categorias)
+    const arrayProviders = useSelector((state) => state.provedores)
+    const arrayTags = useSelector((state) => state.tags)
 
     const [category, setCategory] = useState([])
-   
+
     const [totalPages, setTotalPages] = useState(0)
     const [datas, setDatas] = useState([])
     const [datasAux, setDatasAux] = useState([])
@@ -24,28 +26,17 @@ export default function ProductList({ search }) {
 
     const [filter, setFilter] = useState({
         category: "",
-        name:search,
-        tags: [], // Array de nombres de etiquetas
+        name: "",
+        tags: ["1kg"], // Array de nombres de etiquetas
         provider: '',
         orderBy: "",
         orderDirection: "",
         page: 1,
         pageSize: 4
     });
-    const params = {
-        category: 'aaad4ed5-17d5-47a4-8698-93abaa6a8a76', // ID de la categoría
-        tags: ['Proteina', '5kg'], // Array de nombres de etiquetas
-        provider: 'Mass Gainer', // Nombre del proveedor
-        orderBy: 'price',
-        orderDirection: 'DESC',
-        name: 'Mass',
-        page: 1,
-        pageSize: 10
-    };
-    //merge con el back de royer
 
     const buildQueryParams = (filter) => {
-        filter.name = search
+        if (search) filter.name = search
         let queryParams = "?";
         for (const [key, value] of Object.entries(filter)) {
             if (value !== null && value !== "") {
@@ -56,6 +47,8 @@ export default function ProductList({ search }) {
                 }
             }
         }
+        console.log(queryParams);
+        console.log(filter, "FIlter");
         return queryParams;
     };
     const fetchAlojamientos = async (queryParams) => {
@@ -106,13 +99,62 @@ export default function ProductList({ search }) {
     const handleCategoryFilter = (category) => {
         if (category) {
 
-            const changeFilter = { ...filter, category ,page:1};
+            const changeFilter = { ...filter, category, page: 1 };
             setFilter(changeFilter);
             buildQueryParams();
             fetchAlojamientos();
         } else {
             const changeFilter = {
                 category: "",
+                provider: filter.provider,
+                orderBy: filter.orderBy,
+                orderDirection: filter.orderDirection,
+                page: 1,
+                pageSize: filter.pageSize,
+                tags: filter.tags
+            };
+            setFilter(changeFilter);
+            buildQueryParams();
+            fetchAlojamientos();
+
+        }
+    }
+    const handleProviderFilter = (provider) => {
+        if (provider) {
+
+            const changeFilter = { ...filter, provider, page: 1 };
+            setFilter(changeFilter);
+            buildQueryParams();
+            fetchAlojamientos();
+        } else {
+            const changeFilter = {
+                tags: filter.tags,
+                provider: "",
+                category: filter.category,
+                orderBy: filter.orderBy,
+                orderDirection: filter.orderDirection,
+                page: 1,
+                pageSize: filter.pageSize
+            };
+            setFilter(changeFilter);
+            buildQueryParams();
+            fetchAlojamientos();
+
+        }
+    }
+    const handleTagsFilter = (tag) => {
+        if (tag && !filter.tags.includes(tag) && tag.trim() !== '') {
+
+                const changeFilter = { ...filter, tags: [...filter.tags, tag], page: 1 };
+                setFilter(changeFilter);
+                buildQueryParams();
+                fetchAlojamientos();
+
+        } else {
+            const changeFilter = {
+                tags: [],
+                provider: filter.provider,
+                category: filter.category,
                 orderBy: filter.orderBy,
                 orderDirection: filter.orderDirection,
                 page: 1,
@@ -125,15 +167,34 @@ export default function ProductList({ search }) {
         }
     }
 
+
     return (
         <div className={style.productList}>
             <div className={style.categories}>
+                <div>
 
-                <p className={style.category} key={category.id} onClick={() => handleCategoryFilter(category.id)} value=" ">Todos</p>
-                {arrayCategory.map((category) => {
-                    return <p className={style.category} key={category.id} name="category" value={category.id} onClick={() => handleCategoryFilter(category.id)}>{category.name}</p>
-                })}
+                    <p className={style.category} onClick={() => handleCategoryFilter(category.id)} value=" ">Todos</p>
+                    {arrayCategory.map((category) => {
+                        return <p className={style.category} key={category.id} name="category" value={category.id} onClick={() => handleCategoryFilter(category.id)}>{category.name}</p>
+                    })}
 
+                </div>
+                <div >
+
+                    <p className={style.category} onClick={() => handleProviderFilter("")} value=" ">Todos</p>
+                    {arrayProviders.map((provider) => {
+                        return <p className={style.category} key={provider.id} name="provider" value={provider.id} onClick={() => handleProviderFilter(provider.id)}>{provider.name}</p>
+                    })}
+
+                </div>
+                <div >
+
+                    <p className={style.category} onClick={() => handleTagsFilter("")} value=" ">Todos</p>
+                    {arrayTags.map((tag) => {
+                        return <p className={style.category} key={tag.id} name="tags" value={tag.id} onClick={() => handleTagsFilter(tag.name)}>{tag.name}</p>
+                    })}
+
+                </div>
             </div>
             <div className={style.catalogo}>
 

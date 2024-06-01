@@ -18,77 +18,92 @@ function UpdateSuplement() {
         page: 1,
         pageSize: 4
     });
+
+    const [suplemento, setSuplement] = useState({
+        amount: 0,
+        description: "",
+        images: [],
+        image: "",
+        category: "",
+        price: 0,
+        provider: ""
+    });
     useEffect(() => {
         const query = buildQueryParams(filter);
         axios.get("/suplements/filter" + query).then(({ data }) => {
             setSuplements(data.items);
         });
     }, [filter]);
-
-    const [suplemento, setSuplement] = useState({
-        amount: 0,
-        description: "",
-        image: "",
-        category: "",
-        price: 0
-    });
-    const [actualización,setActualizacion]=useState(false)
-    useEffect(()=>{
+    const [actualización, setActualizacion] = useState(false)
+    useEffect(() => {
         if (suplemento.name) {
-            
+
             setActualizacion(true)
         }
-    },[suplemento])
-    const [updatedSuplements, setUpdatedSuplements] = useState({
-        images: []
-    });
+    }, [suplemento])
+    // const [updatedSuplements, setUpdatedSuplements] = useState({
+    //     images: []
+    // });
 
     const dispatch = useDispatch();
     const { id } = useParams();
 
     const [errors, setErrors] = useState({ name: 'Completa todos los datos' });
+    const [opCategory, setOpCategory] = useState(suplemento.category);
 
     const handleUpdate = (sup) => {
         setSuplement({ ...suplemento, sup });
         axios.get(`/suplements/${sup.id}`).then(({ data }) => {
             console.log(data);
             setSuplement({
+                ...suplemento,
                 ...data,
-                category:data.category.name
+                category: data.category.name,
+                provider: data.Provider.map,
+                tags: data.Tags.map((tag) => tag.name)
             });
+            setOpCategory(data.category.name)
+
         });
-        setUpdatedSuplements({
-            ...updateSuplement,
-            categories: []
-        });
+
     };
 
-    useEffect(() => {
-        if (suplemento) {
-            setUpdatedSuplements(suplemento);
-        }
-    }, [suplemento]);
+    // useEffect(() => {
+    //     if (suplemento) {
+    //         setUpdatedSuplements(suplemento);
+    //     }
+    // }, [suplemento]);
 
     function handleChange(event) {
         const { name, files, value, type, checked } = event.target;
         let newValue = value;
+        console.log(value);
+        console.log(name);
+        console.log(suplemento);
+        event.preventDefault();
         if (name === "images") {
             newValue = [
-                ...updatedSuplements.images,
-                ...Array.from(files).slice(0, 3 - updatedSuplements.images.length),
+                // ...suplemento.images,
+                ...Array.from(files).slice(0, 3 - suplemento.images.length),
             ];
         }
-        event.preventDefault();
-        setUpdatedSuplements({ ...updatedSuplements, [name]: newValue });
+        if (name === "tags") {
+            newValue = value.split(',').map(tag => tag.trim());
+        }
+        if (name === "provider") {
+            setSuplement({ ...suplemento, provider: newValue });
+            return
+        }
+        setSuplement({ ...suplemento, [name]: newValue });
     }
-    // const [opCategory, setOpCategory] = useState('');
 
-    // const handleChangeCategory = (event) => {
-    //     event.preventDefault();
-    //     const category = event.target.value;
-    //     setOpCategory(category);
-    //     setUpdatedSuplements({ ...updatedSuplements, category });
-    // };
+    const handleChangeCategory = (event) => {
+        event.preventDefault();
+        const category = event.target.value;
+        console.log(category);
+        setOpCategory(category);
+        setSuplement({ ...suplemento, category });
+    };
     const handleImageRemove = (index) => {
         const updatedImages = [...updatedSuplements.images];
         updatedImages.splice(index, 1);
@@ -100,15 +115,16 @@ function UpdateSuplement() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(suplemento);
         const formDataToSend = new FormData();
-        Object.entries(updatedSuplements).forEach(([key, value]) => {
+        Object.entries(suplemento).forEach(([key, value]) => {
             if (key === "images") {
                 value.forEach((image) => formDataToSend.append("images", image));
             } else {
                 formDataToSend.append(key, value);
             }
         });
-        dispatch(updateSuplement(id, formDataToSend)).then(() => {
+        dispatch(updateSuplement(formDataToSend)).then(() => {
             // Después de la actualización, obtener de nuevo la lista de suplementos
             axios.get("/suplements/filter" + buildQueryParams(filter)).then(({ data }) => {
                 setSuplements(data.items);
@@ -122,7 +138,14 @@ function UpdateSuplement() {
             page: newPage
         }));
     };
-
+    const handleTagClick = (tagName) => {
+        if (!suplemento.tags.includes(tagName) && tagName.trim() !== '') {
+            setSuplement((prevState) => ({
+                ...prevState,
+                tags: [...prevState.tags, tagName]
+            }));
+        }
+    };
     return (
         <div className={style.container}>
             <div className={style.list}>
@@ -156,9 +179,9 @@ function UpdateSuplement() {
                 <label>Categoria </label>
                 <select
                     className={style.form_style}
-                    value={suplemento.category}
+                    value={opCategory}
                     name="category"
-                    onChange={handleChange}
+                    onChange={handleChangeCategory}
                 >
                     <option value='' disabled>Selecciona una Opción</option>
                     {arrayCategory.map((objeto) => (
@@ -171,8 +194,8 @@ function UpdateSuplement() {
                     type="text"
                     className={style.form_style}
                     name="category"
-                    value={suplemento.category}
-                    onChange={handleChange}
+                    value={opCategory}
+                    onChange={handleChangeCategory}
                 />
                 {errors.category && <p className={style.errors}>{errors.category}</p>}
 
@@ -207,6 +230,37 @@ function UpdateSuplement() {
                 />
                 {errors.amount && <p className={style.errors}>{errors.amount}</p>}
 
+                <label>Provedor </label>
+                <select
+                    className={style.form_style}
+                    value={suplemento.provider}
+                    name="provider"
+                    onChange={handleChange}
+                >
+                    <option value='' disabled>Selecciona una Opción</option>
+                    {arrayProviders.map((objeto) => (
+                        <option key={objeto.id} value={objeto.name}>
+                            {objeto.name}
+                        </option>
+                    ))}
+                </select>
+                <input
+                    type="text"
+                    className={style.form_style}
+                    name="provider"
+                    value={suplemento.provider}
+                    onChange={handleChange}
+                />
+                {errors.provider && <p className={style.errors}>{errors.provider}</p>}
+
+
+                <option value='' disabled hidden>Selecciona una Opción</option>
+                {arrayTags.map((objeto) => (
+                    <span key={objeto.id} value={objeto.name} onClick={() => handleTagClick(objeto.name)}>
+                        {objeto.name}
+                    </span>
+                ))}
+
                 <label>Etiquetas</label>
                 <input
                     type="text"
@@ -230,7 +284,28 @@ function UpdateSuplement() {
                         <span className={style.subirfoto}>Subir foto</span>
                     </label>
                 </div>
-                <img src={suplemento.image} alt="" />
+                {
+                    suplemento.images && suplemento.images.length > 0
+                        ?
+                        suplemento.images.map((image, index) => (
+                            <div key={index} className={style.image_item}>
+                                <img
+                                    className={style.image}
+                                    src={URL.createObjectURL(image)}
+                                    alt={`Imagen ${index + 1}`}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => handleImageRemove(index)}
+                                    className={style.image_remove_btn}
+                                >
+                                    X
+                                </button>
+                            </div>
+                        ))
+                        :
+                        <img src={suplemento.image} alt="" />
+                }
                 <button className={style.btn} type="submit">Actualizar</button>
             </form>}
         </div>
