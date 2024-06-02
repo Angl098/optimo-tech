@@ -1,7 +1,7 @@
 //Importo las librerias o dependencias
 import {useState} from 'react';
 import axios from 'axios';
-
+import Swal from "sweetalert2";
 //para autorizacion de terceros
 import { GoogleLogin } from '@react-oauth/google';
 //para decodificar el token
@@ -13,7 +13,7 @@ import validation from '../../components/Validation/Login/Validation';
 //Importo los estilos
 import style from './Login.module.css';
 
-import { postLogin, user, postRegisterUser } from '..//..//Redux/actions';
+import { postLogin, setUser, postRegisterUser } from '..//..//Redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -43,20 +43,38 @@ function Login(){
   //submit
 const handleSubmit = async (event)=>{
   event.preventDefault();
-  console.log('submit');
   const response = await dispatch(postLogin(login));
-  alert('Respuesta del servidor: ' + response.payload.message);
   console.log(response.payload);
+
+  if(!response.payload.dataUser)
+    {
+      Swal.fire({
+        icon: "error",
+        title: response.payload.message,
+        text: "",
+        timer: 3000
+      }).then(() => {
+        // Redirigir después de que la alerta se cierre
+        navigate("/login"); // Cambia la URL al destino 
+      });
+    }
 
   //Guardar en el storage
   if(response.payload.dataUser){
   window.localStorage.setItem('User', JSON.stringify(response.payload.dataUser));
   const userDispatch = response.payload.dataUser
-  dispatch(user(userDispatch));
-  navigate("/home")
+  dispatch(setUser(userDispatch));
+  Swal.fire({
+    icon: "success",
+    title: response.payload.message,
+    text: "",
+    timer: 3000
+  }).then(() => {
+    // Redirigir después de que la alerta se cierre
+    navigate("/"); // Cambia la URL al destino 
+    window.location.reload();
+  });
   }
-
-  console.log('estado global user', userState);
 };
 
     // Manejador del éxito en el inicio de sesión con Google
@@ -78,7 +96,7 @@ const handleSubmit = async (event)=>{
         address: credentialResponseDecode.address || 'Dirección no disponible', // Ajustar según disponibilidad
       };
 
-      console.log(userObject); // Verificar el objeto antes de enviarlo
+      console.log('usuario creado con google', userObject); // Verificar el objeto antes de enviarlo
 
       //intento de inicio de sesion
       const {email, password} = userObject;
@@ -88,12 +106,39 @@ const handleSubmit = async (event)=>{
             //Guardar en el storage
     if(responseAuth.payload.dataUser){
     window.localStorage.setItem('User', JSON.stringify(responseAuth.payload.dataUser));
-    navigate("/home")
+        Swal.fire({
+      icon: "success",
+      title: responseAuth.payload.message,
+      text: "",
+      timer: 3000
+    }).then(() => {
+      // Redirigir después de que la alerta se cierre
+      navigate("/"); // Cambia la URL al destino 
+      window.location.reload();
+    });
+    
   }else{
+    //registro con google
     const resAuth =  await dispatch(postRegisterUser(userObject));
+    //guardar en storage
     window.localStorage.setItem('User', JSON.stringify(userObject));
     console.log('usuario registrado con Auth', resAuth.payload);
-    navigate("/home")
+
+          //inicio de sesion despues del registro con google
+          const {email, password} = userObject;
+          let login = {email, password};
+              const resAuthLogin = await dispatch(postLogin(login));
+              console.log('responseAuth',responseAuth.payload);
+    Swal.fire({
+      icon: "success",
+      title: resAuthLogin.payload.message,
+      text: "",
+      timer: 3000
+    }).then(() => {
+      // Redirigir después de que la alerta se cierre
+      navigate("/"); // Cambia la URL al destino 
+      window.location.reload();
+    });
   }
 
     
@@ -113,10 +158,23 @@ const handleSubmit = async (event)=>{
       console.error('Error al decodificar el token:', error);
     }
   };
-
+/*   const onSubmit=(e)=>{
+    e.preventDefault()
+    axios.post("/login",login ).then(({data})=>{
+      console.log(data);
+      localStorage.setItem("user", JSON.stringify(data));
+      Swal.fire({
+        icon: "success",
+        title: "¡Usuario registrado!",
+        text: "",
+      });
+      navigate("/")
+    })
+  }
+ */
   return (
     <>
-    <form onSubmit={handleSubmit} className={style.form}>
+      <form className={style.form} onSubmit={handleSubmit}>
         <h3 className={style.title}>Login</h3>
 
         <label>Email</label>
@@ -127,13 +185,11 @@ const handleSubmit = async (event)=>{
             <div className={style.password_input_container}>
                 <input name='password' type={passwordVisible ? 'text' : 'password'} value={login.password || ''} onChange={handleChange} className={style.form_style} />
                 <button type="button" onClick={togglePasswordVisibility} className={style.show_hide_btn}>
-                    {passwordVisible ? '👁️' : '🔒'}
+                    {passwordVisible ? <img className={style.eye} src='https://cdn.icon-icons.com/icons2/1659/PNG/512/3844441-eye-see-show-view-watch_110305.png'/>:<img className={style.eye} src='https://cdn.icon-icons.com/icons2/2065/PNG/512/view_hide_icon_124813.png'/> }
                 </button>
             </div>
         {errors.password!==''&&<p className={style.errors}>{errors.password}</p>}
-
         <button className={style.btn} type="submit">Login</button>
-        {console.log(login)}
 {/* auth terceros */}
         <GoogleLogin
           onSuccess={handleGoogleSuccess}

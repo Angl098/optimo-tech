@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 //Importo las actions
-import {getSuplements, getSuplementsByName} from '../../Redux/actions'
+import {getSuplements, getSuplementsByName, setUser} from '../../Redux/actions'
 
 //Importo los componentes
 
@@ -14,8 +14,8 @@ import ProductList from '../../components/ProductList/ProductList';
 import style from './Home.module.css'
 import loadingImg from '../../assets/loading.gif';
 
-const Home = () => {
-
+const Home = (props) => {
+    const {search}=props
     const dispatch = useDispatch();
 
     const allSuplements = useSelector((state) => state.allSuplements);
@@ -24,8 +24,15 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
 
     //Filtrar por nombre con el back-end
-    const [search, setSearch] = useState('');
+   
+    useEffect(()=>{
+        const user=window.localStorage.getItem("user")
+        if (user) {
+            dispatch(setUser(user))
+        }else{
 
+        }
+    },[])
     useEffect(() => {
         setLoading(true);// Establecer el estado de carga como verdadero al iniciar la solicitud de datos
         dispatch(getSuplements())
@@ -34,16 +41,12 @@ const Home = () => {
     }, [dispatch]);
 
 
-    function handleSearch(e) {
-        e.preventDefault();
-        //console.log(e.target.value)
-        setSearch(e.target.value);
-    }
+   
     
     return (
 
         <div className={style.container}>
-            <NavBar handleSearch={handleSearch}  /> 
+            {/* <NavBar handleSearch={handleSearch} search={search} setSearch={setSearch} /> */}
             <div>
                 {loading ?(
                     <img src={loadingImg} alt="loading" />
@@ -58,37 +61,3 @@ const Home = () => {
 }
 
 export default Home
-
-// codigo angeles
-// import { useState } from 'react';
-// import style from './Home.module.css'
-// import { Link, useNavigate } from 'react-router-dom'
-// import { Header } from '../../components/Header/Header'
-// import ProductList from '../../components/ProductList/ProductList';
-
-
-// const Home = () => {
-//     const [allProducts, setAllProducts] = useState([]);
-//     const [total, setTotal] = useState(0);
-//     const [countProducts, setCountProducts] = useState(0);
-//     const navigate = useNavigate();
-
-//     const handleClick = () => {navigate('/')}
-
-//     return (
-
-//         <div className={style.container}>
-//             <button className={style.backButton} onClick={handleClick}> ← Volver</button>
-//             <Header 
-//                 allProducts={allProducts}
-//                 setAllProducts={setAllProducts}
-//                 total={total}
-//                 setTotal={setTotal}
-//                 countProducts={countProducts}
-//                 setCountProducts={setCountProducts} />
-//             <ProductList/>
-//         </div>
-//     )
-// }
-
-// export default Home

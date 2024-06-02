@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import validation from '..//Validation//CreateSuplements//Validation';
 import { postSuplements } from "..//..//Redux/actions";
-import style from './CreateSuplement.module.css';
+import styles from './CreateSuplement.module.css';
 
 function CreateSuplement() {
     const [disableSubmit, setDisableSubmit] = useState(true);
@@ -94,16 +94,27 @@ function CreateSuplement() {
         setErrors(validation({ ...newSuplements, category: atrCategory }))
     };
 
-    return <>
-
-        <form onSubmit={handleSubmit} className={style.form}>
-            <h3 className={style.title}>Nuevo Suplemento</h3>
+    return <form onSubmit={handleSubmit} className={styles.form}>
+        <h3 className={styles.title}>Nuevo Suplemento</h3>
+        <div className={styles.field}>
             <label>Nombre</label>
-            <input type="text" className={style.form_style} name='name' value={newSuplements.name} onChange={handleChange} />
-            {errors.name !== '' && <p className={style.errors}>{errors.name}</p>}
+            <input
+                type="text"
+                className={styles.form_style}
+                name='name'
+                value={newSuplements.name}
+                onChange={handleChange}
+            />
+            {errors.name && <p className={styles.errors}>{errors.name}</p>}
+        </div>
 
-            <label>Categoria </label>
-            <select className={style.form_style} value={opCategory} onChange={handleChangeCategory}>
+        <div className={styles.field}>
+            <label>Categoria</label>
+            <select
+                className={styles.form_style}
+                value={opCategory}
+                onChange={handleChangeCategory}
+            >
                 <option value='' disabled hidden>Selecciona una Opcion</option>
                 {arrayCategory.map((objeto) => (
                     <option key={objeto.id} value={objeto.category}>
@@ -111,67 +122,93 @@ function CreateSuplement() {
                     </option>
                 ))}
             </select>
-            {errors.category !== '' && <p className={style.errors}>{errors.category}</p>}
+            {errors.category && <p className={styles.errors}>{errors.category}</p>}
+        </div>
 
+        <div className={styles.field}>
             <label>Descripcion</label>
-            <textarea rows='4' cols='35' name="description" className={style.form_style}
-                value={newSuplements.description} onChange={handleChange} />
-            {errors.description !== '' && <p className={style.errors}>{errors.description}</p>}
+            <textarea
+                rows='4'
+                cols='35'
+                name="description"
+                className={styles.form_style}
+                value={newSuplements.description}
+                onChange={handleChange}
+            />
+            {errors.description && <p className={styles.errors}>{errors.description}</p>}
+        </div>
 
+        <div className={styles.field}>
             <label>Precio $</label>
-            <input type="text" className={style.form_style} name='price' value={newSuplements.price} onChange={handleChange} />
-            {errors.price !== '' && <p className={style.errors}>{errors.price}</p>}
+            <input
+                type="number"
+                className={styles.form_style}
+                name='price'
+                value={newSuplements.price}
+                onChange={handleChange}
+                min="0"
+            />
+            {errors.price && <p className={styles.errors}>{errors.price}</p>}
+        </div>
 
-            {/* <label>Imagen </label>
-            <input type="text" className={style.form_style} name='image' onChange={handleImagen} />
-            {imagenURL && <img src={imagenURL} alt="Vista previa de la imagen"
-                style={{ maxWidth: '300px', maxHeight: '300px', padding: '20px' }} />}
-            {errors.image !== '' && <p className={style.errors}>{errors.image}</p>} */}
-
+        <div className={styles.field}>
             <label>Cantidad</label>
-            <input type="text" className={style.form_style} name='amount' value={newSuplements.amount} onChange={handleChange} />
-            {errors.amount !== '' && <p className={style.errors}>{errors.amount}</p>}
+            <input
+                type="number"
+                className={styles.form_style}
+                name='amount'
+                value={newSuplements.amount}
+                onChange={handleChange}
+                min="0"
+            />
+            {errors.amount && <p className={styles.errors}>{errors.amount}</p>}
+        </div>
 
+        <div className={styles.field}>
+            <input
+                type="file"
+                accept="image/*"
+                name="images"
+                id="images"
+                onChange={handleChange}
+                multiple
+            />
+            <label htmlFor="images" className={styles.file_label}>
+                <span>Subir foto</span>
+            </label>
+        </div>
 
-            <div>
-                <input type="file" accept="image/*" name="images" id="images" onChange={handleChange}  multiple />
-                <label htmlFor="images">
-                    <span className={style.subirfoto}>
-                        Subir foto
-                    </span>
-                </label>
-            </div>
-            <div>
-
-                {newSuplements.images.length > 0 && (
-                    <div>
-                        <p>
-                            Previsualización de imágenes:
-                        </p>
-                        <div>
-                            {newSuplements.images.map((image, index) => (
-                                <div key={index}>
-                                    <div>
-                                        <img src={URL.createObjectURL(image)} alt={`Imagen ${index + 1}`} />
-                                        <button type="button" onClick={() => handleImageRemove(index)}>
-                                            X
-                                        </button>
-                                    </div>
-                                </div>
-                            ))}
-                            {[...Array(1 - newSuplements.images.length)].map((_, index) => (
-                                <div key={index}>
-                                    <span>
-                                        Imagen {newSuplements.images.length + index + 1}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
+        <div>
+            {newSuplements.images.length > 0 && (
+                <div>
+                    <p>Previsualización de imágenes:</p>
+                    <div className={styles.image_preview}>
+                        {newSuplements.images.map((image, index) => (
+                            <div key={index} className={styles.image_item}>
+                                <img
+                                    className={styles.image}
+                                    src={URL.createObjectURL(image)}
+                                    alt={`Imagen ${index + 1}`}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => handleImageRemove(index)}
+                                    className={styles.image_remove_btn}
+                                >
+                                    X
+                                </button>
+                            </div>
+                        ))}
+                        {[...Array(1 - newSuplements.images.length)].map((_, index) => (
+                            <div key={index} className={styles.image_placeholder}>
+                                <span>Imagen {newSuplements.images.length + index + 1}</span>
+                            </div>
+                        ))}
                     </div>
-                )}
-            </div>
-            {Object.keys(errors).length <= 0 && <button className={style.btn} type="submit">Registrar</button>}
-        </form>
-    </>
+                </div>
+            )}
+        </div>
+        {Object.keys(errors).length <= 0 && <button className={styles.btn} type="submit">Registrar</button>}
+    </form>
 }
 export default CreateSuplement;

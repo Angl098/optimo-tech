@@ -1,18 +1,22 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect  } from 'react';
+import { useState, useEffect } from 'react';
 import style from './NavBar.module.css'
 import logo from '../../assets/logo.png'
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 //import logo from '../../../public/logo.png'
 import PATHROURES from '../../helpers/PathRoutes';
 import ShoppingCart from "../ShoppingCart/ShoppingCart";
 import { useDispatch, useSelector } from 'react-redux';
-import { showShoppingCart, user } from "../../Redux/actions";
+import { showShoppingCart, setUser } from "../../Redux/actions";
+import Swal from "sweetalert2";
 
 const NavBar = (props) => {
+    const navigate = useNavigate();
 
     const { handleSearch } = props
-
+    const [search, setSearch] = useState("")
+    const [logeado, setLogeado] = useState(false)
+    const [admin, setAdmin] = useState(false)
     const [showNav, setShowNav] = useState(null);
     const [quantityProductsCart, setQuantityProductsCart] = useState(0)
     const location = useLocation()
@@ -20,8 +24,36 @@ const NavBar = (props) => {
     const cart = useSelector(state => state.cart)
     const userState = useSelector(state => state.user)
     const showShoppingCartState = useSelector((state) => state.showShoppingCart)
-    console.log('showShoppingCartState', showShoppingCartState)
+/*     useEffect(() => {
+        const nameUsuario = JSON.parse(localStorage.getItem("user"));
 
+        if (JSON.parse(localStorage.getItem("user"))) {
+            console.log(JSON.parse(localStorage.getItem("user")).email);
+            if (JSON.parse(localStorage.getItem("user")).userId) {
+                
+                setLogeado(true)
+                console.log("setLogeado");
+            }else{
+                setLogeado(false)
+                console.log("setNotLogeado");
+                
+            }
+            
+            
+            if (JSON.parse(localStorage.getItem("user")).email==="admin@gmail.com") {
+                console.log("navbar");
+                console.log(JSON.parse(localStorage.getItem("user")).email);
+                setAdmin(true)
+            }else{
+                
+                setAdmin(false)
+            }
+        } else {
+            setAdmin(false)
+            setLogeado(false)
+        }
+
+    }, [user]) */
     useEffect(() => {
         if (cart.length > 0) {
             const quantityProducts = cart.reduce((total, product) => (
@@ -41,6 +73,25 @@ const NavBar = (props) => {
         setShowNav(!showNav);
     };
 
+    const handleChange = (e) => {
+        setSearch(e.target.value);
+        
+    };
+
+    const cerrarSesion=()=>{
+        console.log("cerrado sesion");
+        localStorage.clear();
+        Swal.fire({
+            icon: "success",
+            title: "Cerrando sesion...",
+            text: "",
+            timer: 3000
+          }).then(() => {
+            // Redirigir después de que la alerta se cierre
+            navigate("/"); // Cambia la URL al destino 
+            window.location.reload();
+          });
+    }
     //user
     useEffect(()=>{
         const dataUserJSON = window.localStorage.getItem('User');
@@ -48,11 +99,16 @@ const NavBar = (props) => {
         if(dataUserJSON)
         {
             const dataUser = JSON.parse(dataUserJSON);
-            dispatch(user(dataUser));
+            dispatch(setUser(dataUser));
             console.log('usuario en storage', dataUser);
-            
+
+        if(dataUser.email === "admin@gmail.com")
+        {
+        setAdmin(true);
+        }    
         }
-    }, [user]);
+
+    }, []);
 
 
     return (
@@ -65,41 +121,50 @@ const NavBar = (props) => {
                     <Link to={PATHROURES.LANDING} className={style.title}>ÓPTIMO</Link>
                     <Link to={PATHROURES.LANDING} className={style.linkDesk} onClick={toggleNav}>Home</Link>
                     <Link to={PATHROURES.HOME} className={style.linkDesk} onClick={toggleNav}>Products</Link>
+                    <Link to="/orders" className={style.linkDesk}>Orders</Link>
+
+                    {
+                        admin ?
+                        <Link to={"/dashboard"} className={style.linkDesk} onClick={toggleNav}>Dashboard</Link>
+                        :<></>
+                    }
                 </div>
 
                 <div className={style.searchDeskContent}>
-                    <form onChange={handleSearch} action="" className={style.form1}>
-                        <div className={style.group}>
-                            <input required type="text" className={style.input} />
-                            <span className={style.highlight}></span>
-                            <span className={style.bar}></span>
-                            <label>Tu Suplemento</label>
-                        </div>
-                        <div className={style.groupButton}>
-                            <button type="submit" onClick={()=>{}} className={style.cssbuttonsIo}>
-                                
-                                    Buscar
-                                
-                            </button>
-                        </div>
-                    </form>
+                    <div className={style.group}>
+                        <input required type="text" className={style.input} value={search} onChange={handleChange} />
+                        <span className={style.highlight}></span>
+                        <span className={style.bar}></span>
+                        <label>Tu Suplemento</label>
+                    </div>
+                    <div className={style.groupButton}>
+                        <button type="submit" className={style.cssbuttonsIo} onClick={() => handleSearch(search)}>
+
+                            Buscar
+
+                        </button>
+                    </div>
                 </div>
 
+                <div className={style.cartContainer}>
                 {userState===null && 
-                    
                     <div className={style.buttonContainerDesk}>
                         <Link to={"/login"}>
-                        <button className={style.buttonLog}>Log In</button>
+                            <button className={style.buttonLog}>Log In</button>
                         </Link>
                         <Link to={"/registeruser"}>
-                        <button className={style.buttonSign}>Sign Up</button>
+                            <button className={style.buttonSign}>Register</button>
                         </Link>
+                    </div>    
+                    }
                     </div>
-                }
+
                 
 
                  <div className={style.cartContainer}>
-                    {userState !== null && <p>{userState.name}</p>}
+                    {userState !== null && <>
+                    <img className={style.iconPerfil} src='https://cdn.icon-icons.com/icons2/3298/PNG/96/ui_user_profile_avatar_person_icon_208734.png'/>
+                    <p>{userState.name}</p></>}
 
                     <button className={style.cartButton} onClick={() => shoppingCart()}>
                         <svg
@@ -118,6 +183,9 @@ const NavBar = (props) => {
                         </div>
                     </button>
                     {showShoppingCartState && <ShoppingCart />}
+
+                    {userState !== null &&<button onClick={cerrarSesion} className={style.buttonLogout}>Log Out</button>}
+
                 </div>
             </div>
         </nav>

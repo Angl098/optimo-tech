@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import Swal from "sweetalert2";
 export const GET_SUPLEMENTS_BY_NAME = "GET_SUPLEMENTS_BY_NAME";
 export const NOT_GET_SUPLEMENT_BY_NAME = "NOT_GET_SUPLEMENT_BY_NAME";
 export const POST_SUPLEMENTS = "POST_SUPLEMENTS";
@@ -13,14 +13,17 @@ export const INJECT_CART_DATA = 'INJECT_CART_DATA'
 export const SHOW_SHOPPING_CART = 'SHOW_SHOPPING_CART';
 export const REMOVE_ONE_FROM_CART = 'REMOVE_ONE_FROM_CART';
 export const REMOVE_ALL_FROM_CART = 'REMOVE_ALL_FROM_CART,';
-export const POST_REGISTER_USER="POST_REGISTER_USER";
-export const POST_LOGIN="POST_LOGIN";
-export const USER="USER";
+export const POST_REGISTER_USER = "POST_REGISTER_USER";
+
+export const POST_LOGIN = "POST_LOGIN";
+export const USER = "USER";
+export const INJECT_USER = "INJECT_USER";
+
 
 //Función que hace la peticion con axios al back-end
 //para traer todos los suplementos
 export const getSuplements = () => {
-    return async function(dispatch){
+    return async function (dispatch) {
         const response = await axios.get('/suplements')
         return dispatch({
             type: GET_SUPLEMENTS,
@@ -29,16 +32,23 @@ export const getSuplements = () => {
     }
 }
 
-
-
 export const postSuplements = (newSuplements) => {
 
     return async function (dispatch) {
         try {
-            const response = await axios.post("/suplements", newSuplements);
-            return dispatch({
-                type: POST_SUPLEMENTS,
-                payload: response.data
+            await axios.post("/suplements", newSuplements).then(({ data }) => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Suplemento registrado!",
+                    text: "registrado correctamente",
+                });
+                return dispatch({
+                    type: POST_SUPLEMENTS,
+                    payload: response.data
+                });
+            }).catch((response) => {
+
+                console.log('error al registrar los datos', error);
             });
         }
         catch (error) {
@@ -47,77 +57,54 @@ export const postSuplements = (newSuplements) => {
     };
 };
 
-// export const getSuplement = (id) => {
-//     return async function (dispatch) {
-//         try {
-//             const { data } = await axios.get(`/suplements/${id}`);
-//             console.log(data)
-//             return dispatch({
-//                 type: GET_SUPLEMENT,
-//                 payload: data,
-//             });
-//         } catch (error) {
-//             console.log(err)
-//         }
-//     };
-// };
 
-// export const cleanProductById = () => {
-//     return {
-//         type: CLEAN_PRODUCT_BY_ID,
-//         payload: {}
-//     }
-// }
-
-export function paymentGateway(cart, email) {
-    console.log(`user email: ${email}`);
+// NO ESTA EN USO 
+export function paymentGateway(cart) {
     return async function (dispatch) {
         try {
 
             const items = cart.map((prod) => ({
-                title: prod.model,
+                title: prod.name,
                 price: parseFloat(prod.price),
                 quantity: parseInt(prod.quantity),
                 productId: prod.id,
             }));
-
+            // console.log(items);
             const total = cart.map((prod) => prod.total)
             let totalPrice = 0;
 
             for (let i = 0; i < total.length; i++) {
                 totalPrice += total[i];
             }
+            //almacenar el user en el localstorage
 
-            const valueLocal = JSON.parse(localStorage.getItem("user"))
+            // const cartDB = {
+            //     // idUserLocal: valueLocal.id,
+            //     cartItems: cart.map((prod) => ({
+            //         name: prod.name,
+            //         productId: prod.id,
+            //         price: parseFloat(prod.price),
+            //         quantity: parseInt(prod.quantity),
+            //     })),
+            //     total: totalPrice,
+            //     paymentMethod: "mercadopago"
+            // }
 
-            const cartDB = {
-                idUserLocal: valueLocal.id,
-                cartItems: cart.map((prod) => ({
-                    name: prod.model,
-                    productId: prod.id,
-                    price: parseFloat(prod.price),
-                    quantity: parseInt(prod.quantity),
-                })),
-                total: totalPrice,
-                paymentMethod: "mercadopago"
-            }
-
-
+            //  ALMACENANDO EL CARRITO EN LA BDD
             // const postCart = axios.post("/cart", cartDB)
-            const postCart = axios.post("/cart", cartDB)
 
-            // const response = await axios.post("/create_preference", {
-            const response = await axios.post("/create-order", {
+            const response = await axios.post("/payment/create_preference", {
                 items: items,
                 total: totalPrice,
-                email: email
             })
 
             const { id } = response.data;
-            dispatch({ type: PAYMENT_ID, payload: id })
-            window.localStorage.removeItem('cart')
+            return id;
+            // dispatch({ type: PAYMENT_ID, payload: id })
+            //eliminando los prod del carrito en el localStor cuando la compra se completa con exito
+            // window.localStorage.removeItem('cart')
         } catch (error) {
-            console.log(error);
+            console.log('error obteniendo la orden de pago', error);
         }
     }
 }
@@ -130,7 +117,6 @@ export const showShoppingCart = (data) => {
 }
 
 export const addToCart = (id) => {
-    console.log('add to cart', id)
     return {
         type: ADD_TO_CART,
         payload: id
@@ -160,39 +146,25 @@ export const injectCartData = (data) => {
     }
 }
 
-// export const getAllUsers = () => {
-//     return async function (dispatch) {
-//         try {
-//             const response = await axios.get("/users")
-//             dispatch({ type: GET_ALL_USERS, payload: response.data })
-//         } catch (error) {
-//             console.log(error);
-//         }
-//     }
-// }
-
-// export const getAllSuplement = () => {
-//     return async function (dispatch) {
-//         try {
-//             const response = await axios.get('/suplement?actives=true')
-//             dispatch({ type: GET_ALL_PRODUCTS, payload: response.data.data })
-//         } catch (error) {
-//             console.log(error);
-//         }
-//     };
-// };
-
-// export const getUserByName = (name) => {
-//     return async function (dispatch) {
-//         try {
-//             const response = await axios.get(`/get/user/${name}`)
-//             console.log(response.data);
-//             dispatch({ type: GET_USER_BY_NAME, payload: response.data })
-//         } catch (error) {
-//             console.log(error);
-//         }
-//     }
-// }
+export const postRegisterUser = (user) => {
+    const endpoint = '/users';
+    return async function (dispatch) {
+        try {
+            const response = await axios.post(endpoint, user);
+            return dispatch({
+                type: POST_REGISTER_USER,
+                payload: response.data
+            });
+        }
+        catch (error) {
+            error = {message:"Error completa los datos"};
+            return dispatch({
+                type:POST_REGISTER_USER,
+                payload: error
+        });
+        }
+    }
+};
 
 export const getSuplement = (id) => {
     return async function (dispatch) {
@@ -219,16 +191,16 @@ export const cleanProductById = () => {
 //Función que hace la peticion con axios al back-end
 //para traer suplementos por nombre
 export const getSuplementsByName = (queryParams) => {
-    return async function(dispatch){
+    return async function (dispatch) {
         const response = await axios.get(`/suplements?name=${queryParams}`)
         //console.log(response.data)
-        
+
         if (Array.isArray(response.data)) {
             return dispatch({
                 type: GET_SUPLEMENTS_BY_NAME,
                 payload: response.data
-            })  
-        } else{
+            })
+        } else {
             return dispatch({
                 type: NOT_GET_SUPLEMENT_BY_NAME,
                 payload: response.data
@@ -237,41 +209,45 @@ export const getSuplementsByName = (queryParams) => {
     }
 }
 
-
- export const postRegisterUser = (user) => {
-    const endpointRegisterUser = '/users';
-    return async function (dispatch) {
-        try{
-                const response =await axios.post(endpointRegisterUser, user);
-          return dispatch({
-             type: POST_REGISTER_USER,
-             payload: response.data
-          });  
-        }
-catch(error){
-console.log('error al registrar los datos de usuario', error);
-}
-    };
- };
-
- export const postLogin = (login) => {
-   const endpointRegisterUser = '/login';
-   return async function (dispatch) {
-       try{
-               const response =await axios.post(endpointRegisterUser, login);
-         return dispatch({
-            type: POST_LOGIN,
-            payload: response.data
-         });  
-       }
-catch(error){
-console.log('error al log in', error);
-alert("error" + error);
-}
-   };
+export const fetchSuplementById = (id) => async dispatch => {
+    try {
+        const response = await axios.get(`/suplements/${id}`);
+        dispatch({ type: 'FETCH_SUPLEMENT_BY_ID_SUCCESS', payload: response.data });
+    } catch (error) {
+        console.log(error);
+    }
 };
 
-export const user = (user) => {
+export const updateSuplement = (id, formData) => async dispatch => {
+    try {
+        const response = await axios.put(`/suplements/${id}`, formData);
+        dispatch({ type: 'UPDATE_SUPLEMENT_SUCCESS', payload: response.data });
+    } catch (error) {
+        console.log(error);
+    }
+};
+``
+export const postLogin = (login) => {
+    const endpointRegisterUser = '/login';
+    return async function (dispatch) {
+        try {
+            const response = await axios.post(endpointRegisterUser, login);
+            return dispatch({
+                type: POST_LOGIN,
+                payload: response.data
+            });
+        }
+        catch (error) {
+            error = {message:"Error completa los datos"};
+            return dispatch({
+                type:POST_LOGIN,
+                payload: error
+        });
+        }
+    };
+};
+
+export const setUser = (user) => {
     return {
     type: USER,
     payload: user
