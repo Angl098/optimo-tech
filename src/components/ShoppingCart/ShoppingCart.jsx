@@ -45,10 +45,9 @@ const ShoppingCart = () => {
     }
 
     const handleCreateCart = async () => {
-        // const userId = localStorage.getItem('userId');
-        const { userId } = user; // traigo userId del estado de Redux yaq del localstor no me lo traee 
-        if (userId) {
-            const response = dispatch(createCart(userId));
+        const {id} = JSON.parse(localStorage.getItem('User'));
+        if (id) {
+            const response = dispatch(createCart(id));
             if (response && response.data) {
                 localStorage.setItem('cartId', response.data.id);
             }
@@ -74,20 +73,25 @@ const ShoppingCart = () => {
     };
 
     const handleCheckout = async () => {
-        // const userId = localStorage.getItem('userId');
-        const { userId } = user;
-        console.log(userId)
-        if (!userId) {
+        const user = JSON.parse(localStorage.getItem('User'));
+        if (user) {
+            
+            // const { userId } = user;
+            if (!user.id) {
+                swal("Login first", "To make a purchase you need to register", "error");
+                return;
+            }
+            
+            await handleAddSuplementsToCart();
+            
+            if (cart.length > 0) {
+                // createPreference();  
+            }
+        }else{
+
             swal("Login first", "To make a purchase you need to register", "error");
-            return;
         }
 
-        await handleAddSuplementsToCart();
-        console.log(handleAddSuplementsToCart);
-
-        if (cart.length > 0) {
-            createPreference();  
-        }
     };
 
     useEffect(() => {
@@ -143,7 +147,7 @@ const ShoppingCart = () => {
                                 <div className={style.containerTotal}>
                                     <div className={style.totalPrice}>
                                         <p>Total</p>
-                                        <span>$ {cart.reduce((total, product) => total + product.total, 0)} ARS</span>
+                                        {/* <span>$ {cart.reduce((total, product) => total + product.total, 0)} ARS</span> */}
                                     </div>
                                     <hr />
                                 </div>

@@ -25,6 +25,7 @@ const initialState = {
   error: '', //estado para cuando no se encuentra suplemento por nombre
   products: [],
   cart: [],
+  order:{},
   paymentID: null,
   user: null,
   showShoppingCart: false,
@@ -187,7 +188,7 @@ const rootReducer = (state = initialState, action) => {
     case INJECT_CART_DATA:
       return {
         ...state,
-        cart: payload
+        order: payload
       }
 
     case INJECT_USER:
@@ -199,19 +200,19 @@ const rootReducer = (state = initialState, action) => {
     case CREATE_CART:
       return { 
         ...state, 
-        cart: payload 
+        order: payload 
       };
 
     case ADD_SUPLEMENTS_TO_CART:
       return { 
         ...state, 
-        cart: payload
+        order: payload
       };
 
     case GET_CART_CONTENTS:
       return { 
         ...state, 
-        cart: payload 
+        order: payload 
       };
       
     default:

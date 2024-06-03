@@ -68,7 +68,7 @@ export const getSuplements = () => {
 }
 
 export const postSuplements = (newSuplements) => {
-
+    console.log(newSuplements);
     return async function (dispatch) {
         try {
             await axios.post("/suplements", newSuplements).then(({ data }) => {
@@ -81,10 +81,7 @@ export const postSuplements = (newSuplements) => {
                     type: POST_SUPLEMENTS,
                     payload: response.data
                 });
-            }).catch((response) => {
-
-                console.log('error al registrar los datos', error);
-            });
+            })
         }
         catch (error) {
             console.log('error al registrar los datos', error);
@@ -299,7 +296,6 @@ export const createCart = (userId) => async (dispatch) => {
             paymentMethod: 'Cash', //valor predeterminado para paymentMethod
             paymentStatus: 'Pending', //valor predeterminado 
         };
-
         const response = await axios.post('/cart/create-cart', cartData);
         dispatch({ type: CREATE_CART, payload: response.data });
     } catch (error) {

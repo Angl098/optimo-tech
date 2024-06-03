@@ -26,23 +26,18 @@ const NavBar = (props) => {
     const showShoppingCartState = useSelector((state) => state.showShoppingCart)
     const { id } = useParams()
     useEffect(() => {
-        const nameUsuario = JSON.parse(localStorage.getItem("user"));
-        if (JSON.parse(localStorage.getItem("user"))) {
-            console.log(JSON.parse(localStorage.getItem("user")).email);
-            if (JSON.parse(localStorage.getItem("user")).userId) {
+        const nameUsuario = JSON.parse(localStorage.getItem("User"));
+        if (nameUsuario) {
+            if (nameUsuario.id) {
 
                 setLogeado(true)
-                console.log("setLogeado");
             } else {
                 setLogeado(false)
-                console.log("setNotLogeado");
 
             }
 
             ///Condicion de admin
-            if (JSON.parse(localStorage.getItem("user")).email === "admin@gmail.com") {
-                console.log("navbar");
-                console.log(JSON.parse(localStorage.getItem("user")).email);
+            if (nameUsuario.email === "admin@gmail.com") {
                 setAdmin(true)
             } else {
 
@@ -97,11 +92,9 @@ const NavBar = (props) => {
     //user
     useEffect(() => {
         const dataUserJSON = window.localStorage.getItem('User');
-        console.log('dataUserJSON', dataUserJSON);
         if (dataUserJSON) {
             const dataUser = JSON.parse(dataUserJSON);
             dispatch(setUser(dataUser));
-            console.log('usuario en storage', dataUser);
 
             if (dataUser.email === "admin@gmail.com") {
                 setAdmin(true);
@@ -157,8 +150,7 @@ const NavBar = (props) => {
                                 <button className={style.buttonSign}>Register</button>
                             </Link>
                         </div>
-                        :
-                        <button onClick={cerrarSesion} className={style.buttonSign}>Cerrar sesion</button>
+                        : <></>
 
                     }
                 </div>
@@ -170,6 +162,7 @@ const NavBar = (props) => {
                         <img className={style.iconPerfil} src='https://cdn.icon-icons.com/icons2/3298/PNG/96/ui_user_profile_avatar_person_icon_208734.png' />
                         <p>{userState.name}</p></>}
 
+                    {userState !== null && <button onClick={cerrarSesion} className={style.buttonLogout}>Log Out</button>}
                     <button className={style.cartButton} onClick={() => shoppingCart()}>
                         <svg
                             className={style.cartSvg}
@@ -188,7 +181,6 @@ const NavBar = (props) => {
                     </button>
                     {showShoppingCartState && <ShoppingCart />}
 
-                    {userState !== null && <button onClick={cerrarSesion} className={style.buttonLogout}>Log Out</button>}
 
                 </div>
             </div>

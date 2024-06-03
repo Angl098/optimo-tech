@@ -47,8 +47,6 @@ export default function ProductList({ search }) {
                 }
             }
         }
-        console.log(queryParams);
-        console.log(filter, "FIlter");
         return queryParams;
     };
     const fetchAlojamientos = async (queryParams) => {
