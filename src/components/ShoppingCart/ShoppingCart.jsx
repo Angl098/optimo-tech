@@ -57,10 +57,10 @@ const ShoppingCart = () => {
 
 
     const handleAddSuplementsToCart = async () => {
-        let cartId = localStorage.getItem('cartId');
+        let cartId = localStorage.getItem('cart');
         if (!cartId) {
             await handleCreateCart();
-            cartId = localStorage.getItem('cartId');
+            cartId = localStorage.getItem('cart');
         }
 
         const suplements = cart.map((prod) => ({
@@ -70,7 +70,7 @@ const ShoppingCart = () => {
 
         if (cartId && suplements.length > 0) {
             dispatch(addSuplementsToCart(cartId, suplements));
-        }
+        } 
     };
 
     const handleCheckout = async () => {

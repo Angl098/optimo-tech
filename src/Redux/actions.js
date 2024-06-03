@@ -260,6 +260,7 @@ export const injectUser = (data) => {
 export const createCart = (userId) => async (dispatch) => {
     try {
 
+        // const userLocal = JSON.parse(localStorage.getItem("user"))
         const cartData = {
             userId,
             total: 0, //valor predeterminado para total
@@ -276,7 +277,7 @@ export const createCart = (userId) => async (dispatch) => {
 
 export const addSuplementsToCart = (cartId, suplements) => async (dispatch) => {
     try {
-        const response = await axios.post(`/cart/add-suplements/${cartId}`, { suplements });
+        const response = await axios.post(`/cart/add-suplement`, { cartId, suplements });
         dispatch({ type: ADD_SUPLEMENTS_TO_CART, payload: response.data });
     } catch (error) {
         console.error('Error adding suplements to cart:', error);
