@@ -1,5 +1,6 @@
 import { Routes, Route, useNavigate } from 'react-router-dom'
-
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import PATHROUTES from "./helpers/PathRoutes";
 import Landing from "./views/Landing/Landing";
 import Home from './views/Home/Home';
@@ -9,6 +10,8 @@ import Detail from './views/Detail/Detail';
 import RegisterUser from './components/RegisterUser';
 import Login from './views/Login/index';
 import Orders from './components/Ordenes/Ordenes'
+import OrderSupplements from './components/Ordenes/OrdenSuplemento';
+import { injectCartData} from './Redux/actions'
 
 
 import './App.css'
@@ -24,11 +27,28 @@ function App() {
   dispatch(getProviders())
   dispatch(getTags())
   const [search, setSearch] = useState('');
+  const user = useSelector(state => state.user)
+  const dispatch = useDispatch()
   const navigate=useNavigate()
   function handleSearch(search) {
     setSearch(search);
     navigate("/home")
   }
+/* 
+  useEffect(() => {
+    const user = window.localStorage.getItem('user')
+    if(user) dispatch(injectUser(JSON.parse(user)))
+  },[]) */
+
+  useEffect(() => {
+    const productsInCart = window.localStorage.getItem('cart')
+    if(productsInCart){
+      if(productsInCart){
+        dispatch(injectCartData(JSON.parse(productsInCart)))
+      }
+    }
+  },[dispatch])
+
   return (
 
     <div>
@@ -44,6 +64,7 @@ function App() {
         {/* <Route path={PATHROUTES.DETAIL} element={<Detail/>}/> */}
         <Route path='registeruser' element={<RegisterUser />} />
         <Route path="/orders" element={<Orders />} />
+        <Route path="/order-supplements" element={<OrderSupplements/>} />
       </Routes>
       <Footer />
     </div>

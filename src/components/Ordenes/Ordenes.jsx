@@ -6,6 +6,7 @@ const Orders = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [orderDetails, setOrderDetails] = useState({});
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -21,6 +22,24 @@ const Orders = () => {
 
         fetchOrders();
     }, []);
+
+    const fetchOrderDetails = async (orderId) => {
+        try {
+            const response = await axios.get(`/orders/${orderId}/details`);
+            setOrderDetails(prevDetails => ({
+                ...prevDetails,
+                [orderId]: response.data
+            }));
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    const viewOrderDetails = (orderId) => {
+        if (!orderDetails[orderId]) {
+            fetchOrderDetails(orderId);
+        }
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -45,7 +64,8 @@ const Orders = () => {
                 </thead>
                 <tbody>
                     {orders.map(order => (
-                        <tr key={order.id}>
+                        <React.Fragment key={order.id}>
+                        <tr>
                             <td>{order.id}</td>
                             <td>{(order.total / 100).toFixed(2)}</td>
                             <td>{order.status}</td>
@@ -54,6 +74,14 @@ const Orders = () => {
                                 <button onClick={() => viewOrderDetails(order.id)}>View Details</button>
                             </td>
                         </tr>
+                        {orderDetails[order.id] && (
+                            <tr>
+                                <td colSpan="5">
+                                    <OrderDetails details={orderDetails[order.id]} />
+                                </td>
+                            </tr>
+                        )}
+                    </React.Fragment>
                     ))}
                 </tbody>
             </table>
@@ -61,9 +89,30 @@ const Orders = () => {
     );
 };
 
-const viewOrderDetails = (orderId) => {
-    // Implementa la lógica para ver los detalles de la orden
-    console.log(`Ver detalles de la orden: ${orderId}`);
-};
+const OrderDetails = ({ details }) => (
+    <div className={styles.orderDetails}>
+        <h3>Order Details</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {details.OrdenSuplementos.map(supplement => (
+                    <tr key={supplement.Suplement.id}>
+                        <td>{supplement.Suplement.id}</td>
+                        <td>{supplement.Suplement.name}</td>
+                        <td>{supplement.quantity}</td>
+                        <td>{(supplement.price / 100).toFixed(2)}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    </div>
+);
 
 export default Orders;

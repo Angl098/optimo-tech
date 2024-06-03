@@ -73,3 +73,11 @@
 .show_hide_btn:focus {
     outline: none; /* Elimina el borde al hacer clic */
   }
+
+  .eye {
+    height: 20px;
+    width: auto;
+    background-color: transparent;
+  }
+
+  

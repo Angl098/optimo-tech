@@ -20,6 +20,8 @@ export const USER = "USER";
 export const GET_CATEGORIES = "GET_CATEGORIES";
 export const GET_PROVIDERS = "GET_PROVIDERS";
 export const GET_TAGS = "GET_TAGS";
+export const INJECT_USER = "INJECT_USER";
+
 
 //Función que hace la peticion con axios al back-end
 //para traer todos los suplementos
@@ -61,23 +63,24 @@ export const getSuplements = () => {
     }
 }
 
-
-
 export const postSuplements = (newSuplements) => {
 
     return async function (dispatch) {
         try {
-            await axios.post("/suplements", newSuplements).then(({data})=>{
+            await axios.post("/suplements", newSuplements).then(({ data }) => {
                 Swal.fire({
                     icon: "success",
                     title: "Suplemento registrado!",
                     text: "registrado correctamente",
-                  });
+                });
                 return dispatch({
                     type: POST_SUPLEMENTS,
                     payload: response.data
                 });
-            })
+            }).catch((response) => {
+
+                console.log('error al registrar los datos', error);
+            });
         }
         catch (error) {
             console.log('error al registrar los datos', error);
@@ -88,7 +91,6 @@ export const postSuplements = (newSuplements) => {
 
 // NO ESTA EN USO 
 export function paymentGateway(cart) {
-    // console.log();
     return async function (dispatch) {
         try {
 
@@ -106,7 +108,6 @@ export function paymentGateway(cart) {
                 totalPrice += total[i];
             }
             //almacenar el user en el localstorage
-            // const valueLocal = JSON.parse(localStorage.getItem("user"))
 
             // const cartDB = {
             //     // idUserLocal: valueLocal.id,
@@ -132,7 +133,7 @@ export function paymentGateway(cart) {
             return id;
             // dispatch({ type: PAYMENT_ID, payload: id })
             //eliminando los prod del carrito en el localStor cuando la compra se completa con exito
-            window.localStorage.removeItem('cart')
+            // window.localStorage.removeItem('cart')
         } catch (error) {
             console.log('error obteniendo la orden de pago', error);
         }
@@ -147,7 +148,6 @@ export const showShoppingCart = (data) => {
 }
 
 export const addToCart = (id) => {
-    // console.log('add to cart', id)
     return {
         type: ADD_TO_CART,
         payload: id
@@ -188,7 +188,11 @@ export const postRegisterUser = (user) => {
             });
         }
         catch (error) {
-            console.log('error al registrar los datos', error);
+            error = {message:"Error completa los datos"};
+            return dispatch({
+                type:POST_REGISTER_USER,
+                payload: error
+        });
         }
     }
 };
@@ -265,13 +269,17 @@ export const postLogin = (login) => {
             });
         }
         catch (error) {
-            console.log('error al log in', error);
-            alert("error" + error);
+            error = {message:"Error completa los datos"};
+            return dispatch({
+                type:POST_LOGIN,
+                payload: error
+        });
         }
     };
 };
 
-export const setUser = (user) => ({
+export const setUser = (user) => {
+    return {
     type: USER,
-    payload: user,
-});
+    payload: user
+}};

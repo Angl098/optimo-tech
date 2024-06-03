@@ -13,15 +13,16 @@ import validation from '../../components/Validation/Login/Validation';
 //Importo los estilos
 import style from './Login.module.css';
 
-import { postLogin } from '..//..//Redux/actions';
+import { postLogin, setUser, postRegisterUser } from '..//..//Redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, } from 'react-router-dom';
-//const userLogin = useSelector(state => state.user);
+import { useNavigate } from 'react-router-dom';
+
 
 function Login(){
   const dispatch = useDispatch();
   const [login, setLogin] = useState({});
   const [errors, setErrors] = useState({});
+  const userState = useSelector(state => state.user);
   const navigate = useNavigate();
 
   //manejador del estado principal login
@@ -42,18 +43,42 @@ function Login(){
   //submit
 const handleSubmit = async (event)=>{
   event.preventDefault();
-  console.log('submit');
   const response = await dispatch(postLogin(login));
-  //Guardar en el storage
-  window.localStorage.setItem('Optimo', JSON.stringify(response.payload.dataUser));
   console.log(response.payload);
-  //const userDispatch = response.payload.dataUser
-  //dispatch(userLogin(userDispatch));
-  alert('Respuesta del servidor: ' + response.payload.message);
+
+  if(!response.payload.dataUser)
+    {
+      Swal.fire({
+        icon: "error",
+        title: response.payload.message,
+        text: "",
+        timer: 3000
+      }).then(() => {
+        // Redirigir después de que la alerta se cierre
+        navigate("/login"); // Cambia la URL al destino 
+      });
+    }
+
+  //Guardar en el storage
+  if(response.payload.dataUser){
+  window.localStorage.setItem('User', JSON.stringify(response.payload.dataUser));
+  const userDispatch = response.payload.dataUser
+  dispatch(setUser(userDispatch));
+  Swal.fire({
+    icon: "success",
+    title: response.payload.message,
+    text: "",
+    timer: 3000
+  }).then(() => {
+    // Redirigir después de que la alerta se cierre
+    navigate("/"); // Cambia la URL al destino 
+    window.location.reload();
+  });
+  }
 };
 
     // Manejador del éxito en el inicio de sesión con Google
-    const handleGoogleSuccess = (credentialResponse) => {
+    const handleGoogleSuccess = async(credentialResponse) => {
         //console.log(credentialResponse); // credencial encryptada
     try {
       const credentialResponseDecode = jwtDecode(credentialResponse.credential);
@@ -71,21 +96,69 @@ const handleSubmit = async (event)=>{
         address: credentialResponseDecode.address || 'Dirección no disponible', // Ajustar según disponibilidad
       };
 
-      console.log(userObject); // Verificar el objeto antes de enviarlo
+      console.log('usuario creado con google', userObject); // Verificar el objeto antes de enviarlo
+
+      //intento de inicio de sesion
+      const {email, password} = userObject;
+      let login = {email, password};
+          const responseAuth = await dispatch(postLogin(login));
+          console.log('responseAuth',responseAuth.payload);
+            //Guardar en el storage
+    if(responseAuth.payload.dataUser){
+    window.localStorage.setItem('User', JSON.stringify(responseAuth.payload.dataUser));
+        Swal.fire({
+      icon: "success",
+      title: responseAuth.payload.message,
+      text: "",
+      timer: 3000
+    }).then(() => {
+      // Redirigir después de que la alerta se cierre
+      navigate("/"); // Cambia la URL al destino 
+      window.location.reload();
+    });
+    
+  }else{
+    //registro con google
+    const resAuth =  await dispatch(postRegisterUser(userObject));
+    //guardar en storage
+    window.localStorage.setItem('User', JSON.stringify(userObject));
+    console.log('usuario registrado con Auth', resAuth.payload);
+
+          //inicio de sesion despues del registro con google
+          const {email, password} = userObject;
+          let login = {email, password};
+              const resAuthLogin = await dispatch(postLogin(login));
+              console.log('responseAuth',responseAuth.payload);
+    Swal.fire({
+      icon: "success",
+      title: resAuthLogin.payload.message,
+      text: "",
+      timer: 3000
+    }).then(() => {
+      // Redirigir después de que la alerta se cierre
+      navigate("/"); // Cambia la URL al destino 
+      window.location.reload();
+    });
+  }
+
+    
 
       // Enviar el objeto al backend usando axios
-      axios.post('/users', userObject)
+/*       axios.post('/users', userObject)
         .then((response) => {
           console.log('Usuario creado:', response.data);
         })
         .catch((error) => {
           console.error('Error al crear el usuario:', error);
-        });
+        }); */
+    
+
+
     } catch (error) {
       console.error('Error al decodificar el token:', error);
     }
   };
-  const onSubmit=(e)=>{
+/*   const onSubmit=(e)=>{
     e.preventDefault()
     axios.post("/login",login ).then(({data})=>{
       console.log(data);
@@ -98,10 +171,10 @@ const handleSubmit = async (event)=>{
       navigate("/")
     })
   }
-
+ */
   return (
     <>
-      <form className={style.form} onSubmit={onSubmit}>
+      <form className={style.form} onSubmit={handleSubmit}>
         <h3 className={style.title}>Login</h3>
 
         <label>Email</label>
@@ -112,7 +185,7 @@ const handleSubmit = async (event)=>{
             <div className={style.password_input_container}>
                 <input name='password' type={passwordVisible ? 'text' : 'password'} value={login.password || ''} onChange={handleChange} className={style.form_style} />
                 <button type="button" onClick={togglePasswordVisibility} className={style.show_hide_btn}>
-                    {passwordVisible ? '👁️' : '🔒'}
+                    {passwordVisible ? <img className={style.eye} src='https://cdn.icon-icons.com/icons2/1659/PNG/512/3844441-eye-see-show-view-watch_110305.png'/>:<img className={style.eye} src='https://cdn.icon-icons.com/icons2/2065/PNG/512/view_hide_icon_124813.png'/> }
                 </button>
             </div>
         {errors.password!==''&&<p className={style.errors}>{errors.password}</p>}
