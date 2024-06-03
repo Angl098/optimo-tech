@@ -27,7 +27,7 @@ export default function ProductList({ search }) {
     const [filter, setFilter] = useState({
         category: "",
         name: "",
-        tags: ["1kg"], // Array de nombres de etiquetas
+        tags: [], // Array de nombres de etiquetas
         provider: '',
         orderBy: "",
         orderDirection: "",

@@ -18,7 +18,6 @@ import './App.css'
 import Dashboard from './components/Dashboard/Dashboard';
 import NavBar from './components/NavBar/NavBar';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { getCategorias, getProviders, getTags } from './Redux/actions';
 
 function App() {
@@ -28,7 +27,6 @@ function App() {
   dispatch(getTags())
   const [search, setSearch] = useState('');
   const user = useSelector(state => state.user)
-  const dispatch = useDispatch()
   const navigate=useNavigate()
   function handleSearch(search) {
     setSearch(search);

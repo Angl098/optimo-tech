@@ -53,7 +53,7 @@ const NavBar = (props) => {
             setLogeado(false)
         }
 
-    }, [user, location])
+    }, [userState, location])
     useEffect(() => {
         if (cart.length > 0) {
             const quantityProducts = cart.reduce((total, product) => (
