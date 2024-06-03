@@ -82,7 +82,7 @@ const handleSubmit= async (event)=>{
 useEffect(()=>{
     Swal.fire({
     icon: "info",
-    title: "Completa los datos para ver el boton registrar",
+    title: "Completa los datos correctamente para el registro!",
     text: "",
     timer: 5000
   })  

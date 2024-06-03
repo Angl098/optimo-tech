@@ -19,6 +19,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import NavBar from './components/NavBar/NavBar';
 import { useState } from 'react';
 import { getCategorias, getProviders, getTags } from './Redux/actions';
+import CartList from './components/CartList/CartList';
 
 function App() {
   const dispatch=useDispatch()
@@ -63,6 +64,7 @@ function App() {
         <Route path='registeruser' element={<RegisterUser />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/order-supplements" element={<OrderSupplements/>} />
+        <Route path="/cart-list" element={<CartList/>} />
       </Routes>
       <Footer />
     </div>
