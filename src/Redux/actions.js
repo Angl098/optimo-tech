@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Swal from "sweetalert2";
+
 export const GET_SUPLEMENTS_BY_NAME = "GET_SUPLEMENTS_BY_NAME";
 export const NOT_GET_SUPLEMENT_BY_NAME = "NOT_GET_SUPLEMENT_BY_NAME";
 export const POST_SUPLEMENTS = "POST_SUPLEMENTS";
@@ -22,8 +23,8 @@ export const GET_PROVIDERS = "GET_PROVIDERS";
 export const GET_TAGS = "GET_TAGS";
 export const INJECT_USER = "INJECT_USER";
 
-export const CREATE_CART = 'CREATE_CART';
-export const ADD_SUPLEMENTS_TO_CART = 'ADD_SUPLEMENTS_TO_CART';
+export const CREATE_CART_AND_ADD_SUPLEMENTS = 'CREATE_CART_AND_ADD_SUPLEMENTS';
+export const CREATE_CART_AND_ADD_SUPLEMENTS_ERROR = 'CREATE_CART_AND_ADD_SUPLEMENTS_ERROR';
 export const GET_CART_CONTENTS = 'GET_CART_CONTENTS';
 
 
@@ -91,55 +92,55 @@ export const postSuplements = (newSuplements) => {
 
 
 // NO ESTA EN USO 
-export function paymentGateway(cart) {
-    return async function (dispatch) {
-        try {
+// export function paymentGateway(cart) {
+//     return async function (dispatch) {
+//         try {
 
-            const items = cart.map((prod) => ({
-                title: prod.name,
-                price: parseFloat(prod.price),
-                quantity: parseInt(prod.quantity),
-                productId: prod.id,
-            }));
-            // console.log(items);
-            const total = cart.map((prod) => prod.total)
-            let totalPrice = 0;
+//             const items = cart.map((prod) => ({
+//                 title: prod.name,
+//                 price: parseFloat(prod.price),
+//                 quantity: parseInt(prod.quantity),
+//                 productId: prod.id,
+//             }));
+//             // console.log(items);
+//             const total = cart.map((prod) => prod.total)
+//             let totalPrice = 0;
 
-            for (let i = 0; i < total.length; i++) {
-                totalPrice += total[i];
-            }
-            //almacenar el user en el localstorage
+//             for (let i = 0; i < total.length; i++) {
+//                 totalPrice += total[i];
+//             }
+//             //almacenar el user en el localstorage
 
-            // const cartDB = {
-            //     // idUserLocal: valueLocal.id,
-            //     cartItems: cart.map((prod) => ({
-            //         name: prod.name,
-            //         productId: prod.id,
-            //         price: parseFloat(prod.price),
-            //         quantity: parseInt(prod.quantity),
-            //     })),
-            //     total: totalPrice,
-            //     paymentMethod: "mercadopago"
-            // }
+//             // const cartDB = {
+//             //     // idUserLocal: valueLocal.id,
+//             //     cartItems: cart.map((prod) => ({
+//             //         name: prod.name,
+//             //         productId: prod.id,
+//             //         price: parseFloat(prod.price),
+//             //         quantity: parseInt(prod.quantity),
+//             //     })),
+//             //     total: totalPrice,
+//             //     paymentMethod: "mercadopago"
+//             // }
 
-            //  ALMACENANDO EL CARRITO EN LA BDD
-            // const postCart = axios.post("/cart", cartDB)
+//             //  ALMACENANDO EL CARRITO EN LA BDD
+//             // const postCart = axios.post("/cart", cartDB)
 
-            const response = await axios.post("/payment/create_preference", {
-                items: items,
-                total: totalPrice,
-            })
+//             const response = await axios.post("/payment/create_preference", {
+//                 items: items,
+//                 total: totalPrice,
+//             })
 
-            const { id } = response.data;
-            return id;
-            // dispatch({ type: PAYMENT_ID, payload: id })
-            //eliminando los prod del carrito en el localStor cuando la compra se completa con exito
-            // window.localStorage.removeItem('cart')
-        } catch (error) {
-            console.log('error obteniendo la orden de pago', error);
-        }
-    }
-}
+//             const { id } = response.data;
+//             return id;
+//             // dispatch({ type: PAYMENT_ID, payload: id })
+//             //eliminando los prod del carrito en el localStor cuando la compra se completa con exito
+//             // window.localStorage.removeItem('cart')
+//         } catch (error) {
+//             console.log('error obteniendo la orden de pago', error);
+//         }
+//     }
+// }
 
 export const showShoppingCart = (data) => {
     return {
@@ -286,29 +287,43 @@ export const setUser = (data) => {
     }
 }
 
-
-export const createCart = (userId) => async (dispatch) => {
+export const createCartAndAddSuplements = (cart, user) => async (dispatch) => {
     try {
+
+        if (!user || !user.id) {
+            throw new Error('User ID not found');
+        }
+        if (!cart || cart.length === 0) {
+            throw new Error('Cart is empty');
+        }
+
+        const suplements = cart.map((prod) => ({
+            suplementId: prod.id,
+            quantity: prod.quantity,
+        }));
 
         const cartData = {
-            userId,
-            total: 0, //valor predeterminado para total
-            paymentMethod: 'Cash', //valor predeterminado para paymentMethod
-            paymentStatus: 'Pending', //valor predeterminado 
+            userId: user.id,
+            total: 0, //ENVIAR EL TOTAL 
+            paymentMethod: 'Mercado Pago', 
+            paymentStatus: 'Pending', 
         };
-        const response = await axios.post('/cart/create-cart', cartData);
-        dispatch({ type: CREATE_CART, payload: response.data });
-    } catch (error) {
-        console.error('Error creating cart:', error);
-    }
-};
 
-export const addSuplementsToCart = (cartId, suplements) => async (dispatch) => {
-    try {
-        const response = await axios.post(`/cart/add-suplements/${cartId}`, { suplements });
-        dispatch({ type: ADD_SUPLEMENTS_TO_CART, payload: response.data });
+        const createCartResponse = await axios.post('/cart/create-cart', cartData);
+        console.log('Create Cart Response:', createCartResponse);
+
+        const cartId = createCartResponse.data.id;
+        if (!cartId) {
+            throw new Error('No se recibió el ID del carrito en la respuesta');
+        }
+
+        const addSuplementsResponse = await axios.post(`/cart/add-suplement`, { cartId, suplements });
+
+        dispatch({ type: CREATE_CART_AND_ADD_SUPLEMENTS, payload: { cart: createCartResponse.data, suplements: addSuplementsResponse.data } });
+        return { cartId, suplements: addSuplementsResponse.data };
     } catch (error) {
-        console.error('Error adding suplements to cart:', error);
+        console.error('Error creating cart and adding suplements:', error);
+        dispatch({ type: CREATE_CART_AND_ADD_SUPLEMENTS_ERROR, payload: error.message });
     }
 };
 

@@ -115,6 +115,7 @@ const NavBar = (props) => {
                     <Link to={PATHROURES.LANDING} className={style.linkDesk} onClick={toggleNav}>Home</Link>
                     <Link to={PATHROURES.HOME} className={style.linkDesk} onClick={toggleNav}>Products</Link>
                     <Link to="/orders" className={style.linkDesk}>Orders</Link>
+                    <Link to="/cart-list" className={style.linkDesk}>Carritos</Link>
 
                     {
                         admin ?

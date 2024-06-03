@@ -2,7 +2,7 @@ import style from "../ShoppingCart/ShoppingCart.module.css";
 import ItemShoppingCart from "../ItemShoppingCart/ItemShoppingCart";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { showShoppingCart, createCart, addSuplementsToCart, getCartContents } from '../../Redux/actions'
+import { showShoppingCart, getCartContents, createCartAndAddSuplements } from '../../Redux/actions'
 import axios from "axios";
 import swal from 'sweetalert';
 
@@ -91,7 +91,11 @@ const ShoppingCart = () => {
 
             swal("Login first", "To make a purchase you need to register", "error");
         }
-
+        
+        if (cart.length > 0) {
+            createPreference();  
+            dispatch(createCartAndAddSuplements(cart, user))
+        }
     };
 
     useEffect(() => {
@@ -147,7 +151,7 @@ const ShoppingCart = () => {
                                 <div className={style.containerTotal}>
                                     <div className={style.totalPrice}>
                                         <p>Total</p>
-                                        {/* <span>$ {cart.reduce((total, product) => total + product.total, 0)} ARS</span> */}
+                                        <span>$ {cart?.reduce((total, product) => total + product.total, 0)} ARS</span>
                                     </div>
                                     <hr />
                                 </div>
