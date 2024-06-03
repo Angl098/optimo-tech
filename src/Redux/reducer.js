@@ -11,7 +11,10 @@ import {
   GET_CATEGORIES,
   GET_PROVIDERS,
   GET_TAGS,
-  INJECT_USER
+  INJECT_USER,
+  CREATE_CART,
+  ADD_SUPLEMENTS_TO_CART,
+  GET_CART_CONTENTS
 } from "./actions"
 
 
@@ -193,10 +196,29 @@ const rootReducer = (state = initialState, action) => {
         user: payload
       }
 
+    case CREATE_CART:
+      return { 
+        ...state, 
+        cart: payload 
+      };
+
+    case ADD_SUPLEMENTS_TO_CART:
+      return { 
+        ...state, 
+        cart: payload
+      };
+
+    case GET_CART_CONTENTS:
+      return { 
+        ...state, 
+        cart: payload 
+      };
+      
     default:
       return state;
   }
 };
+
 
 //     
 //       case POST_REGISTER_USER:

@@ -22,6 +22,10 @@ export const GET_PROVIDERS = "GET_PROVIDERS";
 export const GET_TAGS = "GET_TAGS";
 export const INJECT_USER = "INJECT_USER";
 
+export const CREATE_CART = 'CREATE_CART';
+export const ADD_SUPLEMENTS_TO_CART = 'ADD_SUPLEMENTS_TO_CART';
+export const GET_CART_CONTENTS = 'GET_CART_CONTENTS';
+
 
 //Función que hace la peticion con axios al back-end
 //para traer todos los suplementos
@@ -278,8 +282,45 @@ export const postLogin = (login) => {
     };
 };
 
-export const setUser = (user) => {
+export const setUser = (data) => {
     return {
-    type: USER,
-    payload: user
-}};
+        type: INJECT_USER,
+        payload: data
+    }
+}
+
+
+export const createCart = (userId) => async (dispatch) => {
+    try {
+
+        const cartData = {
+            userId,
+            total: 0, //valor predeterminado para total
+            paymentMethod: 'Cash', //valor predeterminado para paymentMethod
+            paymentStatus: 'Pending', //valor predeterminado 
+        };
+
+        const response = await axios.post('/cart/create-cart', cartData);
+        dispatch({ type: CREATE_CART, payload: response.data });
+    } catch (error) {
+        console.error('Error creating cart:', error);
+    }
+};
+
+export const addSuplementsToCart = (cartId, suplements) => async (dispatch) => {
+    try {
+        const response = await axios.post(`/cart/add-suplements/${cartId}`, { suplements });
+        dispatch({ type: ADD_SUPLEMENTS_TO_CART, payload: response.data });
+    } catch (error) {
+        console.error('Error adding suplements to cart:', error);
+    }
+};
+
+export const getCartContents = (cartId) => async (dispatch) => {
+    try {
+        const response = await axios.get(`/cart/get-cart/${cartId}`);
+        dispatch({ type: GET_CART_CONTENTS, payload: response.data });
+    } catch (error) {
+        console.error('Error getting cart contents:', error);
+    }
+};

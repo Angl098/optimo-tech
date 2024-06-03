@@ -2,7 +2,7 @@ import style from "../ShoppingCart/ShoppingCart.module.css";
 import ItemShoppingCart from "../ItemShoppingCart/ItemShoppingCart";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { paymentGateway, showShoppingCart } from '../../Redux/actions'
+import { showShoppingCart, createCart, addSuplementsToCart, getCartContents } from '../../Redux/actions'
 import axios from "axios";
 import swal from 'sweetalert';
 
@@ -11,6 +11,8 @@ const ShoppingCart = () => {
     const cart = useSelector((state) => state.cart);
     const user = useSelector(state => state.user)
     const showShoppingCartState = useSelector((state) => state.showShoppingCart);
+    const dispatch = useDispatch();
+    
 
     const createPreference = async () => {
         try {
@@ -42,24 +44,51 @@ const ShoppingCart = () => {
         }
     }
 
-    const dispatch = useDispatch();
+    const handleCreateCart = async () => {
+        // const userId = localStorage.getItem('userId');
+        const { userId } = user; // traigo userId del estado de Redux yaq del localstor no me lo traee 
+        if (userId) {
+            const response = dispatch(createCart(userId));
+            if (response && response.data) {
+                localStorage.setItem('cartId', response.data.id);
+            }
+        }
+    };
 
-    const handleBuy = () => {
-        if (user === null) {
+
+    const handleAddSuplementsToCart = async () => {
+        let cartId = localStorage.getItem('cartId');
+        if (!cartId) {
+            await handleCreateCart();
+            cartId = localStorage.getItem('cartId');
+        }
+
+        const suplements = cart.map((prod) => ({
+            suplementId: prod.id,
+            quantity: prod.quantity,
+        }));
+
+        if (cartId && suplements.length > 0) {
+            dispatch(addSuplementsToCart(cartId, suplements));
+        }
+    };
+
+    const handleCheckout = async () => {
+        // const userId = localStorage.getItem('userId');
+        const { userId } = user;
+        console.log(userId)
+        if (!userId) {
             swal("Login first", "To make a purchase you need to register", "error");
-            return false;
+            return;
         }
-        return true;
-    }
 
-    const handleCheckout = () => {
-        if (handleBuy()) {
-            createPreference();
+        await handleAddSuplementsToCart();
+        console.log(handleAddSuplementsToCart);
+
+        if (cart.length > 0) {
+            createPreference();  
         }
-    }
-
-    console.log(cart)
-    useEffect(() => { }, [showShoppingCartState]);
+    };
 
     useEffect(() => {
         if (cart) {
@@ -114,7 +143,7 @@ const ShoppingCart = () => {
                                 <div className={style.containerTotal}>
                                     <div className={style.totalPrice}>
                                         <p>Total</p>
-                                        <span>$ {cart?.reduce((total, product) => total + product.total, 0)} ARS</span>
+                                        <span>$ {cart.reduce((total, product) => total + product.total, 0)} ARS</span>
                                     </div>
                                     <hr />
                                 </div>
