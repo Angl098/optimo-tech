@@ -1,13 +1,17 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 import { postRegisterUser } from '../../Redux/actions';
 import validation from '../Validation/RegisterUser/Validation';
 import style from './RegisterUser.module.css';
+import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
+
 
 function RegisterUser () {
     const dispatch = useDispatch();
     const [user, setUser] = useState({});
     const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
 
         //manejador del estado principal user
         function handleChange(event){
@@ -52,11 +56,38 @@ function RegisterUser () {
 const handleSubmit= async (event)=>{
     event.preventDefault();
     const response = await dispatch(postRegisterUser(user));
-    console.log(response);
-    alert("Respuesta servidor: " + response.payload.message);
+    if(response.payload.dataUser)
+        {
+       Swal.fire({
+        icon: "success",
+        title: response.payload.message,
+        text: "",
+        timer: 3000
+      }).then(() => {
+        // Redirigir después de que la alerta se cierre
+        navigate("/login"); // Cambia la URL al destino 
+        window.location.reload();
+      });         
+        }else{
+            Swal.fire({
+                icon: "error",
+                title: response.payload.message,
+                text: "",
+                timer: 3000
+              })   
+        }
 
 };
 
+useEffect(()=>{
+    Swal.fire({
+    icon: "info",
+    title: "Completa los datos para ver el boton registrar",
+    text: "",
+    timer: 5000
+  })  
+
+}, []);
 
     return <>
     <form onSubmit={handleSubmit} className={style.form}>
@@ -92,7 +123,7 @@ const handleSubmit= async (event)=>{
             <div className={style.password_input_container}>
                 <input name='password' type={passwordVisible ? 'text' : 'password'} value={user.password || ''} onChange={handleChange} className={style.form_style} />
                 <button type="button" onClick={togglePasswordVisibility} className={style.show_hide_btn}>
-                    {passwordVisible ? '👁️' : '🔒'}
+                {passwordVisible ? <img className={style.eye} src='https://cdn.icon-icons.com/icons2/1659/PNG/512/3844441-eye-see-show-view-watch_110305.png'/>:<img className={style.eye} src='https://cdn.icon-icons.com/icons2/2065/PNG/512/view_hide_icon_124813.png'/> }
                 </button>
             </div>
         {errors.password!==''&&<p className={style.errors}>{errors.password}</p>}
@@ -101,7 +132,7 @@ const handleSubmit= async (event)=>{
             <div className={style.password_input_container}>
                 <input name='confirmPassword' type={passwordConfirmVisible ? 'text' : 'password'} value={user.confirmPassword || ''} onChange={handleChange} className={style.form_style} />
                 <button type="button" onClick={togglePasswordConfirmVisibility} className={style.show_hide_btn}>
-                    {passwordConfirmVisible ? '👁️' : '🔒'}
+                    {passwordConfirmVisible ? <img className={style.eye} src='https://cdn.icon-icons.com/icons2/1659/PNG/512/3844441-eye-see-show-view-watch_110305.png'/>:<img className={style.eye} src='https://cdn.icon-icons.com/icons2/2065/PNG/512/view_hide_icon_124813.png'/> }
                 </button>
             </div>
         {errors.confirmPassword!==''&&<p className={style.errors}>{errors.confirmPassword}</p>}

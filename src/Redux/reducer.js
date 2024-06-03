@@ -8,6 +8,9 @@ import {
   //POST_REGISTER_USER 
   POST_LOGIN, POST_REGISTER_USER,
   USER,
+  GET_CATEGORIES,
+  GET_PROVIDERS,
+  GET_TAGS,
   INJECT_USER,
   CREATE_CART,
   ADD_SUPLEMENTS_TO_CART,
@@ -25,8 +28,10 @@ const initialState = {
   paymentID: null,
   user: null,
   showShoppingCart: false,
-  suplemento: {},
-  user: null,
+  suplemento:{},
+  categorias:[],
+  provedores:[],
+  tags:[]
 };
 
 
@@ -34,6 +39,21 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case GET_CATEGORIES:
+      return {
+        ...state,
+        categorias: payload,
+      };
+    case GET_PROVIDERS:
+      return {
+        ...state,
+        provedores: payload,
+      };
+    case GET_TAGS:
+      return {
+        ...state,
+        tags: payload,
+      };
     case GET_SUPLEMENTS:
       return {
         ...state,

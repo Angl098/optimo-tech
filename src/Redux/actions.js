@@ -17,6 +17,9 @@ export const POST_REGISTER_USER = "POST_REGISTER_USER";
 
 export const POST_LOGIN = "POST_LOGIN";
 export const USER = "USER";
+export const GET_CATEGORIES = "GET_CATEGORIES";
+export const GET_PROVIDERS = "GET_PROVIDERS";
+export const GET_TAGS = "GET_TAGS";
 export const INJECT_USER = "INJECT_USER";
 
 export const CREATE_CART = 'CREATE_CART';
@@ -26,6 +29,34 @@ export const GET_CART_CONTENTS = 'GET_CART_CONTENTS';
 
 //Función que hace la peticion con axios al back-end
 //para traer todos los suplementos
+export const getCategorias = () => {
+    return async function (dispatch) {
+        const response = await axios.get('/category')
+        return dispatch({
+            type: GET_CATEGORIES,
+            payload: response.data
+        })
+    }
+}
+export const getProviders = () => {
+    return async function (dispatch) {
+        const response = await axios.get('/provider')
+        return dispatch({
+            type: GET_PROVIDERS,
+            payload: response.data
+        })
+    }
+}
+export const getTags = () => {
+    return async function (dispatch) {
+        const response = await axios.get('/tags')
+        return dispatch({
+            type: GET_TAGS,
+            payload: response.data
+        })
+    }
+}
+
 export const getSuplements = () => {
     return async function (dispatch) {
         const response = await axios.get('/suplements')
@@ -161,7 +192,11 @@ export const postRegisterUser = (user) => {
             });
         }
         catch (error) {
-            console.log('error al registrar los datos', error);
+            error = {message:"Error completa los datos"};
+            return dispatch({
+                type:POST_REGISTER_USER,
+                payload: error
+        });
         }
     }
 };
@@ -218,9 +253,9 @@ export const fetchSuplementById = (id) => async dispatch => {
     }
 };
 
-export const updateSuplement = (id, formData) => async dispatch => {
+export const updateSuplement = (formData) => async dispatch => {
     try {
-        const response = await axios.put(`/suplements/${id}`, formData);
+        const response = await axios.put(`/suplements`, formData);
         dispatch({ type: 'UPDATE_SUPLEMENT_SUCCESS', payload: response.data });
     } catch (error) {
         console.log(error);
@@ -238,18 +273,16 @@ export const postLogin = (login) => {
             });
         }
         catch (error) {
-            console.log('error al log in', error);
-            alert("error" + error);
+            error = {message:"Error completa los datos"};
+            return dispatch({
+                type:POST_LOGIN,
+                payload: error
+        });
         }
     };
 };
 
-export const setUser = (user) => ({
-    type: USER,
-    payload: user,
-});
-
-export const injectUser = (data) => {
+export const setUser = (data) => {
     return {
         type: INJECT_USER,
         payload: data

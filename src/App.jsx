@@ -11,28 +11,32 @@ import RegisterUser from './components/RegisterUser';
 import Login from './views/Login/index';
 import Orders from './components/Ordenes/Ordenes'
 import OrderSupplements from './components/Ordenes/OrdenSuplemento';
-import { injectCartData, injectUser } from './Redux/actions'
+import { injectCartData} from './Redux/actions'
 
 
 import './App.css'
 import Dashboard from './components/Dashboard/Dashboard';
 import NavBar from './components/NavBar/NavBar';
 import { useState } from 'react';
+import { getCategorias, getProviders, getTags } from './Redux/actions';
 
 function App() {
+  const dispatch=useDispatch()
+  dispatch(getCategorias())
+  dispatch(getProviders())
+  dispatch(getTags())
   const [search, setSearch] = useState('');
   const user = useSelector(state => state.user)
-  const dispatch = useDispatch()
   const navigate=useNavigate()
   function handleSearch(search) {
     setSearch(search);
     navigate("/home")
   }
-
+/* 
   useEffect(() => {
     const user = window.localStorage.getItem('user')
     if(user) dispatch(injectUser(JSON.parse(user)))
-  },[])
+  },[]) */
 
   useEffect(() => {
     const productsInCart = window.localStorage.getItem('cart')

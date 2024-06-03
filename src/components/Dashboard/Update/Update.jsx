@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import style from './FormCategories.module.css';
+import style from '../FormCategories.module.css';
 
-function UpdateSuplement({ categories, onCategoryUpdate, onCategoryCreate }) {
+function Update({ categories, onCategoryUpdate, onCategoryCreate }) {
     const [categoryName, setCategoryName] = useState('');
     const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -52,4 +52,4 @@ function UpdateSuplement({ categories, onCategoryUpdate, onCategoryCreate }) {
     );
 }
 
-export default UpdateSuplement;
+export default Update;
