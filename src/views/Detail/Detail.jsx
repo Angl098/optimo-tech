@@ -47,7 +47,7 @@ const Detail = () => {
                 <div className={styles.details}>
                     <h2 className={styles.title}>{productData.name}</h2>
                     <p className={styles.description}>{productData.description}</p>
-                    <p className={styles.category}>Categoria: {getSuplementById.category ? getSuplementById.category.map(genre => genre.name).join(", ") : ""}</p>
+                    {/* <p className={styles.category}>Categoria: {getSuplementById.category ? getSuplementById.category.map(genre => genre.name).join(", ") : ""}</p> */}
                     <p className={styles.price}>Precio: ${productData.price}</p>
                     <button className={styles.btnAddToCart} onClick={handleAddToCart}>
                         Añadir al carrito

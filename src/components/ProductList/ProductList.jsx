@@ -172,7 +172,7 @@ export default function ProductList({ search }) {
         <div className={style.productList}>
             <div className={style.categories}>
                 <div>
-
+                <h3>Categorias</h3>
                     <p className={style.category} onClick={() => handleCategoryFilter(category.id)} value=" ">Todos</p>
                     {arrayCategory.map((category) => {
                         return <p className={style.category} key={category.id} name="category" value={category.id} onClick={() => handleCategoryFilter(category.id)}>{category.name}</p>
@@ -180,7 +180,7 @@ export default function ProductList({ search }) {
 
                 </div>
                 <div >
-
+                <h3>Marcas</h3>
                     <p className={style.category} onClick={() => handleProviderFilter("")} value=" ">Todos</p>
                     {arrayProviders.map((provider) => {
                         return <p className={style.category} key={provider.id} name="provider" value={provider.id} onClick={() => handleProviderFilter(provider.id)}>{provider.name}</p>
@@ -188,7 +188,7 @@ export default function ProductList({ search }) {
 
                 </div>
                 <div >
-
+                <h3>Etiquetas</h3>
                     <p className={style.category} onClick={() => handleTagsFilter("")} value=" ">Todos</p>
                     {arrayTags.map((tag) => {
                         return <p className={style.category} key={tag.id} name="tags" value={tag.id} onClick={() => handleTagsFilter(tag.name)}>{tag.name}</p>
@@ -226,18 +226,19 @@ export default function ProductList({ search }) {
                         })}
                     </div>
                 </div>
-                <div >
-                    <button onClick={prevPage} disabled={filter.page === 1} >❮</button>
-                    {[...Array(totalPages)].map((_, index) => (
-                        <button
-                            key={index + 1}
-                            onClick={() => goToPage(index + 1)}
-                        >
-                            {index + 1}
-                        </button>
-                    ))}
-                    <button onClick={nextPage} disabled={filter.page === totalPages}>❯</button>
-                </div>
+                <div className={style.buttonContainer}>
+                <button onClick={prevPage} className={style.btnPages} disabled={filter.page === 1} >❮</button>
+                {[...Array(totalPages)].map((_, index) => (
+                    <button
+                        key={index + 1}
+                        onClick={() => goToPage(index + 1)}
+                        className={style.pageButton}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+                <button onClick={nextPage} className={style.btnPages} disabled={filter.page === totalPages}>❯</button>
+            </div>
             </div>
 
         </div>
