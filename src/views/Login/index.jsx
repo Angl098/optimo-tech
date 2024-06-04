@@ -191,6 +191,7 @@ const handleSubmit = async (event)=>{
         {errors.password!==''&&<p className={style.errors}>{errors.password}</p>}
         <button className={style.btn} type="submit">Login</button>
 {/* auth terceros */}
+
         <GoogleLogin
           onSuccess={handleGoogleSuccess}
           onError={() => {

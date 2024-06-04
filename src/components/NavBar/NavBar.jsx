@@ -27,12 +27,15 @@ const NavBar = (props) => {
     const { id } = useParams()
     useEffect(() => {
         const nameUsuario = JSON.parse(localStorage.getItem("User"));
+        console.log(nameUsuario);
         if (nameUsuario) {
-            if (nameUsuario.id) {
+            if (nameUsuario.userId) {
 
                 setLogeado(true)
+                console.log("setLogeado");
             } else {
                 setLogeado(false)
+                console.log("setNotLogeado");
 
             }
 
@@ -92,6 +95,7 @@ const NavBar = (props) => {
     //user
     useEffect(() => {
         const dataUserJSON = window.localStorage.getItem('User');
+        console.log('dataUserJSON', dataUserJSON);
         if (dataUserJSON) {
             const dataUser = JSON.parse(dataUserJSON);
             dispatch(setUser(dataUser));
@@ -114,7 +118,7 @@ const NavBar = (props) => {
                     <Link to={PATHROURES.LANDING} className={style.title}>ÓPTIMO</Link>
                     <Link to={PATHROURES.LANDING} className={style.linkDesk} onClick={toggleNav}>Home</Link>
                     <Link to={PATHROURES.HOME} className={style.linkDesk} onClick={toggleNav}>Products</Link>
-                   
+                    <Link to="/orders" className={style.linkDesk}>Orders</Link>
 
                     {
                         admin ?
