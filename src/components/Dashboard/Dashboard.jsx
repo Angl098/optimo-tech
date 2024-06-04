@@ -87,8 +87,8 @@ const Dashboard = () => {
                         <Route path="orders" element={<Orders />} />
 
                         <Route path='updatesuplement' element={<UpdateSuplement />} />
-                        <Route path="/order-supplements" element={<OrdenSuplemento />} />
-                        <Route path="/cart-list" element={<CartList />} />
+                        <Route path="order-supplements" element={<OrdenSuplemento />} />
+                        <Route path="cart-list" element={<CartList />} />
 
                     </Routes>
                 </div>

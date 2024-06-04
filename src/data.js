@@ -67,7 +67,7 @@ export const data = [
         "name": "Vitamina C",
         "category": "Vitaminas y Minerales",
         "description": "Este suplemento combina el poder nutritivo de la Vitamina C con los beneficios percibidos del Zinc en cómodas cápsulas. Diseñado para quienes buscan complementar su dieta diaria de manera práctica, estas cápsulas están pensadas para ayudar a mantener un bienestar general. Ideales para incorporar a tu rutina diaria y asegurar una ingesta adecuada de estos importantes nutrientes.",
-        "price": 9.990,
+        "price": 9990,
         "image": "https://www.fynutrition.com/cdn/shop/products/vitaminac_720x.png?v=1610122919",
         "amount": 10
     },
@@ -75,7 +75,7 @@ export const data = [
         "name": "Vitamina B12",
         "category": "Vitaminas y Minerales",
         "description": "La Vitamina B12 es un nutriente esencial para los seres humanos aunque, paradójicamente, el organismo no es capaz de generarlo pero sí de almacenarlo. Algunos de los síntomas que nos pueden indicar cierto nivel de deficiencia de la B12 son el cansancio, debilidad, constipación, pérdida de apetito con pérdida de peso, problemas neurológicos como entumecimiento y hormigueo en las manos y en los pies, problemas de equilibrio, depresión, confusión, demencia, mala memoria e inflamación de la boca o lengua.",
-        "price": 9.800,
+        "price": 9800,
         "image": "https://www.fynutrition.com/cdn/shop/products/vitaminab12_720x.png?v=1610122876",
         "amount": 10
     },
@@ -91,7 +91,7 @@ export const data = [
         "name": "Colágeno Antioxidante",
         "category": "Antioxidantes",
         "description": "Actualmente, el envejecimiento natural se acelera con todo: rayos del sol, humo de cigarrillos, contaminación, estrés, dietas y la lista sigue y sigue. Todo esto aumenta la presencia de radicales libres que atentan contra el organismo, por lo que es necesario contar con antioxidantes que prevengan el envejecimiento de las células. ¡Este suplemento los tiene!",
-        "price": 28.791,
+        "price": 28791,
         "image": "https://www.fynutrition.com/cdn/shop/products/colagenoantixoidantematcha_720x.jpg?v=1635347387",
         "amount": 10
     },
@@ -99,7 +99,7 @@ export const data = [
         "name": "Magnesio",
         "category": "Vitaminas y Minerales",
         "description": "El magnesio es un mineral reconocido por su participación en numerosos procesos del cuerpo. Este suplemento, con Magnesio Triple Fynutrition(400 mg - formulado con 3 tipos de magnesios para una buena absorción), está diseñado para complementar tu dieta diaria con magnesio.",
-        "price": 10.300,
+        "price": 10300,
         "image": "https://www.fynutrition.com/cdn/shop/products/magnesio1_720x.jpg?v=1649169813",
         "amount": 10
     },

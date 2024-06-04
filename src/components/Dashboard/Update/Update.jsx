@@ -10,7 +10,11 @@ function Update({ categories, onCategoryUpdate, onCategoryCreate }) {
         if (selectedCategory) {
             onCategoryUpdate(selectedCategory.id, categoryName);
         } else {
-            onCategoryCreate(categoryName);
+            if (categoryName!=="") {
+                onCategoryCreate(categoryName);
+            }else{
+                console.log("llenar datos");
+            }
         }
         setCategoryName('');
         setSelectedCategory(null);

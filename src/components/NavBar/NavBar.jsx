@@ -118,7 +118,6 @@ const NavBar = (props) => {
                     <Link to={PATHROURES.LANDING} className={style.title}>ÓPTIMO</Link>
                     <Link to={PATHROURES.LANDING} className={style.linkDesk} onClick={toggleNav}>Home</Link>
                     <Link to={PATHROURES.HOME} className={style.linkDesk} onClick={toggleNav}>Products</Link>
-                    <Link to="/orders" className={style.linkDesk}>Orders</Link>
 
                     {
                         admin ?
@@ -166,7 +165,7 @@ const NavBar = (props) => {
                         <img className={style.iconPerfil} src='https://cdn.icon-icons.com/icons2/3298/PNG/96/ui_user_profile_avatar_person_icon_208734.png' />
                         <p>{userState.name}</p></>}
 
-                    {userState !== null && <button onClick={cerrarSesion} className={style.buttonLogout}>Log Out</button>}
+                    {userState !== null && <button onClick={cerrarSesion} className={style.buttonSign}>Cerrar sesion</button>}
                     <button className={style.cartButton} onClick={() => shoppingCart()}>
                         <svg
                             className={style.cartSvg}
