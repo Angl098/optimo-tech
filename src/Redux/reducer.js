@@ -8,7 +8,12 @@ import {
   //POST_REGISTER_USER 
   POST_LOGIN, POST_REGISTER_USER,
   USER,
-  INJECT_USER
+  GET_CATEGORIES,
+  GET_PROVIDERS,
+  GET_TAGS,
+  INJECT_USER,
+  CREATE_CART_AND_ADD_SUPLEMENTS, CREATE_CART_AND_ADD_SUPLEMENTS_ERROR,
+  GET_CART_CONTENTS
 } from "./actions"
 
 
@@ -22,7 +27,10 @@ const initialState = {
   paymentID: null,
   user: null,
   showShoppingCart: false,
-  suplemento: {},
+  suplemento:{},
+  categorias:[],
+  provedores:[],
+  tags:[]
 };
 
 
@@ -30,6 +38,21 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case GET_CATEGORIES:
+      return {
+        ...state,
+        categorias: payload,
+      };
+    case GET_PROVIDERS:
+      return {
+        ...state,
+        provedores: payload,
+      };
+    case GET_TAGS:
+      return {
+        ...state,
+        tags: payload,
+      };
     case GET_SUPLEMENTS:
       return {
         ...state,
@@ -172,10 +195,30 @@ const rootReducer = (state = initialState, action) => {
         user: payload
       }
 
+    case CREATE_CART_AND_ADD_SUPLEMENTS:
+      return {
+        ...state,
+        cart: payload.cart,
+        error: null,
+      };
+
+    case CREATE_CART_AND_ADD_SUPLEMENTS_ERROR:
+      return {
+        ...state,
+        error: payload,
+      };
+
+    case GET_CART_CONTENTS:
+      return { 
+        ...state, 
+        cart: payload 
+      };
+      
     default:
       return state;
   }
 };
+
 
 //     
 //       case POST_REGISTER_USER:

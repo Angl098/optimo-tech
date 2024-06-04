@@ -109,3 +109,31 @@
 .LinkWithoutUnderline {
     text-decoration: none; 
 }
+
+.buttonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btnPages {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 50px; /* Ancho fijo */
+}
+
+.btnPages:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btnPages:hover {
+    background-color: #0056b3;
+}

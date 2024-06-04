@@ -18,13 +18,18 @@ import './App.css'
 import Dashboard from './components/Dashboard/Dashboard';
 import NavBar from './components/NavBar/NavBar';
 import { useState } from 'react';
+import { getCategorias, getProviders, getTags } from './Redux/actions';
+import CartList from './components/CartList/CartList';
 
 import UserPerfil from './components/userPerfil/userPerfil.jsx';
 
 function App() {
+  const dispatch=useDispatch()
+  dispatch(getCategorias())
+  dispatch(getProviders())
+  dispatch(getTags())
   const [search, setSearch] = useState('');
   const user = useSelector(state => state.user)
-  const dispatch = useDispatch()
   const navigate=useNavigate()
   function handleSearch(search) {
     setSearch(search);
@@ -61,6 +66,7 @@ function App() {
         <Route path='registeruser' element={<RegisterUser />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/order-supplements" element={<OrderSupplements/>} />
+        <Route path="/cart-list" element={<CartList/>} />
         <Route path="/userperfil" element={<UserPerfil user={user=>user}/>} />
       </Routes>
       <Footer />

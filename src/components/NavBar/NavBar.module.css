@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Anta&display=swap');
 
-.nav{
+.nav {
     display: flex;
     align-items: center;
     height: 10vh;
@@ -9,7 +9,7 @@
     font-size: 1.5em;
 }
 
-.mainContent{
+.mainContent {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -18,22 +18,22 @@
     width: 100%;
 }
 
-.linkContainer{
+.linkContainer {
     display: flex;
     align-items: center;
     text-decoration: none;
 }
 
-.img{
+.img {
     width: 35px;
     height: 35px;
 }
 
-.group {
+/* .group {
     position: relative;
     padding-right: 2rem;
-   }
-   .input {
+   } */
+/* .input {
     font-size: 16px;
     padding: 10px 20px 10px 5px;
     display: block;
@@ -47,9 +47,9 @@
    
    .input:focus {
     outline: none;
-   }
+   } */
 
-   .nav label {
+.nav label {
     color: #FAF0E6;
     font-size: 18px;
     font-weight: normal;
@@ -60,15 +60,17 @@
     transition: 0.2s ease all;
     -moz-transition: 0.2s ease all;
     -webkit-transition: 0.2s ease all;
-   }
-   .input:focus ~ label, .input:valid ~ .nav label {
+}
+
+.input:focus~label,
+.input:valid~.nav label {
     top: -20px;
     font-size: 14px;
     color: #FAF0E6;
-   }
-   
+}
 
-   .highlight {
+
+/* .highlight {
     position: absolute;
     height: 60%;
     width: 100px;
@@ -76,30 +78,30 @@
     left: 0;
     pointer-events: none;
     opacity: 0.5;
-   }
-   
-   .input:focus ~ .highlight {
-    animation: inputHighlighter 0.3s ease;
-   }
-   
-   @keyframes inputHighlighter {
-    from {
-     background: #5264AE;
-    }
-   
-    to {
-     width: 0;
-     background: transparent;
-    }
-   }
+}
 
-   .bar {
+.input:focus~.highlight {
+    animation: inputHighlighter 0.3s ease;
+} */
+
+@keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+.bar {
     position: relative;
     display: block;
     width: 200px;
-   }
+}
 
-.title{
+.title {
     color: #000;
     text-decoration: none;
     font-size: .9em;
@@ -108,12 +110,12 @@
     font-family: "Anta", sans-serif;
 }
 
-.linkDesk{
+.linkDesk {
     display: none;
-    
+
 }
 
-.link{
+.link {
     color: #000;
     text-decoration: none;
     font-size: 1.2em;
@@ -129,11 +131,11 @@
     padding: 1em;
 }
 
-.buttonContainerDesk{
+.buttonContainerDesk {
     display: none;
 }
 
-.cartButton{
+.cartButton {
     width: 45px;
     height: 45px;
     border: none;
@@ -143,13 +145,14 @@
     cursor: pointer;
 }
 
-.cartSvg{
+.cartSvg {
     cursor: pointer;
     height: 1.5em;
     fill: #000;
 }
 
-.buttonLog, .buttonSign{
+.buttonLog,
+.buttonSign {
     border: none;
     padding: 10px;
     border-radius: 5px;
@@ -161,7 +164,7 @@
     color: #fff;
 }
 
-.buttonLogout{
+.buttonLogout {
     border: none;
     padding: 5px;
     border-radius: 5px;
@@ -174,11 +177,80 @@
     color: #fff;
 }
 
+.searchDeskContent {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.group {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+}
+
+.input {
+    font-size: 16px;
+    padding: 10px 10px 10px 40px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.input:focus {
+    border-color: #007bff;
+}
+
+.label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 16px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.input:focus + .label,
+.input:not(:placeholder-shown) + .label {
+    top: -10px;
+    left: 10px;
+    font-size: 12px;
+    color: #007bff;
+}
+
+.groupButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.searchButton {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.searchButton:hover {
+    background-color: #0056b3;
+}
+
 /* css para el boton */
 .cssbuttonsIo {
-    height: 50px;
-    margin: 10px 0px 0px 0px;
-    width: 150px;
+    height: 40px;
+    margin: 10px 0 0 0;
+    width: 100px;
     background: #c9dbcc;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
@@ -200,44 +272,44 @@
       inset 5px 5px 10px #61f5a9, inset -5px -5px 10px #61f5a9;
     box-shadow: -1px -5px 15px #41465b, 5px 5px 15px #41465b,
       inset 5px 5px 10px #61f5a9, inset -5px -5px 10px #61f5a9; */
-    }
-    
-    .cssbuttonsIo:hover {
-      color: rgb(0, 0, 0);
-      background: #c4c4c4;
-    }
-    
-    .cssbuttonsIo:active {
-      -webkit-box-shadow: 1px 1px 13px #20232e, -1px -1px 33px #545b78;
-      box-shadow: 1px 1px 13px #20232e, -1px -1px 33px #545b78;
-      color: #d6d6d6;
-      -webkit-transition: 100ms;
-      transition: 100ms;
-    }
-  
-    .groupButton{
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-    }
+}
 
-@media screen and (min-width: 768px){
-    .mainContent{
+.cssbuttonsIo:hover {
+    color: rgb(0, 0, 0);
+    background: #c4c4c4;
+}
+
+.cssbuttonsIo:active {
+    -webkit-box-shadow: 1px 1px 13px #20232e, -1px -1px 33px #545b78;
+    box-shadow: 1px 1px 13px #20232e, -1px -1px 33px #545b78;
+    color: #d6d6d6;
+    -webkit-transition: 100ms;
+    transition: 100ms;
+}
+
+/* .groupButton {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+} */
+
+@media screen and (min-width: 768px) {
+    .mainContent {
         margin-left: 2em;
         margin-right: 2em;
     }
 
-    .mobileButtonContent{
+    .mobileButtonContent {
         display: none;
     }
 
-    .linkContentMobile{
+    .linkContentMobile {
         display: none;
     }
 
-    .linkDesk{
+    .linkDesk {
         display: block;
         text-decoration: none;
         margin-left: 1em;
@@ -245,38 +317,40 @@
         font-size: .9em;
     }
 
-    .linkDesk:hover{
+    .linkDesk:hover {
         color: #000;
         border-bottom: 1px solid #000;
     }
 
 
 
-    .buttonContainerDesk{
+    .buttonContainerDesk {
         display: block;
     }
-    
-    .cartContainer{
+
+    .cartContainer {
         display: flex;
         align-items: center;
     }
 
-    .buttonLog, .buttonSign{
+    .buttonLog,
+    .buttonSign {
         font-size: .9em;
     }
 }
-.searchDeskContent{
+
+/* .searchDeskContent{
     display: flex;
     flex-direction: row;
-}
+} */
 
 
-@media screen and (max-width: 1024px) and (min-width: 768px){
-    .title{
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+    .title {
         display: none;
     }
 
-    .searchDeskContent{
+    .searchDeskContent {
         width: 250px;
     }
 }

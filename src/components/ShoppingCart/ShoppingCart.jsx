@@ -2,7 +2,7 @@ import style from "../ShoppingCart/ShoppingCart.module.css";
 import ItemShoppingCart from "../ItemShoppingCart/ItemShoppingCart";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { paymentGateway, showShoppingCart } from '../../Redux/actions'
+import { showShoppingCart, getCartContents, createCartAndAddSuplements } from '../../Redux/actions'
 import axios from "axios";
 import swal from 'sweetalert';
 
@@ -11,6 +11,8 @@ const ShoppingCart = () => {
     const cart = useSelector((state) => state.cart);
     const user = useSelector(state => state.user)
     const showShoppingCartState = useSelector((state) => state.showShoppingCart);
+    const dispatch = useDispatch();
+    
 
     const createPreference = async () => {
         try {
@@ -42,24 +44,18 @@ const ShoppingCart = () => {
         }
     }
 
-    const dispatch = useDispatch();
-
-    const handleBuy = () => {
+    const handleCheckout = async () => {
+        
         if (user === null) {
             swal("Login first", "To make a purchase you need to register", "error");
-            return false;
+            return;
         }
-        return true;
-    }
-
-    const handleCheckout = () => {
-        if (handleBuy()) {
-            createPreference();
+        
+        if (cart.length > 0) {
+            createPreference();  
+            dispatch(createCartAndAddSuplements(cart, user))
         }
-    }
-
-    console.log(cart)
-    useEffect(() => { }, [showShoppingCartState]);
+    };
 
     useEffect(() => {
         if (cart) {

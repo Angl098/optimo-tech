@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import style from './NavBar.module.css'
 import logo from '../../assets/logo.png'
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 //import logo from '../../../public/logo.png'
 import PATHROURES from '../../helpers/PathRoutes';
 import ShoppingCart from "../ShoppingCart/ShoppingCart";
@@ -24,28 +24,26 @@ const NavBar = (props) => {
     const cart = useSelector(state => state.cart)
     const userState = useSelector(state => state.user)
     const showShoppingCartState = useSelector((state) => state.showShoppingCart)
-/*     useEffect(() => {
-        const nameUsuario = JSON.parse(localStorage.getItem("user"));
+    const { id } = useParams()
+    useEffect(() => {
+        const nameUsuario = JSON.parse(localStorage.getItem("User"));
+        console.log(nameUsuario);
+        if (nameUsuario) {
+            if (nameUsuario.userId) {
 
-        if (JSON.parse(localStorage.getItem("user"))) {
-            console.log(JSON.parse(localStorage.getItem("user")).email);
-            if (JSON.parse(localStorage.getItem("user")).userId) {
-                
                 setLogeado(true)
                 console.log("setLogeado");
-            }else{
+            } else {
                 setLogeado(false)
                 console.log("setNotLogeado");
-                
+
             }
-            
-            
-            if (JSON.parse(localStorage.getItem("user")).email==="admin@gmail.com") {
-                console.log("navbar");
-                console.log(JSON.parse(localStorage.getItem("user")).email);
+
+            ///Condicion de admin
+            if (nameUsuario.email === "admin@gmail.com") {
                 setAdmin(true)
-            }else{
-                
+            } else {
+
                 setAdmin(false)
             }
         } else {
@@ -53,7 +51,7 @@ const NavBar = (props) => {
             setLogeado(false)
         }
 
-    }, [user]) */
+    }, [userState, location])
     useEffect(() => {
         if (cart.length > 0) {
             const quantityProducts = cart.reduce((total, product) => (
@@ -75,40 +73,40 @@ const NavBar = (props) => {
 
     const handleChange = (e) => {
         setSearch(e.target.value);
-        
+
     };
 
-    const cerrarSesion=()=>{
-        console.log("cerrado sesion");
+    const cerrarSesion = () => {
         localStorage.clear();
+        setAdmin(false)
+        setLogeado(false)
+        navigate("/")
         Swal.fire({
             icon: "success",
             title: "Cerrando sesion...",
             text: "",
             timer: 3000
-          }).then(() => {
+        }).then(() => {
             // Redirigir después de que la alerta se cierre
             navigate("/"); // Cambia la URL al destino 
             window.location.reload();
-          });
+        });
     }
     //user
-    useEffect(()=>{
+    useEffect(() => {
         const dataUserJSON = window.localStorage.getItem('User');
         console.log('dataUserJSON', dataUserJSON);
-        if(dataUserJSON)
-        {
+        if (dataUserJSON) {
             const dataUser = JSON.parse(dataUserJSON);
             dispatch(setUser(dataUser));
-            console.log('usuario en storage', dataUser);
 
-        if(dataUser.email === "admin@gmail.com")
-        {
-        setAdmin(true);
-        }    
+            if (dataUser.email === "admin@gmail.com") {
+                setAdmin(true);
+            }
         }
 
     }, []);
+
 
     return (
         <nav className={style.nav}>
@@ -124,8 +122,8 @@ const NavBar = (props) => {
 
                     {
                         admin ?
-                        <Link to={"/dashboard"} className={style.linkDesk} onClick={toggleNav}>Dashboard</Link>
-                        :<></>
+                            <Link to={"/dashboard"} className={style.linkDesk} onClick={toggleNav}>Dashboard</Link>
+                            : <></>
                     }
                 </div>
 
@@ -146,27 +144,29 @@ const NavBar = (props) => {
                 </div>
 
                 <div className={style.cartContainer}>
-                {userState===null && 
-                    <div className={style.buttonContainerDesk}>
-                        <Link to={"/login"}>
-                            <button className={style.buttonLog}>Log In</button>
-                        </Link>
-                        <Link to={"/registeruser"}>
-                            <button className={style.buttonSign}>Register</button>
-                        </Link>
-                    </div>    
+                    {userState === null
+                        ?
+                        <div className={style.buttonContainerDesk}>
+                            <Link to={"/login"}>
+                                <button className={style.buttonLog}>Log In</button>
+                            </Link>
+                            <Link to={"/registeruser"}>
+                                <button className={style.buttonSign}>Register</button>
+                            </Link>
+                        </div>
+                        : <></>
+
                     }
-                    </div>
+                </div>
 
-                
 
-                 <div className={style.cartContainer}>
+
+                <div className={style.cartContainer}>
                     {userState !== null && <>
-                    <a href='/userperfil'>
-                    <img className={style.iconPerfil} src='https://cdn.icon-icons.com/icons2/3298/PNG/96/ui_user_profile_avatar_person_icon_208734.png'/>
-                    </a>
-                    <p>{userState.name}</p></>}
+                        <img className={style.iconPerfil} src='https://cdn.icon-icons.com/icons2/3298/PNG/96/ui_user_profile_avatar_person_icon_208734.png' />
+                        <p>{userState.name}</p></>}
 
+                    {userState !== null && <button onClick={cerrarSesion} className={style.buttonLogout}>Log Out</button>}
                     <button className={style.cartButton} onClick={() => shoppingCart()}>
                         <svg
                             className={style.cartSvg}
@@ -185,7 +185,6 @@ const NavBar = (props) => {
                     </button>
                     {showShoppingCartState && <ShoppingCart />}
 
-                    {userState !== null &&<button onClick={cerrarSesion} className={style.buttonLogout}>Log Out</button>}
 
                 </div>
             </div>

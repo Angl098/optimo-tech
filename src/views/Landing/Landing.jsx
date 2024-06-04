@@ -48,7 +48,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className={style.carouselContent}>
-                    <h1 className={style.hyper}>Get some power from HYPER!</h1>
+                    <h1 className={style.hyper}>More products!</h1>
                     <Carousel />
                 </div>
             </div>
