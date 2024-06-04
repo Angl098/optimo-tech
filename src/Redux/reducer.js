@@ -24,14 +24,14 @@ const initialState = {
   error: '', //estado para cuando no se encuentra suplemento por nombre
   products: [],
   cart: [],
-  order:{},
+  order: {},
   paymentID: null,
   user: null,
   showShoppingCart: false,
-  suplemento:{},
-  categorias:[],
-  provedores:[],
-  tags:[]
+  suplemento: {},
+  categorias: [],
+  provedores: [],
+  tags: []
 };
 
 
@@ -196,17 +196,18 @@ const rootReducer = (state = initialState, action) => {
         user: payload
       }
 
-    case CREATE_CART:
-      return { 
-        ...state, 
-        order: payload 
-      };
+    // case CREATE_CART:
+    //   return {
+    //     ...state,
+    //     order: payload
+    //   };
 
-    case ADD_SUPLEMENTS_TO_CART:
-      return { 
-        ...state, 
-        order: payload}
-        
+    // case ADD_SUPLEMENTS_TO_CART:
+    //   return {
+    //     ...state,
+    //     order: payload
+    //   }
+
     case CREATE_CART_AND_ADD_SUPLEMENTS:
       return {
         ...state,
@@ -221,11 +222,11 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case GET_CART_CONTENTS:
-      return { 
-        ...state, 
-        order: payload 
+      return {
+        ...state,
+        order: payload
       };
-      
+
     default:
       return state;
   }

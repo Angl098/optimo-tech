@@ -98,9 +98,7 @@ function UpdateSuplement() {
     }
 
     const handleChangeCategory = (event) => {
-        event.preventDefault();
         const category = event.target.value;
-        console.log(category);
         setOpCategory(category);
         setSuplement({ ...suplemento, category });
     };
@@ -114,7 +112,6 @@ function UpdateSuplement() {
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault();
         console.log(suplemento);
         const formDataToSend = new FormData();
         Object.entries(suplemento).forEach(([key, value]) => {
@@ -176,12 +173,13 @@ function UpdateSuplement() {
                 />
                 {errors.name && <p className={style.errors}>{errors.name}</p>}
 
-                <label>Categoria </label>
+                <label>Categoria</label>
                 <select
                     className={style.form_style}
                     value={opCategory}
                     name="category"
                     onChange={handleChangeCategory}
+                    disabled={newCategory}
                 >
                     <option value='' disabled>Selecciona una Opción</option>
                     {arrayCategory.map((objeto) => (
@@ -193,9 +191,11 @@ function UpdateSuplement() {
                 <input
                     type="text"
                     className={style.form_style}
-                    name="category"
-                    value={opCategory}
-                    onChange={handleChangeCategory}
+                    name="newCategory"
+                    value={newCategory}
+                    onChange={handleNewCategoryChange}
+                    placeholder="O escribe una nueva categoría"
+                    disabled={opCategory}
                 />
                 {errors.category && <p className={style.errors}>{errors.category}</p>}
 

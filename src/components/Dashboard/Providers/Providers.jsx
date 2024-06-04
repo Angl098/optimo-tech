@@ -26,7 +26,7 @@ const Provedores=()=> {
     const handleCategoryCreate = async (name) => {
         const body={name}
         // Lógica para crear una nueva categoría en el backend
-        const newCategory = axios.post("/category",body)
+        const newCategory = axios.post("/provider",body)
 
 
         // Actualizar el estado local

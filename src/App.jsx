@@ -62,9 +62,6 @@ function App() {
         <Route path='/home/:id' element={<Detail />} />
         {/* <Route path={PATHROUTES.DETAIL} element={<Detail/>}/> */}
         <Route path='registeruser' element={<RegisterUser />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/order-supplements" element={<OrderSupplements/>} />
-        <Route path="/cart-list" element={<CartList/>} />
       </Routes>
       <Footer />
     </div>

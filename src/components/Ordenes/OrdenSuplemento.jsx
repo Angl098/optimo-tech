@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-// import style from './OrdenSuplemento.module.css'
+import style from './Ordenes.module.css'
 
 const OrdenSuplemento = () => {
     const [orderSupplements, setOrderSupplements] = useState([]);
