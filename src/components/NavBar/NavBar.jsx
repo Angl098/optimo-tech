@@ -110,7 +110,6 @@ const NavBar = (props) => {
 
     }, []);
 
-
     return (
         <nav className={style.nav}>
             <div className={style.mainContent}>
@@ -163,7 +162,9 @@ const NavBar = (props) => {
 
                  <div className={style.cartContainer}>
                     {userState !== null && <>
+                    <a href='/userperfil'>
                     <img className={style.iconPerfil} src='https://cdn.icon-icons.com/icons2/3298/PNG/96/ui_user_profile_avatar_person_icon_208734.png'/>
+                    </a>
                     <p>{userState.name}</p></>}
 
                     <button className={style.cartButton} onClick={() => shoppingCart()}>

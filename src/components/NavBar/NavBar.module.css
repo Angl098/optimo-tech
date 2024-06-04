@@ -283,4 +283,13 @@
 
 .iconPerfil {
     height: 50px;
+    cursor: pointer;
+    border-radius: 30%;
+}
+.iconPerfil:hover {
+    transform: scale(1.1); 
+    transition: 3s;
+    box-shadow: 0 8px 16px rgba(214, 128, 90, 0.2);
+    transition: box-shadow 1s, transform 1s;
+    background-color: rgb(47, 163, 82);
 }

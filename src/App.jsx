@@ -11,13 +11,15 @@ import RegisterUser from './components/RegisterUser';
 import Login from './views/Login/index';
 import Orders from './components/Ordenes/Ordenes'
 import OrderSupplements from './components/Ordenes/OrdenSuplemento';
-import { injectCartData} from './Redux/actions'
+import { injectCartData, setUser} from './Redux/actions'
 
 
 import './App.css'
 import Dashboard from './components/Dashboard/Dashboard';
 import NavBar from './components/NavBar/NavBar';
 import { useState } from 'react';
+
+import UserPerfil from './components/userPerfil/userPerfil.jsx';
 
 function App() {
   const [search, setSearch] = useState('');
@@ -59,10 +61,11 @@ function App() {
         <Route path='registeruser' element={<RegisterUser />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/order-supplements" element={<OrderSupplements/>} />
+        <Route path="/userperfil" element={<UserPerfil user={user=>user}/>} />
       </Routes>
       <Footer />
     </div>
   )
 }
 
-export default App
+export default App;
