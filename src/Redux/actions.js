@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import Swal from "sweetalert2";
 
 export const GET_SUPLEMENTS_BY_NAME = "GET_SUPLEMENTS_BY_NAME";
@@ -26,6 +27,7 @@ export const INJECT_USER = "INJECT_USER";
 export const CREATE_CART_AND_ADD_SUPLEMENTS = 'CREATE_CART_AND_ADD_SUPLEMENTS';
 export const CREATE_CART_AND_ADD_SUPLEMENTS_ERROR = 'CREATE_CART_AND_ADD_SUPLEMENTS_ERROR';
 export const GET_CART_CONTENTS = 'GET_CART_CONTENTS';
+export const UPDATE_USER = 'UPDATE_USER';
 
 
 //Función que hace la peticion con axios al back-end
@@ -228,7 +230,7 @@ export const postLogin = (login) => {
 
 export const setUser = (data) => {
     return {
-        type: INJECT_USER,
+        type: USER,
         payload: data
     }
 }
@@ -279,4 +281,24 @@ export const getCartContents = (cartId) => async (dispatch) => {
     } catch (error) {
         console.error('Error getting cart contents:', error);
     }
+};
+
+export const updateUser = (user) => {
+    const endpointUpdateUser = '/updateuser';
+    return async function (dispatch) {
+        try {
+            const response = await axios.post(endpointUpdateUser, user);
+            return dispatch({
+                type: UPDATE_USER,
+                payload: response.data
+            });
+        }
+        catch (error) {
+            error = {message:"Error completa los datos"};
+            return dispatch({
+                type:UPDATE_USER,
+                payload: error
+        });
+        }
+    };
 };

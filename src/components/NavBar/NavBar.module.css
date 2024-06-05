@@ -50,7 +50,7 @@
    } */
 
 .nav label {
-    color: #FAF0E6;
+    color: #f9f7f5;
     font-size: 18px;
     font-weight: normal;
     /* position: absolute; */
@@ -357,4 +357,15 @@
 
 .iconPerfil {
     height: 50px;
+    cursor: pointer;
+    border-radius: 30%;
+    background-color: #b6ecbf;
+}
+.iconPerfil:hover {
+    transform: scale(1.1); 
+    transition: 3s;
+    box-shadow: 0 8px 16px rgba(214, 128, 90, 0.2);
+    transition: box-shadow 1s, transform 1s;
+    
+    background: #c9dbcc;
 }

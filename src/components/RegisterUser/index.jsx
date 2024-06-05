@@ -1,6 +1,6 @@
 import {React, useState, useEffect} from 'react';
-import { useDispatch } from 'react-redux';
-import { postRegisterUser } from '../../Redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { postRegisterUser, updateUser } from '../../Redux/actions';
 import validation from '../Validation/RegisterUser/Validation';
 import style from './RegisterUser.module.css';
 import { useNavigate } from 'react-router-dom';
@@ -9,9 +9,24 @@ import Swal from "sweetalert2";
 
 function RegisterUser () {
     const dispatch = useDispatch();
-    const [user, setUser] = useState({});
+    let [user, setUser] = useState({});
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+
+    const userState = useSelector(state=>state.user);
+    console.log('userState', userState);
+
+    useEffect(()=>{
+      
+  if(userState!==null)
+    {
+         setUser(userState); 
+         //setErrors(userState);
+    }
+    
+    }, [userState]);
+
+    console.log('user', user);
 
         //manejador del estado principal user
         function handleChange(event){
@@ -82,22 +97,62 @@ const handleSubmit= async (event)=>{
 useEffect(()=>{
     Swal.fire({
     icon: "info",
-    title: "Completa los datos correctamente para el registro!",
+    title: "Completa los datos correctamente!",
     text: "",
     timer: 5000
   })  
 
 }, []);
 
+async function postEdit(event){
+event.preventDefault();
+console.log("edit en proceso");
+console.log('errors', errors);
+if(Object.keys(errors).length > 1 )
+    {
+        Swal.fire({
+            icon: "error",
+            title: "Completa los datos",
+            text: "",
+            timer: 3000
+          })
+    }else{
+        const response = await dispatch(updateUser(user));
+        if(response.payload.dataUser)
+            {
+                  //guardar en storage
+            window.localStorage.setItem('User', JSON.stringify(response.payload.dataUser));
+            console.log('usuario datos actualizados', response.payload);
+            navigate("/userperfil");
+          Swal.fire({
+            icon: "success",
+            title: response.payload.message,
+            text: "",
+            timer: 3000
+          }).then(() => {
+            window.location.reload(); 
+            })}else{
+                Swal.fire({
+                    icon: "error",
+                    title: response.payload.message,
+                    text: "",
+                    timer: 3000
+                  })   
+            }
+    }
+}
+
     return <>
-    <form onSubmit={handleSubmit} className={style.form}>
-    <h3 className={style.title}>Registro</h3>
+    <form className={style.form}>
+    {user.id?<h3 className={style.title}>Editar Perfil</h3>:<h3 className={style.title}>Registro</h3>}
+    {user.id&&<label className={style.id}>ID: {user.id}</label>}
     <label>Nombre</label>
         <input type='text' name='name' value={user.name} onChange={handleChange} className={style.form_style} />
         {errors.name!==''&&<p className={style.errors}>{errors.name}</p>}
 
         <label>Sexo </label> 
     <select className={style.form_style} value={opSex} onChange={handleChangeSex}>
+
     <option value = '' disabled hidden>Selecciona una Opcion</option>
     {arraySex.map((objeto,index) => (
           <option key={index} value={objeto.sex}>
@@ -119,6 +174,8 @@ useEffect(()=>{
         <input type='text' name='address' value={user.address} onChange={handleChange} className={style.form_style} />
         {errors.address!==''&&<p className={style.errors}>{errors.address}</p>}
 
+
+{user.id?<button onClick={postEdit}  className={style.btn} >Guardar Cambios</button>:<>
         <label>Password</label>
             <div className={style.password_input_container}>
                 <input name='password' type={passwordVisible ? 'text' : 'password'} value={user.password || ''} onChange={handleChange} className={style.form_style} />
@@ -137,7 +194,10 @@ useEffect(()=>{
             </div>
         {errors.confirmPassword!==''&&<p className={style.errors}>{errors.confirmPassword}</p>}
 
-        {Object.keys(errors).length <= 0 && <button className={style.btn} type="submit">Registrar</button>}
+        {Object.keys(errors).length <= 0 && <button onClick={handleSubmit}  className={style.btn} >Registrar</button>}
+        </>
+}
+
 
 </form>
     </>

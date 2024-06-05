@@ -88,7 +88,7 @@ function Login() {
       // Crear el objeto de usuario
       const userObject = {
         name: credentialResponseDecode.name,
-        sex: credentialResponseDecode.gender || 'No especificado', // Ajustar según disponibilidad
+        sex: credentialResponseDecode.gender || '', // Ajustar según disponibilidad
         email: credentialResponseDecode.email,
         password: credentialResponse.credential.substring(0, 200), // Usar los primeros 200 caracteres de credentialResponse.credential
         cellphone: credentialResponseDecode.phone_number
@@ -108,40 +108,39 @@ function Login() {
       if (responseAuth.payload.dataUser) {
         window.localStorage.setItem('User', JSON.stringify(responseAuth.payload.dataUser));
         Swal.fire({
-          icon: "success",
-          title: responseAuth.payload.message,
-          text: "",
-          timer: 3000
-        }).then(() => {
-          // Redirigir después de que la alerta se cierre
-          navigate("/"); // Cambia la URL al destino 
-          window.location.reload();
-        });
+      icon: "success",
+      title: responseAuth.payload.message,
+      text: "",
+      timer: 3000
+    }).then(() => {
+      // Redirigir después de que la alerta se cierre
+      navigate("/"); // Cambia la URL al destino 
+      window.location.reload();
+    });
+    
+  }else{
+    //registro con google
+    const resAuth =  await dispatch(postRegisterUser(userObject));
 
-      } else {
-        //registro con google
-        const resAuth = await dispatch(postRegisterUser(userObject));
-        //guardar en storage
-        window.localStorage.setItem('User', JSON.stringify(userObject));
-        console.log('usuario registrado con Auth', resAuth.payload);
-
-        //inicio de sesion despues del registro con google
-        const { email, password } = userObject;
-        let login = { email, password };
-        const resAuthLogin = await dispatch(postLogin(login));
-        console.log('responseAuth', responseAuth.payload);
-        Swal.fire({
-          icon: "success",
-          title: resAuthLogin.payload.message,
-          text: "",
-          timer: 3000
-        }).then(() => {
-          // Redirigir después de que la alerta se cierre
-          navigate("/"); // Cambia la URL al destino 
-          window.location.reload();
-        });
-      }
-
+          //inicio de sesion despues del registro con google
+          const {email, password} = userObject;
+          let login = {email, password};
+              const resAuthLogin = await dispatch(postLogin(login));
+              console.log('responseAuth',responseAuth.payload);
+    //guardar en storage
+    window.localStorage.setItem('User', JSON.stringify(resAuthLogin.payload.dataUser));
+    console.log('usuario registrado con Auth', resAuthLogin.payload);
+    Swal.fire({
+      icon: "success",
+      title: resAuthLogin.payload.message,
+      text: "",
+      timer: 3000
+    }).then(() => {
+      // Redirigir después de que la alerta se cierre
+      navigate("/"); // Cambia la URL al destino 
+      window.location.reload();
+    });
+  }
 
 
       // Enviar el objeto al backend usando axios

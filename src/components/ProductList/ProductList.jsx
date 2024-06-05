@@ -16,6 +16,7 @@ export default function ProductList({ search }) {
     const [datas, setDatas] = useState([]);
     const [datasAux, setDatasAux] = useState([]);
 
+
     useEffect(() => {
         axios.get("/category/").then(({ data }) => {
             setCategory([...data]);

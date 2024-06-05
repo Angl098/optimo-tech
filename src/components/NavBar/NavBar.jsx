@@ -91,18 +91,13 @@ const NavBar = (props) => {
         });
     }
     //user
-    useEffect(() => {
+ /*    useEffect(() => {
         const dataUserJSON = window.localStorage.getItem('User');
         if (dataUserJSON) {
-            const dataUser = JSON.parse(dataUserJSON);
-            dispatch(setUser(dataUser));
-
-            if (dataUser.email === "admin@gmail.com") {
-                setAdmin(true);
-            }
+        const dataUser = JSON.parse(dataUserJSON);
+        dispatch(setUser(dataUser));     
         }
-
-    }, []);
+    }, []); */
 
 
     return (
@@ -128,7 +123,6 @@ const NavBar = (props) => {
                         <input required type="text" className={style.input} value={search} onChange={handleChange} />
                         <span className={style.highlight}></span>
                         <span className={style.bar}></span>
-                        <label>Tu Suplemento</label>
                     </div>
                     <div className={style.groupButton}>
                         <button type="submit" className={style.cssbuttonsIo} onClick={() => handleSearch(search)}>
@@ -159,7 +153,9 @@ const NavBar = (props) => {
 
                 <div className={style.cartContainer}>
                     {userState !== null && <>
+                    <Link to='userperfil'>
                         <img className={style.iconPerfil} src='https://cdn.icon-icons.com/icons2/3298/PNG/96/ui_user_profile_avatar_person_icon_208734.png' />
+                    </Link>
                         <p>{userState.name}</p></>}
 
                     {userState !== null && <button onClick={cerrarSesion} className={style.buttonSign}>Cerrar sesion</button>}

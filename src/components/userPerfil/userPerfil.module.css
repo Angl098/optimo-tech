@@ -1,0 +1,55 @@
+label {
+    font-weight: bold; 
+  }
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .btn {
+    background: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .btn:hover {
+    background: #0056b3;
+  }
+
+  .id{
+    padding: 10px 50px;
+    background: #c9dbcc;
+    border-radius: 5px;
+    align-items: center;
+    }
+  
+    .iconPerfil {
+        height: 130px;
+        border-radius: 30%;
+        background-color: #b6ecbf;
+    }
+    .imgPerfil {
+        align-items: center;
+    }
+
+
