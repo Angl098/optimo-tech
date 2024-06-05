@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getSuplement, cleanProductById, addToCart, showShoppingCart } from "../../Redux/actions";
 import styles from "./Detail.module.css";
+import axios from "axios";
 
 const Detail = () => {
     const { id } = useParams();
@@ -37,7 +38,26 @@ const Detail = () => {
             dispatch(showShoppingCart(true));
         }
     };
-    console.log(productData);
+    const [newComment, setNewComment] = useState("");
+    const [parentId, setParentId] = useState(null);
+    // Función para manejar el cambio en el input del comentario
+    const handleCommentChange = (e) => {
+        setNewComment(e.target.value);
+    };
+
+    // Función para manejar el envío del nuevo comentario
+    const userId=JSON.parse(localStorage.getItem("User")).id
+    const handleAddComment = () => {
+        axios.post("/comments",{content:newComment,userId,suplementId:id,parentId}).then(({data})=>{console.log(data);})
+        // Aquí puedes enviar el nuevo comentario al backend
+        console.log("Agregando comentario:", newComment);
+        // Luego puedes limpiar el input del comentario si lo deseas
+        setNewComment("");
+    };
+
+    const handleReplyToComment = (commentId) => {
+        setParentId(commentId); // Establecer el parentId al ID del comentario al que se está respondiendo
+    };
     return (
         <div className={styles.body}>
             <div className={styles.card}>
@@ -57,6 +77,15 @@ const Detail = () => {
                         <button className={styles.btnBack}>Volver</button>
                     </Link>
                 </div>
+            </div>
+            <div className={styles.addComment}>
+                <input
+                    type="text"
+                    placeholder="Escribe tu comentario..."
+                    value={newComment}
+                    onChange={handleCommentChange}
+                />
+                <button onClick={handleAddComment}>Agregar comentario</button>
             </div>
         </div>
     );
