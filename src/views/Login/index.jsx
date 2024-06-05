@@ -108,49 +108,40 @@ function Login() {
       if (responseAuth.payload.dataUser) {
         window.localStorage.setItem('User', JSON.stringify(responseAuth.payload.dataUser));
         Swal.fire({
-      icon: "success",
-      title: responseAuth.payload.message,
-      text: "",
-      timer: 3000
-    }).then(() => {
-      // Redirigir después de que la alerta se cierre
-      navigate("/"); // Cambia la URL al destino 
-      window.location.reload();
-    });
-    
-  }else{
-    //registro con google
-    const resAuth =  await dispatch(postRegisterUser(userObject));
+          icon: "success",
+          title: responseAuth.payload.message,
+          text: "",
+          timer: 3000
+        }).then(() => {
+          // Redirigir después de que la alerta se cierre
+          navigate("/"); // Cambia la URL al destino 
+          window.location.reload();
+        });
 
-          //inicio de sesion despues del registro con google
-          const {email, password} = userObject;
-          let login = {email, password};
-              const resAuthLogin = await dispatch(postLogin(login));
-              console.log('responseAuth',responseAuth.payload);
-    //guardar en storage
-    window.localStorage.setItem('User', JSON.stringify(resAuthLogin.payload.dataUser));
-    console.log('usuario registrado con Auth', resAuthLogin.payload);
-    Swal.fire({
-      icon: "success",
-      title: resAuthLogin.payload.message,
-      text: "",
-      timer: 3000
-    }).then(() => {
-      // Redirigir después de que la alerta se cierre
-      navigate("/"); // Cambia la URL al destino 
-      window.location.reload();
-    });
-  }
+      } else {
+        //registro con google
+        const resAuth = await dispatch(postRegisterUser(userObject));
 
+        //inicio de sesion despues del registro con google
+        const { email, password } = userObject;
+        let login = { email, password };
+        const resAuthLogin = await dispatch(postLogin(login));
+        console.log('responseAuth', responseAuth.payload);
+        //guardar en storage
+        window.localStorage.setItem('User', JSON.stringify(resAuthLogin.payload.dataUser));
+        console.log('usuario registrado con Auth', resAuthLogin.payload);
+        Swal.fire({
+          icon: "success",
+          title: resAuthLogin.payload.message,
+          text: "",
+          timer: 3000
+        }).then(() => {
+          // Redirigir después de que la alerta se cierre
+          navigate("/"); // Cambia la URL al destino 
+          window.location.reload();
+        });
+      }
 
-      // Enviar el objeto al backend usando axios
-      /*       axios.post('/users', userObject)
-              .then((response) => {
-                console.log('Usuario creado:', response.data);
-              })
-              .catch((error) => {
-                console.error('Error al crear el usuario:', error);
-              }); */
 
 
 
@@ -158,20 +149,7 @@ function Login() {
       console.error('Error al decodificar el token:', error);
     }
   };
-  /*   const onSubmit=(e)=>{
-      e.preventDefault()
-      axios.post("/login",login ).then(({data})=>{
-        console.log(data);
-        localStorage.setItem("user", JSON.stringify(data));
-        Swal.fire({
-          icon: "success",
-          title: "¡Usuario registrado!",
-          text: "",
-        });
-        navigate("/")
-      })
-    }
-   */
+
   return (
     <>
       <form className={style.form} onSubmit={handleSubmit}>
