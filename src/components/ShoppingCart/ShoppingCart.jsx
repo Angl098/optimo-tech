@@ -29,10 +29,14 @@ const ShoppingCart = () => {
             for (let i = 0; i < total.length; i++) {
                 totalPrice += total[i];
             }
+            const valueLocal = JSON.parse(localStorage.getItem("User")); 
+            const userId = valueLocal.id;
+            console.log(userId);
 
             const response = await axios.post("/payment/create_preference", {
                 items: items,
                 total: totalPrice,
+                userId,
             })
 
             const { point } = response.data;

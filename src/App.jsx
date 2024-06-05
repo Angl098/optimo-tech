@@ -10,7 +10,6 @@ import Detail from './views/Detail/Detail';
 import RegisterUser from './components/RegisterUser';
 import Login from './views/Login/index';
 import Orders from './components/Ordenes/Ordenes'
-import OrderSupplements from './components/Ordenes/OrdenSuplemento';
 import { injectCartData} from './Redux/actions'
 
 
@@ -60,10 +59,9 @@ function App() {
 
         <Route path='login' element={<Login />} />
         <Route path='/home/:id' element={<Detail />} />
-        {/* <Route path={PATHROUTES.DETAIL} element={<Detail/>}/> */}
         <Route path='registeruser' element={<RegisterUser />} />
         <Route path="/orders" element={<Orders />} />
-        <Route path="/order-supplements" element={<OrderSupplements/>} />
+        {/* <Route path="/orders/:id" element={<OrderSupplements/>} /> */}
         <Route path="/cart-list" element={<CartList/>} />
       </Routes>
       <Footer />
