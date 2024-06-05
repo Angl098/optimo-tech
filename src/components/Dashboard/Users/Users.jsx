@@ -12,7 +12,7 @@ const Users=()=> {
 
     return (
         <div className={style.FormCategories}>
-            <h1>Provedores</h1>
+            <h1>Lista de usuarios</h1>
             <UserController/>
         </div>
     );
