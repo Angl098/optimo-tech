@@ -1,28 +1,26 @@
 /* eslint-disable react/prop-types */
 
-import { useEffect, useState } from 'react'
-import style from './ProductList.module.css'
-import axios from 'axios'
-
-
-import Card from '../card/card.component'
-import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react';
+import style from './ProductList.module.css';
+import axios from 'axios';
+import Card from '../card/card.component';
+import { useSelector } from 'react-redux';
 
 export default function ProductList({ search }) {
-    const arrayCategory = useSelector((state) => state.categorias)
-    const arrayProviders = useSelector((state) => state.provedores)
-    const arrayTags = useSelector((state) => state.tags)
+    const arrayCategory = useSelector((state) => state.categorias);
+    const arrayProviders = useSelector((state) => state.provedores);
+    const arrayTags = useSelector((state) => state.tags);
 
-    const [category, setCategory] = useState([])
+    const [category, setCategory] = useState([]);
+    const [totalPages, setTotalPages] = useState(0);
+    const [datas, setDatas] = useState([]);
+    const [datasAux, setDatasAux] = useState([]);
 
-    const [totalPages, setTotalPages] = useState(0)
-    const [datas, setDatas] = useState([])
-    const [datasAux, setDatasAux] = useState([])
     useEffect(() => {
         axios.get("/category/").then(({ data }) => {
-            setCategory([...data])
-        })
-    }, [])
+            setCategory([...data]);
+        });
+    }, []);
 
     const [filter, setFilter] = useState({
         category: "",
@@ -36,7 +34,7 @@ export default function ProductList({ search }) {
     });
 
     const buildQueryParams = (filter) => {
-        if (search) filter.name = search
+        if (search) filter.name = search;
         let queryParams = "?";
         for (const [key, value] of Object.entries(filter)) {
             if (value !== null && value !== "") {
@@ -49,13 +47,12 @@ export default function ProductList({ search }) {
         }
         return queryParams;
     };
+
     const fetchAlojamientos = async (queryParams) => {
         try {
             const { data } = await axios.get("/suplements/filter" + queryParams);
-            // console.log(data);
-            setDatas(data.items)
-            setTotalPages(data.totalPages)
-            //   dispatch(getAllAlojamientos(data));
+            setDatas(data.items);
+            setTotalPages(data.totalPages);
         } catch (error) {
             console.log(error);
         }
@@ -66,173 +63,125 @@ export default function ProductList({ search }) {
         fetchAlojamientos(queryParams);
     }, [filter, search]);
 
-
     const [numberPage, setNumberPage] = useState(1);
 
     useEffect(() => {
-        setNumberPage(1)
-    }, [])
-
+        setNumberPage(1);
+    }, []);
 
     const nextPage = () => {
         setFilter({ ...filter, page: filter.page + 1 });
-    }
+    };
 
     const prevPage = () => {
         setFilter({ ...filter, page: filter.page - 1 });
-    }
+    };
 
     const goToPage = (page) => {
         setFilter({ ...filter, page });
     };
 
-
     const handleFilterChange = async (e) => {
         const changeFilter = { ...filter, [e.target.name]: e.target.value };
         setFilter(changeFilter);
-        buildQueryParams();
-        fetchAlojamientos();
-    }
+        const queryParams = buildQueryParams(changeFilter);
+        fetchAlojamientos(queryParams);
+    };
 
-    const handleCategoryFilter = (category) => {
-        if (category) {
+    const [selectCategory, setSelectCategory] = useState(null);
+    const [selectProvider, setSelectProvider] = useState(null);
+    const [selectTags, setSelectTags] = useState([]);
 
-            const changeFilter = { ...filter, category, page: 1 };
-            setFilter(changeFilter);
-            buildQueryParams();
-            fetchAlojamientos();
-        } else {
-            const changeFilter = {
-                category: "",
-                provider: filter.provider,
-                orderBy: filter.orderBy,
-                orderDirection: filter.orderDirection,
-                page: 1,
-                pageSize: filter.pageSize,
-                tags: filter.tags
-            };
-            setFilter(changeFilter);
-            buildQueryParams();
-            fetchAlojamientos();
+    const handleCategoryFilter = (category, index) => {
+        setSelectCategory(index);
+        const changeFilter = category
+            ? { ...filter, category, page: 1 }
+            : { ...filter, category: "", page: 1 };
+        setFilter(changeFilter);
+        const queryParams = buildQueryParams(changeFilter);
+        fetchAlojamientos(queryParams);
+    };
 
-        }
-    }
-    const handleProviderFilter = (provider) => {
-        if (provider) {
+    const handleProviderFilter = (provider, index) => {
+        setSelectProvider(index);
+        const changeFilter = provider
+            ? { ...filter, provider, page: 1 }
+            : { ...filter, provider: "", page: 1 };
+        setFilter(changeFilter);
+        const queryParams = buildQueryParams(changeFilter);
+        fetchAlojamientos(queryParams);
+    };
 
-            const changeFilter = { ...filter, provider, page: 1 };
-            setFilter(changeFilter);
-            buildQueryParams();
-            fetchAlojamientos();
-        } else {
-            const changeFilter = {
-                tags: filter.tags,
-                provider: "",
-                category: filter.category,
-                orderBy: filter.orderBy,
-                orderDirection: filter.orderDirection,
-                page: 1,
-                pageSize: filter.pageSize
-            };
-            setFilter(changeFilter);
-            buildQueryParams();
-            fetchAlojamientos();
-
-        }
-    }
-    const handleTagsFilter = (tag) => {
-        if (tag.trim() !== '') {
-
-            if (tag && !filter.tags.includes(tag)) {
-
-                const changeFilter = { ...filter, tags: [...filter.tags, tag], page: 1 };
-                setFilter(changeFilter);
-                buildQueryParams();
-                fetchAlojamientos();
-
-            }else{
-                const changeFilter = {
-                    tags: [...filter.tags],
-                    provider: filter.provider,
-                    category: filter.category,
-                    orderBy: filter.orderBy,
-                    orderDirection: filter.orderDirection,
-                    page: 1,
-                    pageSize: filter.pageSize
-                };
-                setFilter(changeFilter);
-                buildQueryParams();
-                fetchAlojamientos();
-
+    const handleTagsFilter = (tag, index) => {
+        setSelectTags((prevSelectTags) => {
+            let updatedTags;
+            if (tag.trim() !== '') {
+                if (!prevSelectTags.includes(index)) {
+                    updatedTags = [...prevSelectTags, index];
+                } else {
+                    updatedTags = prevSelectTags.filter((i) => i !== index);
+                }
+            } else {
+                updatedTags = [];
             }
-        } else {
-            const changeFilter = {
-                tags: [],
-                provider: filter.provider,
-                category: filter.category,
-                orderBy: filter.orderBy,
-                orderDirection: filter.orderDirection,
-                page: 1,
-                pageSize: filter.pageSize
-            };
+
+            const selectedTagNames = updatedTags.map(i => arrayTags[i - 1].name);
+
+            const changeFilter = { ...filter, tags: selectedTagNames, page: 1 };
             setFilter(changeFilter);
-            buildQueryParams();
-            fetchAlojamientos();
+            const queryParams = buildQueryParams(changeFilter);
+            fetchAlojamientos(queryParams);
 
-        }
-    }
-
+            return updatedTags;
+        });
+    };
 
     return (
         <div className={style.productList}>
             <div className={style.categories}>
                 <div>
-                <h3>Categorias</h3>
-                    <p className={style.category} onClick={() => handleCategoryFilter(category.id)} value=" ">Todos</p>
-                    {arrayCategory.map((category) => {
-                        return <p className={style.category} key={category.id} name="category" value={category.id} onClick={() => handleCategoryFilter(category.id)}>{category.name}</p>
+                    <h3>Categorias</h3>
+                    <p className={!selectCategory ? style.selectCategory : style.category} onClick={() => handleCategoryFilter(null, null)} value=" ">Todos</p>
+                    {arrayCategory.map((category, index) => {
+                        return <p className={selectCategory === index + 1 ? style.selectCategory : style.category} key={category.id} name="category" value={category.id} onClick={() => handleCategoryFilter(category.id, index + 1)}>{category.name}</p>
                     })}
-
                 </div>
-                <div >
-                <h3>Marcas</h3>
-                    <p className={style.category} onClick={() => handleProviderFilter("")} value=" ">Todos</p>
-                    {arrayProviders.map((provider) => {
-                        return <p className={style.category} key={provider.id} name="provider" value={provider.id} onClick={() => handleProviderFilter(provider.id)}>{provider.name}</p>
+                <div>
+                    <h3>Marcas</h3>
+                    <p className={!selectProvider ? style.selectCategory : style.category} onClick={() => handleProviderFilter(null, null)} value=" ">Todos</p>
+                    {arrayProviders.map((provider, index) => {
+                        return <p className={selectProvider === index + 1 ? style.selectCategory : style.category} key={provider.id} name="provider" value={provider.id} onClick={() => handleProviderFilter(provider.id, index + 1)}>{provider.name}</p>
                     })}
-
                 </div>
-                <div >
-                <h3>Etiquetas</h3>
-                    <p className={style.category} onClick={() => handleTagsFilter("")} value=" ">Todos</p>
-                    {arrayTags.map((tag) => {
-                        return <p className={style.category} key={tag.id} name="tags" value={tag.id} onClick={() => handleTagsFilter(tag.name)}>{tag.name}</p>
+                <div>
+                    <h3>Etiquetas</h3>
+                    <p className={!selectTags.length ? style.selectCategory : style.category} onClick={() => handleTagsFilter("", null)} value=" ">Todos</p>
+                    {arrayTags.map((tag, index) => {
+                        return <p className={selectTags.includes(index + 1) ? style.selectCategory : style.category} key={tag.id} name="tags" value={tag.id} onClick={() => handleTagsFilter(tag.name, index + 1)}>{tag.name}</p>
                     })}
-
                 </div>
             </div>
             <div className={style.catalogo}>
 
-                <div>
+                <div className={style.selectContainer}>
                     <select
                         name="orderBy"
                         onChange={handleFilterChange}
-                        className=" bg-transparent focus:outline-none text-chocolate-100 mb-1"
+                        className={style.selectElement}
                     >
-                        <option value="price">Por precio</option>
-                        <option value="name">Alfebeticamente</option>
+                        <option className={style.optionElement} value="price">Por precio</option>
+                        <option className={style.optionElement} value="name">Alfabéticamente</option>
                     </select>
                     <select
                         name="orderDirection"
                         onChange={handleFilterChange}
-                        className=" bg-transparent focus:outline-none text-chocolate-100 mb-1"
+                        className={style.selectElement}
                     >
-                        <option value="ASC">Asc</option>
-                        <option value="DESC">Desc</option>
+                        <option className={style.optionElement} value="ASC">Asc</option>
+                        <option className={style.optionElement} value="DESC">Desc</option>
                     </select>
                 </div>
                 <div className={style.newData}>
-
                     <div className={style.contenedorCards}>
                         {datas.map((suplement) => {
                             return (
@@ -242,20 +191,19 @@ export default function ProductList({ search }) {
                     </div>
                 </div>
                 <div className={style.buttonContainer}>
-                <button onClick={prevPage} className={style.btnPages} disabled={filter.page === 1} >❮</button>
-                {[...Array(totalPages)].map((_, index) => (
-                    <button
-                        key={index + 1}
-                        onClick={() => goToPage(index + 1)}
-                        className={style.pageButton}
-                    >
-                        {index + 1}
-                    </button>
-                ))}
-                <button onClick={nextPage} className={style.btnPages} disabled={filter.page === totalPages}>❯</button>
+                    <button onClick={prevPage} className={style.btnPages} disabled={filter.page === 1}>❮</button>
+                    {[...Array(totalPages)].map((_, index) => (
+                        <button
+                            key={index + 1}
+                            onClick={() => goToPage(index + 1)}
+                            className={style.btnPages}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+                    <button onClick={nextPage} className={style.btnPages} disabled={filter.page === totalPages}>❯</button>
+                </div>
             </div>
-            </div>
-
         </div>
-    )
+    );
 }

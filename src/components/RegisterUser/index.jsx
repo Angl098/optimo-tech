@@ -29,7 +29,7 @@ function RegisterUser () {
         {id:2, sex:'Femenino'}
     ];
 
-    const [opSex,setOpSex] = useState([]);
+    const [opSex,setOpSex] = useState("");
 
     const handleChangeSex = (event) => {
         event.preventDefault();
@@ -99,8 +99,8 @@ useEffect(()=>{
         <label>Sexo </label> 
     <select className={style.form_style} value={opSex} onChange={handleChangeSex}>
     <option value = '' disabled hidden>Selecciona una Opcion</option>
-    {arraySex.map((objeto) => (
-          <option key={objeto.id} value={objeto.sex}>
+    {arraySex.map((objeto,index) => (
+          <option key={index} value={objeto.sex}>
             {objeto.sex}
           </option>
         ))}
@@ -139,7 +139,6 @@ useEffect(()=>{
 
         {Object.keys(errors).length <= 0 && <button className={style.btn} type="submit">Registrar</button>}
 
-        {console.log(user)}
 </form>
     </>
 }

@@ -24,9 +24,9 @@ const Carousel = () => {
     }
     return (
         <div className={style.slider}>
-            {suplements.map((s)=>
+            {suplements.map((s,index)=>
 
-            <Link to={'/detail/'} className={style.slide} onClick={scroll}>
+            <Link to={'/detail/'} key={index} className={style.slide} onClick={scroll}>
                 <img className={style.img} src={s.image} alt="" />
                 <div className={style.info}>
                     <p className={style.p}>{s.name}</p>
