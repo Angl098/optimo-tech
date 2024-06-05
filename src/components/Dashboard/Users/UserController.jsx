@@ -4,6 +4,7 @@ import style from '../FormCategories.module.css';
 
 function UserController() {
     const [users, setUsers] = useState([]);
+    const [totalPages, setTotalPages] = useState(1);
     const [filter, setFilter] = useState({
         email: "",
         orderBy: "",
@@ -28,12 +29,17 @@ function UserController() {
         return queryParams;
     };
 
-    useEffect(() => {
+    const fetchUsers = (filter) => {
         axios.get('/users/filter' + buildQueryParams(filter))
             .then(({ data }) => {
-                setUsers(data.items)
+                setUsers(data.items);
+                setTotalPages(data.totalPages);
             })
             .catch(error => console.error('Error fetching users:', error));
+    };
+
+    useEffect(() => {
+        fetchUsers(filter);
     }, [filter]);
 
     const handleBanUser = (userId) => {
@@ -68,43 +74,67 @@ function UserController() {
     };
 
     const handleFilter = () => {
-        axios.get('/users/filter' + buildQueryParams(filter))
-            .then(({ data }) => {
-                setUsers(data.items);
-            })
-            .catch(error => console.error('Error fetching users:', error));
+        setFilter({ ...filter, page: 1 });
+    };
+
+    const handlePageChange = (newPage) => {
+        setFilter({ ...filter, page: newPage });
     };
 
     const nextPage = () => {
-        setFilter({ ...filter, page: filter.page + 1 });
-        axios.get('/users/filter' + buildQueryParams(filter))
-            .then(({ data }) => {
-                setUsers(data.items);
-            })
-            .catch(error => console.error('Error fetching users:', error));
+        if (filter.page < totalPages) {
+            handlePageChange(filter.page + 1);
+        }
     };
 
     const prevPage = () => {
-        setFilter({ ...filter, page: filter.page - 1 });
-        axios.get('/users/filter' + buildQueryParams(filter))
-            .then(({ data }) => {
-                setUsers(data.items);
-            })
-            .catch(error => console.error('Error fetching users:', error));
+        if (filter.page > 1) {
+            handlePageChange(filter.page - 1);
+        }
+    };
+
+    const renderPagination = () => {
+        const maxPageButtons = 5;
+        const pages = [];
+        let startPage = Math.max(1, filter.page - Math.floor(maxPageButtons / 2));
+        let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+
+        if (endPage - startPage < maxPageButtons - 1) {
+            startPage = Math.max(1, endPage - maxPageButtons + 1);
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(
+                <button
+                    key={i}
+                    className={`${style.pageButton} ${filter.page === i ? style.activePage : ''}`}
+                    onClick={() => handlePageChange(i)}
+                >
+                    {i}
+                </button>
+            );
+        }
+
+        return (
+            <div className={style.pagination}>
+                {filter.page > 1 && (
+                    <button onClick={prevPage} className={style.pageButton}>{"<"}</button>
+                )}
+                {pages}
+                {filter.page < totalPages && (
+                    <button onClick={nextPage} className={style.pageButton}>{">"}</button>
+                )}
+            </div>
+        );
     };
 
     return (
         <div className={style.UpdateCategorias}>
             <div className={style.userList}>
-                <input type="text" onChange={handleChange} name='email' value={filter.email} />
-                <button onClick={handleFilter}>Buscar</button>
+                <input type="text" onChange={handleChange} name='email' value={filter.email} className={style.input}/>
+                <button onClick={handleFilter} className={style.button}>Buscar</button>
                 <div>
-                    {users.length > 4 && (
-                        <>
-                            <button onClick={prevPage}>{"<"}</button>
-                            <button onClick={nextPage}>{">"}</button>
-                        </>
-                    )}
+                    {users.length > 0 && renderPagination()}
                 </div>
                 <h3>Usuarios</h3>
                 {users.map((user) => (
