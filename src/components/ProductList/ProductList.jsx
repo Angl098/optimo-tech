@@ -47,8 +47,6 @@ export default function ProductList({ search }) {
                 }
             }
         }
-        console.log(queryParams);
-        console.log(filter, "FIlter");
         return queryParams;
     };
     const fetchAlojamientos = async (queryParams) => {
@@ -143,13 +141,30 @@ export default function ProductList({ search }) {
         }
     }
     const handleTagsFilter = (tag) => {
-        if (tag && !filter.tags.includes(tag) && tag.trim() !== '') {
+        if (tag.trim() !== '') {
+
+            if (tag && !filter.tags.includes(tag)) {
 
                 const changeFilter = { ...filter, tags: [...filter.tags, tag], page: 1 };
                 setFilter(changeFilter);
                 buildQueryParams();
                 fetchAlojamientos();
 
+            }else{
+                const changeFilter = {
+                    tags: [...filter.tags],
+                    provider: filter.provider,
+                    category: filter.category,
+                    orderBy: filter.orderBy,
+                    orderDirection: filter.orderDirection,
+                    page: 1,
+                    pageSize: filter.pageSize
+                };
+                setFilter(changeFilter);
+                buildQueryParams();
+                fetchAlojamientos();
+
+            }
         } else {
             const changeFilter = {
                 tags: [],
