@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import style from '../FormCategories.module.css';
 import Update from '../Update/Update';
+import UserController from './UserController';
 
 const Users=()=> {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         // Función para obtener categorías del backend
-        axios.get("/tags").then(({data})=>{
+        axios.get("/users").then(({data})=>{
             setCategories(data);
         })
         
@@ -17,7 +18,7 @@ const Users=()=> {
     const handleCategoryUpdate = async (id, name) => {
         // Lógica para actualizar la categoría en el backend
         const body={id,name}
-        axios.put(`/tags`,body).then(({data})=>{
+        axios.put(`/users`,body).then(({data})=>{
         })
         // Actualizar el estado local
         setCategories(categories.map(cat => (cat.id === id ? { ...cat, name } : cat)));
@@ -36,7 +37,7 @@ const Users=()=> {
     return (
         <div className={style.FormCategories}>
             <h1>Provedores</h1>
-            <Update
+            <UserController
                 categories={categories}
                 onCategoryUpdate={handleCategoryUpdate}
                 onCategoryCreate={handleCategoryCreate}

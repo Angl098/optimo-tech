@@ -87,7 +87,7 @@ const handleSubmit = async (event)=>{
       // Crear el objeto de usuario
       const userObject = {
         name: credentialResponseDecode.name,
-        sex: credentialResponseDecode.gender || 'No especificado', // Ajustar según disponibilidad
+        sex: credentialResponseDecode.gender || '', // Ajustar según disponibilidad
         email: credentialResponseDecode.email,
         password: credentialResponse.credential.substring(0, 200), // Usar los primeros 200 caracteres de credentialResponse.credential
         cellphone: credentialResponseDecode.phone_number
@@ -120,15 +120,15 @@ const handleSubmit = async (event)=>{
   }else{
     //registro con google
     const resAuth =  await dispatch(postRegisterUser(userObject));
-    //guardar en storage
-    window.localStorage.setItem('User', JSON.stringify(userObject));
-    console.log('usuario registrado con Auth', resAuth.payload);
 
           //inicio de sesion despues del registro con google
           const {email, password} = userObject;
           let login = {email, password};
               const resAuthLogin = await dispatch(postLogin(login));
               console.log('responseAuth',responseAuth.payload);
+    //guardar en storage
+    window.localStorage.setItem('User', JSON.stringify(resAuthLogin.payload.dataUser));
+    console.log('usuario registrado con Auth', resAuthLogin.payload);
     Swal.fire({
       icon: "success",
       title: resAuthLogin.payload.message,

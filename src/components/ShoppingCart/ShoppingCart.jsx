@@ -44,11 +44,52 @@ const ShoppingCart = () => {
         }
     }
 
+    const handleCreateCart = async () => {
+        const {id} = JSON.parse(localStorage.getItem('User'));
+        if (id) {
+            const response = dispatch(createCart(id));
+            if (response && response.data) {
+                localStorage.setItem('cartId', response.data.id);
+            }
+        }
+    };
+
+
+    const handleAddSuplementsToCart = async () => {
+        let cartId = localStorage.getItem('cartId');
+        if (!cartId) {
+            await handleCreateCart();
+            cartId = localStorage.getItem('cartId');
+        }
+
+        const suplements = cart.map((prod) => ({
+            suplementId: prod.id,
+            quantity: prod.quantity,
+        }));
+
+        if (cartId && suplements.length > 0) {
+            dispatch(addSuplementsToCart(cartId, suplements));
+        }
+    };
+
     const handleCheckout = async () => {
-        
-        if (user === null) {
+        const user = JSON.parse(localStorage.getItem('User'));
+        if (user) {
+            
+            // const { userId } = user;
+            if (!user.id) {
+                swal("Login first", "To make a purchase you need to register", "error");
+                return;
+            }
+            
+            await handleAddSuplementsToCart();
+            
+            if (cart.length > 0) {
+                // createPreference();  
+            }
+        }else{
+
             swal("Login first", "To make a purchase you need to register", "error");
-            return;
         }
         
         if (cart.length > 0) {

@@ -35,11 +35,6 @@ function App() {
     setSearch(search);
     navigate("/home")
   }
-/* 
-  useEffect(() => {
-    const user = window.localStorage.getItem('user')
-    if(user) dispatch(injectUser(JSON.parse(user)))
-  },[]) */
 
   useEffect(() => {
     const productsInCart = window.localStorage.getItem('cart')
@@ -49,6 +44,15 @@ function App() {
       }
     }
   },[dispatch])
+
+  useEffect(() => {
+    const dataUserJSON = window.localStorage.getItem('User');
+    console.log('dataUserJSON', dataUserJSON);
+    if (dataUserJSON) {
+    const dataUser = JSON.parse(dataUserJSON);
+    dispatch(setUser(dataUser));     
+    }
+}, []);
 
   return (
 
@@ -67,7 +71,7 @@ function App() {
         <Route path="/orders" element={<Orders />} />
         <Route path="/order-supplements" element={<OrderSupplements/>} />
         <Route path="/cart-list" element={<CartList/>} />
-        <Route path="/userperfil" element={<UserPerfil user={user=>user}/>} />
+        <Route path="/userperfil" element={<UserPerfil user={user}/>} />
       </Routes>
       <Footer />
     </div>

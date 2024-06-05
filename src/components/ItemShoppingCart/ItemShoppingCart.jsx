@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 const ItemShoppingCart = () => {
     const itemProduct = useSelector((state) => state.cart)
     const dispatch = useDispatch()
-
     useEffect(() => {
         // console.log('Cart updated:', itemProduct);
         window.localStorage.setItem('cart', JSON.stringify(itemProduct))

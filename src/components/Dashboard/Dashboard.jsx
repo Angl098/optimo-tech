@@ -9,6 +9,9 @@ import FormCategories from "./Categorias/FormCategories"
 import Provedores from "./Providers/Providers"
 import Tags from "./Tags/Tags"
 import Users from "./Users/Users"
+import CartList from "../CartList/CartList"
+import Orders from "../Ordenes/Ordenes"
+import OrdenSuplemento from "../Ordenes/OrdenSuplemento"
 const Dashboard = () => {
 
     const [filter, setFilter] = useState({
@@ -26,22 +29,22 @@ const Dashboard = () => {
             <div className={style.dashboard}>
                 <div className={style.options}>
 
-                    <Link  to={"users"}>
+                    <Link to={"users"}>
                         <p>
                             Usuarios
                         </p>
                     </Link>
-                    <Link  to={"categorias"}>
+                    <Link to={"categorias"}>
                         <p>
                             Categorias
                         </p>
                     </Link>
-                    <Link  to={"provedores"}>
+                    <Link to={"provedores"}>
                         <p>
                             Provedores
                         </p>
                     </Link>
-                    <Link  to={"tags"}>
+                    <Link to={"tags"}>
                         <p>
                             Etiquetas
                         </p>
@@ -54,6 +57,16 @@ const Dashboard = () => {
                     <Link to={`updatesuplement`}>
                         <p>
                             Actualizar Suplementos
+                        </p>
+                    </Link>
+                    <Link to="orders">
+                        <p>
+                            Orders
+                        </p>
+                    </Link>
+                    <Link to="cart-list" >
+                        <p>
+                            Carritos
                         </p>
                     </Link>
                     <div className={style.list}>
@@ -71,8 +84,12 @@ const Dashboard = () => {
                         <Route path='provedores' element={<Provedores />} />
                         <Route path='tags' element={<Tags />} />
                         <Route path='users' element={<Users />} />
+                        <Route path="orders" element={<Orders />} />
 
                         <Route path='updatesuplement' element={<UpdateSuplement />} />
+                        <Route path="/order-supplements" element={<OrdenSuplemento />} />
+                        <Route path="/cart-list" element={<CartList />} />
+
                     </Routes>
                 </div>
             </div>
