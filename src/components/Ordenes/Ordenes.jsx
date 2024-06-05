@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import styles from './Ordenes.module.css'
 
 const Orders = () => {
@@ -7,6 +8,7 @@ const Orders = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [orderDetails, setOrderDetails] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -23,22 +25,8 @@ const Orders = () => {
         fetchOrders();
     }, []);
 
-    const fetchOrderDetails = async (orderId) => {
-        try {
-            const response = await axios.get(`/orders/${orderId}/details`);
-            setOrderDetails(prevDetails => ({
-                ...prevDetails,
-                [orderId]: response.data
-            }));
-        } catch (err) {
-            setError(err.message);
-        }
-    };
-
-    const viewOrderDetails = (orderId) => {
-        if (!orderDetails[orderId]) {
-            fetchOrderDetails(orderId);
-        }
+    const viewOrderDetails = (id) => {
+        navigate(`/orders/${id}`);
     };
 
     if (loading) {
@@ -59,7 +47,7 @@ const Orders = () => {
                         <th>Total</th>
                         <th>Status</th>
                         <th>Payment Method</th>
-                        <th>Actions</th>
+                        <th>User</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,17 +58,12 @@ const Orders = () => {
                             <td>{(order.total / 100).toFixed(2)}</td>
                             <td>{order.status}</td>
                             <td>{order.paymentMethod} Mercado pago</td>
+                            <td>{order.userId} </td>
                             <td>
-                                <button onClick={() => viewOrderDetails(order.id)}>View Details</button>
+                            <button onClick={() => viewOrderDetails(order.id)}>Ver Detalles</button>
                             </td>
                         </tr>
-                        {orderDetails[order.id] && (
-                            <tr>
-                                <td colSpan="5">
-                                    <OrderDetails details={orderDetails[order.id]} />
-                                </td>
-                            </tr>
-                        )}
+                        
                     </React.Fragment>
                     ))}
                 </tbody>
@@ -88,31 +71,5 @@ const Orders = () => {
         </div>
     );
 };
-
-const OrderDetails = ({ details }) => (
-    <div className={styles.orderDetails}>
-        <h3>Order Details</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Product ID</th>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                {details.OrdenSuplementos.map(supplement => (
-                    <tr key={supplement.Suplement.id}>
-                        <td>{supplement.Suplement.id}</td>
-                        <td>{supplement.Suplement.name}</td>
-                        <td>{supplement.quantity}</td>
-                        <td>{(supplement.price / 100).toFixed(2)}</td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-    </div>
-);
 
 export default Orders;

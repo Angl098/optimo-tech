@@ -5,12 +5,10 @@ import PATHROUTES from "./helpers/PathRoutes";
 import Landing from "./views/Landing/Landing";
 import Home from './views/Home/Home';
 import Footer from './components/Footer/Footer';
-import CreateSuplement from './components/CreateSuplements/index';
 import Detail from './views/Detail/Detail';
 import RegisterUser from './components/RegisterUser';
 import Login from './views/Login/index';
 import Orders from './components/Ordenes/Ordenes'
-import OrderSupplements from './components/Ordenes/OrdenSuplemento';
 import { injectCartData, setUser} from './Redux/actions'
 
 
@@ -19,7 +17,6 @@ import Dashboard from './components/Dashboard/Dashboard';
 import NavBar from './components/NavBar/NavBar';
 import { useState } from 'react';
 import { getCategorias, getProviders, getTags } from './Redux/actions';
-import CartList from './components/CartList/CartList';
 
 import UserPerfil from './components/userPerfil/userPerfil.jsx';
 
@@ -66,11 +63,7 @@ function App() {
 
         <Route path='login' element={<Login />} />
         <Route path='/home/:id' element={<Detail />} />
-        {/* <Route path={PATHROUTES.DETAIL} element={<Detail/>}/> */}
         <Route path='registeruser' element={<RegisterUser />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/order-supplements" element={<OrderSupplements/>} />
-        <Route path="/cart-list" element={<CartList/>} />
         <Route path="/userperfil" element={<UserPerfil user={user}/>} />
       </Routes>
       <Footer />
