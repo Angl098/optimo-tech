@@ -5,13 +5,11 @@ import PATHROUTES from "./helpers/PathRoutes";
 import Landing from "./views/Landing/Landing";
 import Home from './views/Home/Home';
 import Footer from './components/Footer/Footer';
-import CreateSuplement from './components/CreateSuplements/index';
 import Detail from './views/Detail/Detail';
 import RegisterUser from './components/RegisterUser';
 import Login from './views/Login/index';
 import Orders from './components/Ordenes/Ordenes'
-import OrderSupplements from './components/Ordenes/OrdenSuplemento';
-import { injectCartData} from './Redux/actions'
+import { injectCartData, setUser} from './Redux/actions'
 
 
 import './App.css'
@@ -19,7 +17,8 @@ import Dashboard from './components/Dashboard/Dashboard';
 import NavBar from './components/NavBar/NavBar';
 import { useState } from 'react';
 import { getCategorias, getProviders, getTags } from './Redux/actions';
-import CartList from './components/CartList/CartList';
+
+import UserPerfil from './components/userPerfil/userPerfil.jsx';
 
 function App() {
   const dispatch=useDispatch()
@@ -33,11 +32,6 @@ function App() {
     setSearch(search);
     navigate("/home")
   }
-/* 
-  useEffect(() => {
-    const user = window.localStorage.getItem('user')
-    if(user) dispatch(injectUser(JSON.parse(user)))
-  },[]) */
 
   useEffect(() => {
     const productsInCart = window.localStorage.getItem('cart')
@@ -47,6 +41,15 @@ function App() {
       }
     }
   },[dispatch])
+
+  useEffect(() => {
+    const dataUserJSON = window.localStorage.getItem('User');
+    console.log('dataUserJSON', dataUserJSON);
+    if (dataUserJSON) {
+    const dataUser = JSON.parse(dataUserJSON);
+    dispatch(setUser(dataUser));     
+    }
+}, []);
 
   return (
 
@@ -60,12 +63,12 @@ function App() {
 
         <Route path='login' element={<Login />} />
         <Route path='/home/:id' element={<Detail />} />
-        {/* <Route path={PATHROUTES.DETAIL} element={<Detail/>}/> */}
         <Route path='registeruser' element={<RegisterUser />} />
+        <Route path="/userperfil" element={<UserPerfil user={user}/>} />
       </Routes>
       <Footer />
     </div>
   )
 }
 
-export default App
+export default App;

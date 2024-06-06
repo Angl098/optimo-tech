@@ -32,15 +32,13 @@ const NavBar = (props) => {
             if (nameUsuario.userId) {
 
                 setLogeado(true)
-                console.log("setLogeado");
             } else {
                 setLogeado(false)
-                console.log("setNotLogeado");
 
             }
 
             ///Condicion de admin
-            if (nameUsuario.email === "admin@gmail.com") {
+            if (nameUsuario.role === "admin") {
                 setAdmin(true)
             } else {
 
@@ -93,19 +91,13 @@ const NavBar = (props) => {
         });
     }
     //user
-    useEffect(() => {
+ /*    useEffect(() => {
         const dataUserJSON = window.localStorage.getItem('User');
-        console.log('dataUserJSON', dataUserJSON);
         if (dataUserJSON) {
-            const dataUser = JSON.parse(dataUserJSON);
-            dispatch(setUser(dataUser));
-
-            if (dataUser.email === "admin@gmail.com") {
-                setAdmin(true);
-            }
+        const dataUser = JSON.parse(dataUserJSON);
+        dispatch(setUser(dataUser));     
         }
-
-    }, []);
+    }, []); */
 
 
     return (
@@ -118,7 +110,6 @@ const NavBar = (props) => {
                     <Link to={PATHROURES.LANDING} className={style.title}>ÓPTIMO</Link>
                     <Link to={PATHROURES.LANDING} className={style.linkDesk} onClick={toggleNav}>Home</Link>
                     <Link to={PATHROURES.HOME} className={style.linkDesk} onClick={toggleNav}>Products</Link>
-                    <Link to="/orders" className={style.linkDesk}>Orders</Link>
 
                     {
                         admin ?
@@ -132,7 +123,6 @@ const NavBar = (props) => {
                         <input required type="text" className={style.input} value={search} onChange={handleChange} />
                         <span className={style.highlight}></span>
                         <span className={style.bar}></span>
-                        <label>Tu Suplemento</label>
                     </div>
                     <div className={style.groupButton}>
                         <button type="submit" className={style.cssbuttonsIo} onClick={() => handleSearch(search)}>
@@ -163,10 +153,12 @@ const NavBar = (props) => {
 
                 <div className={style.cartContainer}>
                     {userState !== null && <>
+                    <Link to='userperfil'>
                         <img className={style.iconPerfil} src='https://cdn.icon-icons.com/icons2/3298/PNG/96/ui_user_profile_avatar_person_icon_208734.png' />
+                    </Link>
                         <p>{userState.name}</p></>}
 
-                    {userState !== null && <button onClick={cerrarSesion} className={style.buttonLogout}>Log Out</button>}
+                    {userState !== null && <button onClick={cerrarSesion} className={style.buttonSign}>Cerrar sesion</button>}
                     <button className={style.cartButton} onClick={() => shoppingCart()}>
                         <svg
                             className={style.cartSvg}

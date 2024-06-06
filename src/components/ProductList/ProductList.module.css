@@ -1,35 +1,51 @@
-.productList{
+.productList {
     display: flex;
-    margin-bottom: 10px;
-    margin-top: 10px;
+    margin: 10px 0;
 }
-.categories{
+
+.selectCategory {
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.categories {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 15px;
     color: black;
     padding: 15px;
-    border-right: 1px solid black;
-    width: 180px;
+    border-right: 1px solid #ccc;
+    width: 200px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
 }
-.category:hover{
+
+.category {
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.category:hover {
     cursor: pointer;
-    color: #807f7f;
+    color: #007bff;
+    background-color: #e9ecef;
 }
-.catalogo{
+
+.catalogo {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 25px;
-    margin-bottom: 25px;
+    margin: 25px 0;
+    width: calc(100% - 220px); /* Ajustar el ancho en relación a las categorías */
 }
-.item{
+
+.item {
     width: 250px;
     height: 400px;
-
-    width: 250px;
-    height: 400px;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -37,22 +53,27 @@
     background-color: #fff;
     margin-bottom: 2em;
     border-radius: 8px;
-    box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
-    border: 1px solid #7471723a;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
     cursor: pointer;
     overflow: hidden;
     text-decoration: none;
     color: #000;
-    padding: 25px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .contenedorCards {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
     align-items: center;
-    justify-content:space-evenly;
-    padding: 25px 25px 25px 25px;
+    justify-content: space-evenly;
+    padding: 25px;
     gap: 25px;
 }
 
@@ -61,16 +82,20 @@
     object-fit: cover;
     max-width: 100%;
     height: auto;
-    transition: .5s;
+    transition: transform 0.5s;
     margin: 0 auto;
 }
 
-.info{
+.image:hover {
+    transform: scale(1.1);
+}
+
+.info {
     display: flex;
     position: relative;
     padding: 10px;
     bottom: 20px;
-    border: 1px solid #7471723a;
+    border: 1px solid #ddd;
     border-radius: 30px;
     background-color: rgba(255, 255, 255, 0.7);
     gap: 10px;
@@ -81,23 +106,19 @@
     flex-direction: column-reverse;
     border: none;
     border-radius: 30px;
-
     margin: 5px;
     padding: 10px;
     background-color: #78bf83;
     color: #fff;
     cursor: pointer;
-    
+    transition: background-color 0.3s ease;
 }
 
-.newData{
-    margin: 25px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
+.btnAddToCart:hover {
+    background-color: #66a871;
 }
-.newData{
+
+.newData {
     margin: 25px;
     display: flex;
     flex-wrap: wrap;
@@ -107,7 +128,7 @@
 }
 
 .LinkWithoutUnderline {
-    text-decoration: none; 
+    text-decoration: none;
 }
 
 .buttonContainer {
@@ -136,4 +157,44 @@
 
 .btnPages:hover {
     background-color: #0056b3;
+}
+.selectContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.selectElement {
+    background-color: #f7f7f7; /* Fondo del select */
+    border: 1px solid #ccc; /* Borde del select */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 0.5rem; /* Espaciado interno */
+    font-size: 1rem; /* Tamaño de la fuente */
+    color: #333; /* Color del texto */
+    appearance: none; /* Elimina la flecha por defecto en algunos navegadores */
+    -webkit-appearance: none; /* Elimina la flecha por defecto en Safari */
+    -moz-appearance: none; /* Elimina la flecha por defecto en Firefox */
+}
+
+.selectElement:focus {
+    outline: none; /* Elimina el borde por defecto al enfocar */
+    border-color: #888; /* Color del borde al enfocar */
+}
+
+.optionElement {
+    background-color: #fff; /* Fondo de las opciones */
+    color: #333; /* Color del texto de las opciones */
+    padding: 0.5rem; /* Espaciado interno de las opciones */
+    font-size: 1rem; /* Tamaño de la fuente de las opciones */
+}
+
+/* Flecha personalizada para el select */
+.selectContainer::after {
+    content: '▼'; /* Símbolo de flecha */
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* Permite hacer clic a través de la flecha */
+    color: #333; /* Color de la flecha */
 }

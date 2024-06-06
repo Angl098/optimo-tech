@@ -13,7 +13,8 @@ import {
   GET_TAGS,
   INJECT_USER,
   CREATE_CART_AND_ADD_SUPLEMENTS, CREATE_CART_AND_ADD_SUPLEMENTS_ERROR,
-  GET_CART_CONTENTS
+  GET_CART_CONTENTS,
+  UPDATE_USER
 } from "./actions"
 
 
@@ -226,6 +227,9 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         order: payload
       };
+
+    case UPDATE_USER:
+      return { ...state, user: payload }
 
     default:
       return state;

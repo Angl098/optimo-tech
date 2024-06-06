@@ -1,11 +1,11 @@
 //Importo las librerias o dependencias
-import {useState} from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import Swal from "sweetalert2";
 //para autorizacion de terceros
 import { GoogleLogin } from '@react-oauth/google';
 //para decodificar el token
-import { jwtDecode}  from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 
 //Importo las Validaciones
@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 
-function Login(){
+function Login() {
   const dispatch = useDispatch();
   const [login, setLogin] = useState({});
   const [errors, setErrors] = useState({});
@@ -26,28 +26,28 @@ function Login(){
   const navigate = useNavigate();
 
   //manejador del estado principal login
-  function handleChange(event){
-      event.preventDefault();
-      setErrors(validation({...login,[event.target.name] : event.target.value
-          })
-      );
-  setLogin({...login,[event.target.name]:event.target.value});
+  function handleChange(event) {
+    event.preventDefault();
+    setErrors(validation({
+      ...login, [event.target.name]: event.target.value
+    })
+    );
+    setLogin({ ...login, [event.target.name]: event.target.value });
   }
 
-      // Función para alternar la visibilidad de la contraseña
-      const [passwordVisible, setPasswordVisible] = useState(false);
-   function togglePasswordVisibility() {
-      setPasswordVisible(!passwordVisible);
+  // Función para alternar la visibilidad de la contraseña
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  function togglePasswordVisibility() {
+    setPasswordVisible(!passwordVisible);
   }
 
   //submit
-const handleSubmit = async (event)=>{
-  event.preventDefault();
-  const response = await dispatch(postLogin(login));
-  console.log(response.payload);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const response = await dispatch(postLogin(login));
+    console.log(response.payload);
 
-  if(!response.payload.dataUser)
-    {
+    if (!response.payload.dataUser) {
       Swal.fire({
         icon: "error",
         title: response.payload.message,
@@ -59,27 +59,28 @@ const handleSubmit = async (event)=>{
       });
     }
 
-  //Guardar en el storage
-  if(response.payload.dataUser){
-  window.localStorage.setItem('User', JSON.stringify(response.payload.dataUser));
-  const userDispatch = response.payload.dataUser
-  dispatch(setUser(userDispatch));
-  Swal.fire({
-    icon: "success",
-    title: response.payload.message,
-    text: "",
-    timer: 3000
-  }).then(() => {
-    // Redirigir después de que la alerta se cierre
-    navigate("/"); // Cambia la URL al destino 
-    window.location.reload();
-  });
-  }
-};
+    //Guardar en el storage
+    if (response.payload.dataUser) {
+      console.log(response.payload.dataUser);
+      window.localStorage.setItem('User', JSON.stringify(response.payload.dataUser));
+      const userDispatch = response.payload.dataUser
+      dispatch(setUser(userDispatch));
+      Swal.fire({
+        icon: "success",
+        title: response.payload.message,
+        text: "",
+        timer: 3000
+      }).then(() => {
+        // Redirigir después de que la alerta se cierre
+        navigate("/"); // Cambia la URL al destino 
+        window.location.reload();
+      });
+    }
+  };
 
-    // Manejador del éxito en el inicio de sesión con Google
-    const handleGoogleSuccess = async(credentialResponse) => {
-        //console.log(credentialResponse); // credencial encryptada
+  // Manejador del éxito en el inicio de sesión con Google
+  const handleGoogleSuccess = async (credentialResponse) => {
+    //console.log(credentialResponse); // credencial encryptada
     try {
       const credentialResponseDecode = jwtDecode(credentialResponse.credential);
       //console.log(credentialResponseDecode); // datos decodificados
@@ -87,7 +88,7 @@ const handleSubmit = async (event)=>{
       // Crear el objeto de usuario
       const userObject = {
         name: credentialResponseDecode.name,
-        sex: credentialResponseDecode.gender || 'No especificado', // Ajustar según disponibilidad
+        sex: credentialResponseDecode.gender || '', // Ajustar según disponibilidad
         email: credentialResponseDecode.email,
         password: credentialResponse.credential.substring(0, 200), // Usar los primeros 200 caracteres de credentialResponse.credential
         cellphone: credentialResponseDecode.phone_number
@@ -99,79 +100,56 @@ const handleSubmit = async (event)=>{
       console.log('usuario creado con google', userObject); // Verificar el objeto antes de enviarlo
 
       //intento de inicio de sesion
-      const {email, password} = userObject;
-      let login = {email, password};
-          const responseAuth = await dispatch(postLogin(login));
-          console.log('responseAuth',responseAuth.payload);
-            //Guardar en el storage
-    if(responseAuth.payload.dataUser){
-    window.localStorage.setItem('User', JSON.stringify(responseAuth.payload.dataUser));
+      const { email, password } = userObject;
+      let login = { email, password };
+      const responseAuth = await dispatch(postLogin(login));
+      console.log('responseAuth', responseAuth.payload);
+      //Guardar en el storage
+      if (responseAuth.payload.dataUser) {
+        window.localStorage.setItem('User', JSON.stringify(responseAuth.payload.dataUser));
         Swal.fire({
-      icon: "success",
-      title: responseAuth.payload.message,
-      text: "",
-      timer: 3000
-    }).then(() => {
-      // Redirigir después de que la alerta se cierre
-      navigate("/"); // Cambia la URL al destino 
-      window.location.reload();
-    });
-    
-  }else{
-    //registro con google
-    const resAuth =  await dispatch(postRegisterUser(userObject));
-    //guardar en storage
-    window.localStorage.setItem('User', JSON.stringify(userObject));
-    console.log('usuario registrado con Auth', resAuth.payload);
+          icon: "success",
+          title: responseAuth.payload.message,
+          text: "",
+          timer: 3000
+        }).then(() => {
+          // Redirigir después de que la alerta se cierre
+          navigate("/"); // Cambia la URL al destino 
+          window.location.reload();
+        });
 
-          //inicio de sesion despues del registro con google
-          const {email, password} = userObject;
-          let login = {email, password};
-              const resAuthLogin = await dispatch(postLogin(login));
-              console.log('responseAuth',responseAuth.payload);
-    Swal.fire({
-      icon: "success",
-      title: resAuthLogin.payload.message,
-      text: "",
-      timer: 3000
-    }).then(() => {
-      // Redirigir después de que la alerta se cierre
-      navigate("/"); // Cambia la URL al destino 
-      window.location.reload();
-    });
-  }
+      } else {
+        //registro con google
+        const resAuth = await dispatch(postRegisterUser(userObject));
 
-    
+        //inicio de sesion despues del registro con google
+        const { email, password } = userObject;
+        let login = { email, password };
+        const resAuthLogin = await dispatch(postLogin(login));
+        console.log('responseAuth', responseAuth.payload);
+        //guardar en storage
+        window.localStorage.setItem('User', JSON.stringify(resAuthLogin.payload.dataUser));
+        console.log('usuario registrado con Auth', resAuthLogin.payload);
+        Swal.fire({
+          icon: "success",
+          title: resAuthLogin.payload.message,
+          text: "",
+          timer: 3000
+        }).then(() => {
+          // Redirigir después de que la alerta se cierre
+          navigate("/"); // Cambia la URL al destino 
+          window.location.reload();
+        });
+      }
 
-      // Enviar el objeto al backend usando axios
-/*       axios.post('/users', userObject)
-        .then((response) => {
-          console.log('Usuario creado:', response.data);
-        })
-        .catch((error) => {
-          console.error('Error al crear el usuario:', error);
-        }); */
-    
+
 
 
     } catch (error) {
       console.error('Error al decodificar el token:', error);
     }
   };
-/*   const onSubmit=(e)=>{
-    e.preventDefault()
-    axios.post("/login",login ).then(({data})=>{
-      console.log(data);
-      localStorage.setItem("user", JSON.stringify(data));
-      Swal.fire({
-        icon: "success",
-        title: "¡Usuario registrado!",
-        text: "",
-      });
-      navigate("/")
-    })
-  }
- */
+
   return (
     <>
       <form className={style.form} onSubmit={handleSubmit}>
@@ -179,18 +157,18 @@ const handleSubmit = async (event)=>{
 
         <label>Email</label>
         <input type='text' name='email' value={login.email} onChange={handleChange} className={style.form_style} />
-        {errors.email!==''&&<p className={style.errors}>{errors.email}</p>}
+        {errors.email !== '' && <p className={style.errors}>{errors.email}</p>}
 
         <label>Password</label>
-            <div className={style.password_input_container}>
-                <input name='password' type={passwordVisible ? 'text' : 'password'} value={login.password || ''} onChange={handleChange} className={style.form_style} />
-                <button type="button" onClick={togglePasswordVisibility} className={style.show_hide_btn}>
-                    {passwordVisible ? <img className={style.eye} src='https://cdn.icon-icons.com/icons2/1659/PNG/512/3844441-eye-see-show-view-watch_110305.png'/>:<img className={style.eye} src='https://cdn.icon-icons.com/icons2/2065/PNG/512/view_hide_icon_124813.png'/> }
-                </button>
-            </div>
-        {errors.password!==''&&<p className={style.errors}>{errors.password}</p>}
+        <div className={style.password_input_container}>
+          <input name='password' type={passwordVisible ? 'text' : 'password'} value={login.password || ''} onChange={handleChange} className={style.form_style} />
+          <button type="button" onClick={togglePasswordVisibility} className={style.show_hide_btn}>
+            {passwordVisible ? <img className={style.eye} src='https://cdn.icon-icons.com/icons2/1659/PNG/512/3844441-eye-see-show-view-watch_110305.png' /> : <img className={style.eye} src='https://cdn.icon-icons.com/icons2/2065/PNG/512/view_hide_icon_124813.png' />}
+          </button>
+        </div>
+        {errors.password !== '' && <p className={style.errors}>{errors.password}</p>}
         <button className={style.btn} type="submit">Login</button>
-{/* auth terceros */}
+        {/* auth terceros */}
 
         <GoogleLogin
           onSuccess={handleGoogleSuccess}

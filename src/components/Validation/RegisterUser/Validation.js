@@ -4,7 +4,12 @@ const regex3 = /.{3,}/;
 function validation(inputs) {
     const errors = {};
 
-    // Validacion name
+    const regexLetras = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/i;
+    const regex3 = /.{3,}/;
+    //validacion name
+    if (!regexLetras.test(inputs.name)) {
+        errors.name = 'Debe ser un nombre'
+    }
     if (!inputs.name) {
         errors.name = 'El nombre no puede estar vacio';
     } else if (!regexLetras.test(inputs.name)) {

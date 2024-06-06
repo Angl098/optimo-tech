@@ -54,12 +54,11 @@ function UpdateSuplement() {
     const handleUpdate = (sup) => {
         setSuplement({ ...suplemento, sup });
         axios.get(`/suplements/${sup.id}`).then(({ data }) => {
-            console.log(data);
             setSuplement({
                 ...suplemento,
                 ...data,
                 category: data.category.name,
-                provider: data.Provider.map,
+                provider: data.Provider.name,
                 tags: data.Tags.map((tag) => tag.name)
             });
             setOpCategory(data.category.name)
@@ -68,18 +67,9 @@ function UpdateSuplement() {
 
     };
 
-    // useEffect(() => {
-    //     if (suplemento) {
-    //         setUpdatedSuplements(suplemento);
-    //     }
-    // }, [suplemento]);
-
     function handleChange(event) {
         const { name, files, value, type, checked } = event.target;
         let newValue = value;
-        console.log(value);
-        console.log(name);
-        console.log(suplemento);
         event.preventDefault();
         if (name === "images") {
             newValue = [
@@ -92,6 +82,10 @@ function UpdateSuplement() {
         }
         if (name === "provider") {
             setSuplement({ ...suplemento, provider: newValue });
+            return
+        }
+        if (name === "category") {
+            setSuplement({ ...suplemento, category: newValue });
             return
         }
         setSuplement({ ...suplemento, [name]: newValue });
@@ -112,7 +106,6 @@ function UpdateSuplement() {
     };
 
     const handleSubmit = (e) => {
-        console.log(suplemento);
         const formDataToSend = new FormData();
         Object.entries(suplemento).forEach(([key, value]) => {
             if (key === "images") {
@@ -176,10 +169,9 @@ function UpdateSuplement() {
                 <label>Categoria</label>
                 <select
                     className={style.form_style}
-                    value={opCategory}
+                    value={suplemento.category}
                     name="category"
-                    onChange={handleChangeCategory}
-                    disabled={newCategory}
+                    onChange={handleChange}
                 >
                     <option value='' disabled>Selecciona una Opción</option>
                     {arrayCategory.map((objeto) => (
@@ -191,11 +183,10 @@ function UpdateSuplement() {
                 <input
                     type="text"
                     className={style.form_style}
-                    name="newCategory"
-                    value={newCategory}
-                    onChange={handleNewCategoryChange}
+                    name="category"
+                    value={suplemento.category}
+                    onChange={handleChange}
                     placeholder="O escribe una nueva categoría"
-                    disabled={opCategory}
                 />
                 {errors.category && <p className={style.errors}>{errors.category}</p>}
 

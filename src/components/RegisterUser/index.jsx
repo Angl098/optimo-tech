@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { postRegisterUser } from '../../Redux/actions';
+import {React, useState, useEffect} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { postRegisterUser, updateUser } from '../../Redux/actions';
 import validation from '../Validation/RegisterUser/Validation';
 import style from './RegisterUser.module.css';
 import { useNavigate } from 'react-router-dom';
@@ -8,35 +8,41 @@ import Swal from 'sweetalert2';
 
 function RegisterUser() {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    
-    const [user, setUser] = useState({
-        name: '',
-        email: '',
-        cellphone: '',
-        address: '',
-        password: '',
-        confirmPassword: '',
-        sex: ''
-    });
-    
+    let [user, setUser] = useState({});
     const [errors, setErrors] = useState({});
-    const [passwordVisible, setPasswordVisible] = useState(false);
-    const [passwordConfirmVisible, setPasswordConfirmVisible] = useState(false);
+    const navigate = useNavigate();
 
-    // manejador del estado principal user
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        const newUser = { ...user, [name]: value };
-        setUser(newUser);
-        setErrors(validation(newUser));
-    };
+    const userState = useSelector(state=>state.user);
+    console.log('userState', userState);
+
+    useEffect(()=>{
+      
+  if(userState!==null)
+    {
+         setUser(userState); 
+         //setErrors(userState);
+    }
+    
+    }, [userState]);
+
+    console.log('user', user);
+
+        //manejador del estado principal user
+        function handleChange(event){
+            event.preventDefault();
+            setErrors(validation({...user,[event.target.name] : event.target.value
+                })
+            );
+        setUser({...user,[event.target.name]:event.target.value});
+        }
 
     // Manejar el cambio de las opciones seleccionadas category
     const arraySex = [
         { id: 1, sex: 'Masculino' },
         { id: 2, sex: 'Femenino' }
     ];
+
+    const [opSex,setOpSex] = useState("");
 
     const handleChangeSex = (event) => {
         const option = event.target.value;
@@ -94,42 +100,73 @@ function RegisterUser() {
         }
     };
 
-    useEffect(() => {
+useEffect(()=>{
+    Swal.fire({
+    icon: "info",
+    title: "Completa los datos correctamente!",
+    text: "",
+    timer: 5000
+  })  
+
+}, []);
+
+async function postEdit(event){
+event.preventDefault();
+console.log("edit en proceso");
+console.log('errors', errors);
+if(Object.keys(errors).length > 1 )
+    {
         Swal.fire({
-            icon: "info",
-            title: "Completa los datos correctamente para el registro!",
+            icon: "error",
+            title: "Completa los datos",
             text: "",
-            timer: 5000
-        });
-    }, []);
+            timer: 3000
+          })
+    }else{
+        const response = await dispatch(updateUser(user));
+        if(response.payload.dataUser)
+            {
+                  //guardar en storage
+            window.localStorage.setItem('User', JSON.stringify(response.payload.dataUser));
+            console.log('usuario datos actualizados', response.payload);
+            navigate("/userperfil");
+          Swal.fire({
+            icon: "success",
+            title: response.payload.message,
+            text: "",
+            timer: 3000
+          }).then(() => {
+            window.location.reload(); 
+            })}else{
+                Swal.fire({
+                    icon: "error",
+                    title: response.payload.message,
+                    text: "",
+                    timer: 3000
+                  })   
+            }
+    }
+}
 
-    return (
-        <form onSubmit={handleSubmit} className={style.form}>
-            <h3 className={style.title}>Registro</h3>
-            <label>Nombre</label>
-            <input
-                type='text'
-                name='name'
-                value={user.name}
-                onChange={handleChange}
-                className={style.form_style}
-            />
-            {errors.name && <p className={style.errors}>{errors.name}</p>}
+    return <>
+    <form className={style.form}>
+    {user.id?<h3 className={style.title}>Editar Perfil</h3>:<h3 className={style.title}>Registro</h3>}
+    {user.id&&<label className={style.id}>ID: {user.id}</label>}
+    <label>Nombre</label>
+        <input type='text' name='name' value={user.name} onChange={handleChange} className={style.form_style} />
+        {errors.name!==''&&<p className={style.errors}>{errors.name}</p>}
 
-            <label>Sexo</label>
-            <select
-                className={style.form_style}
-                value={user.sex}
-                onChange={handleChangeSex}
-            >
-                <option value='' disabled hidden>Selecciona una Opcion</option>
-                {arraySex.map((objeto) => (
-                    <option key={objeto.id} value={objeto.sex}>
-                        {objeto.sex}
-                    </option>
-                ))}
-            </select>
-            {errors.sex && <p className={style.errors}>{errors.sex}</p>}
+        <label>Sexo </label> 
+    <select className={style.form_style} value={opSex} onChange={handleChangeSex}>
+
+    <option value = '' disabled hidden>Selecciona una Opcion</option>
+    {arraySex.map((objeto,index) => (
+          <option key={index} value={objeto.sex}>
+            {objeto.sex}
+          </option>
+        ))}
+    </select>
+    {errors.sex!==''&&<p className={style.errors}>{errors.sex}</p>}
 
             <label>Email</label>
             <input
@@ -161,7 +198,9 @@ function RegisterUser() {
             />
             {errors.address && <p className={style.errors}>{errors.address}</p>}
 
-            <label>Password</label>
+
+{user.id?<button onClick={postEdit}  className={style.btn} >Guardar Cambios</button>:<>
+        <label>Password</label>
             <div className={style.password_input_container}>
                 <input
                     name='password'
@@ -199,9 +238,13 @@ function RegisterUser() {
             </div>
             {errors.confirmPassword && <p className={style.errors}>{errors.confirmPassword}</p>}
 
-            <button className={style.btn} type="submit" disabled={Object.keys(errors).length > 0}>Registrar</button>
-        </form>
-    );
+        {Object.keys(errors).length <= 0 && <button onClick={handleSubmit}  className={style.btn} >Registrar</button>}
+        </>
+}
+
+
+</form>
+    </>
 }
 
 export default RegisterUser;

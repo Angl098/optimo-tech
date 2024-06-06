@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import Swal from "sweetalert2";
 
 export const GET_SUPLEMENTS_BY_NAME = "GET_SUPLEMENTS_BY_NAME";
@@ -26,6 +27,7 @@ export const INJECT_USER = "INJECT_USER";
 export const CREATE_CART_AND_ADD_SUPLEMENTS = 'CREATE_CART_AND_ADD_SUPLEMENTS';
 export const CREATE_CART_AND_ADD_SUPLEMENTS_ERROR = 'CREATE_CART_AND_ADD_SUPLEMENTS_ERROR';
 export const GET_CART_CONTENTS = 'GET_CART_CONTENTS';
+export const UPDATE_USER = 'UPDATE_USER';
 
 
 //Función que hace la peticion con axios al back-end
@@ -90,58 +92,6 @@ export const postSuplements = (newSuplements) => {
     };
 };
 
-
-// NO ESTA EN USO 
-// export function paymentGateway(cart) {
-//     return async function (dispatch) {
-//         try {
-
-//             const items = cart.map((prod) => ({
-//                 title: prod.name,
-//                 price: parseFloat(prod.price),
-//                 quantity: parseInt(prod.quantity),
-//                 productId: prod.id,
-//             }));
-//             // console.log(items);
-//             const total = cart.map((prod) => prod.total)
-//             let totalPrice = 0;
-
-//             for (let i = 0; i < total.length; i++) {
-//                 totalPrice += total[i];
-//             }
-//             //almacenar el user en el localstorage
-
-//             // const cartDB = {
-//             //     // idUserLocal: valueLocal.id,
-//             //     cartItems: cart.map((prod) => ({
-//             //         name: prod.name,
-//             //         productId: prod.id,
-//             //         price: parseFloat(prod.price),
-//             //         quantity: parseInt(prod.quantity),
-//             //     })),
-//             //     total: totalPrice,
-//             //     paymentMethod: "mercadopago"
-//             // }
-
-//             //  ALMACENANDO EL CARRITO EN LA BDD
-//             // const postCart = axios.post("/cart", cartDB)
-
-//             const response = await axios.post("/payment/create_preference", {
-//                 items: items,
-//                 total: totalPrice,
-//             })
-
-//             const { id } = response.data;
-//             return id;
-//             // dispatch({ type: PAYMENT_ID, payload: id })
-//             //eliminando los prod del carrito en el localStor cuando la compra se completa con exito
-//             // window.localStorage.removeItem('cart')
-//         } catch (error) {
-//             console.log('error obteniendo la orden de pago', error);
-//         }
-//     }
-// }
-
 export const showShoppingCart = (data) => {
     return {
         type: SHOW_SHOPPING_CART,
@@ -203,7 +153,6 @@ export const getSuplement = (id) => {
     return async function (dispatch) {
         try {
             const { data } = await axios.get(`/suplements/${id}`);
-            console.log(data)
             return dispatch({
                 type: GET_SUPLEMENT,
                 payload: data,
@@ -226,7 +175,6 @@ export const cleanProductById = () => {
 export const getSuplementsByName = (queryParams) => {
     return async function (dispatch) {
         const response = await axios.get(`/suplements?name=${queryParams}`)
-        //console.log(response.data)
 
         if (Array.isArray(response.data)) {
             return dispatch({
@@ -282,7 +230,7 @@ export const postLogin = (login) => {
 
 export const setUser = (data) => {
     return {
-        type: INJECT_USER,
+        type: USER,
         payload: data
     }
 }
@@ -310,7 +258,6 @@ export const createCartAndAddSuplements = (cart, user) => async (dispatch) => {
         };
 
         const createCartResponse = await axios.post('/cart/create-cart', cartData);
-        console.log('Create Cart Response:', createCartResponse);
 
         const cartId = createCartResponse.data.id;
         if (!cartId) {
@@ -334,4 +281,24 @@ export const getCartContents = (cartId) => async (dispatch) => {
     } catch (error) {
         console.error('Error getting cart contents:', error);
     }
+};
+
+export const updateUser = (user) => {
+    const endpointUpdateUser = '/updateuser';
+    return async function (dispatch) {
+        try {
+            const response = await axios.post(endpointUpdateUser, user);
+            return dispatch({
+                type: UPDATE_USER,
+                payload: response.data
+            });
+        }
+        catch (error) {
+            error = {message:"Error completa los datos"};
+            return dispatch({
+                type:UPDATE_USER,
+                payload: error
+        });
+        }
+    };
 };

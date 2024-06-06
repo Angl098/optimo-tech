@@ -2,26 +2,14 @@ import { Link, Route, Routes } from "react-router-dom"
 import CreateSuplement from "../CreateSuplements"
 import UpdateSuplement from "../UpdateSuplement"
 import style from './Dashboard.module.css'
-import { useEffect, useState } from "react"
-import axios from "axios"
-import buildQueryParams from "../../Utils/QueryFilterPath"
 import FormCategories from "./Categorias/FormCategories"
 import Provedores from "./Providers/Providers"
 import Tags from "./Tags/Tags"
 import Users from "./Users/Users"
 import CartList from "../CartList/CartList"
 import Orders from "../Ordenes/Ordenes"
-import OrdenSuplemento from "../Ordenes/OrdenSuplemento"
 const Dashboard = () => {
 
-    const [filter, setFilter] = useState({
-        category: "",
-        name: "",
-        orderBy: "",
-        orderDirection: "",
-        page: 1,
-        pageSize: 6
-    });
 
     return (
         <div>
@@ -87,8 +75,7 @@ const Dashboard = () => {
                         <Route path="orders" element={<Orders />} />
 
                         <Route path='updatesuplement' element={<UpdateSuplement />} />
-                        <Route path="/order-supplements" element={<OrdenSuplemento />} />
-                        <Route path="/cart-list" element={<CartList />} />
+                        <Route path="cart-list" element={<CartList />} />
 
                     </Routes>
                 </div>
