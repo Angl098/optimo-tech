@@ -190,7 +190,6 @@
 
 /* Flecha personalizada para el select */
 .selectContainer::after {
-    content: '▼'; /* Símbolo de flecha */
     position: absolute;
     right: 1rem;
     top: 50%;

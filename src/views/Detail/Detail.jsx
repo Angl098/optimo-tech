@@ -53,7 +53,8 @@ const Detail = () => {
 
     const handleAddComment = () => {
         axios.post("/comments", { content: newComment, userId, suplementId: id, parentId }).then(({ data }) => {
-            setComments(prevComments => [...prevComments, data]);
+            // Update the comments list with the new comment
+            setComments((prevComments) => [...prevComments, data]);
         });
         setNewComment("");
         setParentId(null);
@@ -97,6 +98,17 @@ const Detail = () => {
                                     </button>
                                 </div>
                             )}
+                            {parentId === comment.id && (
+                                <div className={styles.replyInput}>
+                                    <input
+                                        type="text"
+                                        placeholder="Escribe tu respuesta..."
+                                        value={newComment}
+                                        onChange={handleCommentChange}
+                                    />
+                                    <button onClick={handleAddComment}>Responder</button>
+                                </div>
+                            )}
                             {comment.responses && comment.responses.length > 0 && (
                                 <div className={styles.replySection}>
                                     {comment.responses.map((response) => (
@@ -111,6 +123,17 @@ const Detail = () => {
                                                     >
                                                         Responder
                                                     </button>
+                                                </div>
+                                            )}
+                                            {parentId === response.id && (
+                                                <div className={styles.replyInput}>
+                                                   <input
+                                                        type="text"
+                                                        placeholder="Escribe tu respuesta..."
+                                                        value={newComment}
+                                                        onChange={handleCommentChange}
+                                                    /> 
+                                                    <button onClick={handleAddComment}>Responder</button>
                                                 </div>
                                             )}
                                         </div>

@@ -29,7 +29,8 @@ const ShoppingCart = () => {
             for (let i = 0; i < total.length; i++) {
                 totalPrice += total[i];
             }
-            const valueLocal = JSON.parse(localStorage.getItem("User")); 
+
+            const valueLocal = JSON.parse(localStorage.getItem("User"));
             const userId = valueLocal.id;
             console.log(userId);
 

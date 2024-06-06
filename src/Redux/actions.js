@@ -249,12 +249,13 @@ export const createCartAndAddSuplements = (cart, user) => async (dispatch) => {
             suplementId: prod.id,
             quantity: prod.quantity,
         }));
-
+        
+        const total = cart.reduce((sum, prod) => sum + (prod.price * prod.quantity), 0);
         const cartData = {
             userId: user.id,
-            total: 0, //ENVIAR EL TOTAL 
+            total: total,   
             paymentMethod: 'Mercado Pago', 
-            paymentStatus: 'Pending', 
+            paymentStatus: 'Completado', 
         };
 
         const createCartResponse = await axios.post('/cart/create-cart', cartData);

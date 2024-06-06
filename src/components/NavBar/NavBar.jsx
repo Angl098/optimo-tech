@@ -27,7 +27,6 @@ const NavBar = (props) => {
     const { id } = useParams()
     useEffect(() => {
         const nameUsuario = JSON.parse(localStorage.getItem("User"));
-        console.log(nameUsuario);
         if (nameUsuario) {
             if (nameUsuario.userId) {
 
@@ -41,7 +40,6 @@ const NavBar = (props) => {
             if (nameUsuario.role === "admin") {
                 setAdmin(true)
             } else {
-
                 setAdmin(false)
             }
         } else {

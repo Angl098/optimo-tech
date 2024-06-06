@@ -31,7 +31,7 @@ export default function ProductList({ search }) {
         orderBy: "",
         orderDirection: "",
         page: 1,
-        pageSize: 4
+        pageSize: 6
     });
 
     const buildQueryParams = (filter) => {

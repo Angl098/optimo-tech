@@ -44,7 +44,6 @@ function App() {
 
   useEffect(() => {
     const dataUserJSON = window.localStorage.getItem('User');
-    console.log('dataUserJSON', dataUserJSON);
     if (dataUserJSON) {
     const dataUser = JSON.parse(dataUserJSON);
     dispatch(setUser(dataUser));     
