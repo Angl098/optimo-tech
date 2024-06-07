@@ -1,99 +1,100 @@
-.UpdateCategorias {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px;
+.container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.form {
+.filterSection {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    gap: 10px;
     margin-bottom: 20px;
 }
 
-.button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
+.input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
     font-size: 16px;
-    margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
     cursor: pointer;
-    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 .button:hover {
-    background-color: #45a049;
+    background-color: #0056b3;
 }
 
-.categoryList, .userList {
+.userList {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 600px;
+    gap: 20px;
 }
 
-.categoryItem, .userItem {
-    background-color: #f1f1f1;
-    margin: 5px 0;
-    padding: 10px;
-    width: 100%;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 5px;
+.userItem {
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.userInfo {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.categoryItem:hover, .userItem:hover {
-    background-color: #ddd;
+.userActions {
+    display: flex;
+    gap: 10px;
 }
 
 .banned {
-    color: red;
+    color: #ff0000;
     font-weight: bold;
 }
 
 .changePasswordForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     margin-top: 10px;
-}
-
-.input {
-    padding: 8px;
-    margin-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
 }
 
 .pagination {
     display: flex;
-    justify-content: center;
-    margin: 10px 0;
+    gap: 5px;
+    margin-top: 20px;
 }
 
 .pageButton {
-    margin: 0 5px;
-    padding: 8px 12px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    background-color: #fff;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .pageButton:hover {
-    background-color: #e0e0e0;
+    background-color: #f0f0f0;
 }
 
 .activePage {
     background-color: #007bff;
     color: #fff;
-    border-color: #007bff;
+    font-weight: bold;
 }
-
-/* Puedes agregar más estilos según sea necesario */

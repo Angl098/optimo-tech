@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import style from '../FormCategories.module.css';
+import style from './User.module.css';
+import buildQueryParams from '../../../Utils/QueryFilterPath';
 
 function UserController() {
     const [users, setUsers] = useState([]);
@@ -15,20 +16,7 @@ function UserController() {
     const [showChangePassword, setShowChangePassword] = useState(null);
     const [newPassword, setNewPassword] = useState('');
 
-    const buildQueryParams = (filter) => {
-        let queryParams = "?";
-        for (const [key, value] of Object.entries(filter)) {
-            if (value !== null && value !== "") {
-                if (Array.isArray(value) && value.length > 0) {
-                    queryParams += `${key}=${value.join(",")}&`;
-                } else {
-                    queryParams += `${key}=${value}&`;
-                }
-            }
-        }
-        return queryParams;
-    };
-
+  
     const fetchUsers = (filter) => {
         axios.get('/users/filter' + buildQueryParams(filter))
             .then(({ data }) => {
@@ -129,26 +117,29 @@ function UserController() {
     };
 
     return (
-        <div className={style.UpdateCategorias}>
-            <div className={style.userList}>
-                <input type="text" onChange={handleChange} name='email' value={filter.email} className={style.input}/>
+        <div className={style.container}>
+            <div className={style.filterSection}>
+                <input type="text" onChange={handleChange} name='email' value={filter.email} className={style.input} placeholder="Buscar por email" />
                 <button onClick={handleFilter} className={style.button}>Buscar</button>
-                <div>
-                    {users.length > 0 && renderPagination()}
-                </div>
+            </div>
+            <div className={style.userList}>
                 <h3>Usuarios</h3>
                 {users.map((user) => (
                     <div key={user.id} className={style.userItem}>
-                        {user.name} - {user.email}
-                        {user.banned ? (
-                            <>
+                        <div className={style.userInfo}>
+                            <p>{user.name} - {user.email}</p>
+                            {user.banned ? (
                                 <span className={style.banned}>Baneado</span>
+                            ) : null}
+                        </div>
+                        <div className={style.userActions}>
+                            {user.banned ? (
                                 <button onClick={() => handleUnbanUser(user.id)} className={style.button}>Desbanear</button>
-                            </>
-                        ) : (
-                            <button onClick={() => handleBanUser(user.id)} className={style.button}>Banear</button>
-                        )}
-                        <button onClick={() => setShowChangePassword(user.id)} className={style.button}>Cambiar Contraseña</button>
+                            ) : (
+                                <button onClick={() => handleBanUser(user.id)} className={style.button}>Banear</button>
+                            )}
+                            <button onClick={() => setShowChangePassword(user.id)} className={style.button}>Cambiar Contraseña</button>
+                        </div>
                         {showChangePassword === user.id && (
                             <div className={style.changePasswordForm}>
                                 <input
@@ -168,6 +159,7 @@ function UserController() {
                         )}
                     </div>
                 ))}
+                {users.length > 0 && renderPagination()}
             </div>
         </div>
     );

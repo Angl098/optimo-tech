@@ -53,15 +53,11 @@ function Login() {
         title: response.payload.message,
         text: "",
         timer: 3000
-      }).then(() => {
-        // Redirigir después de que la alerta se cierre
-        navigate("/login"); // Cambia la URL al destino 
-      });
+      })
     }
 
     //Guardar en el storage
     if (response.payload.dataUser) {
-      console.log(response.payload.dataUser);
       window.localStorage.setItem('User', JSON.stringify(response.payload.dataUser));
       const userDispatch = response.payload.dataUser
       dispatch(setUser(userDispatch));
