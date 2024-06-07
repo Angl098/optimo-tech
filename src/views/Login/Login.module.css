@@ -36,7 +36,7 @@
 }
 
 .form_style:focus {
-  border-color: #007bff;
+  border-color: #78bf83;
 }
 
 .errors {
@@ -68,7 +68,7 @@
 .btn {
   width: 100%;
   padding: 10px;
-  background-color: #007bff;
+  background-color: #78bf83;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -78,5 +78,5 @@
 }
 
 .btn:hover {
-  background-color: #0056b3;
+  background-color: #69a572;
 }

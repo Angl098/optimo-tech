@@ -60,7 +60,7 @@
 }
 
 .btnAddToCart, .btnBack {
-  background-color: #007bff;
+  background-color: #78bf83;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -73,7 +73,7 @@
 }
 
 .btnAddToCart:hover, .btnBack:hover {
-  background-color: #0056b3;
+  background-color: #69a572;
 }
 
 .commentsSection {
@@ -114,7 +114,7 @@
 }
 
 .replyButton:hover {
-  background-color: #218838;
+  background-color: #69a572;
 }
 
 .replySection {
@@ -137,7 +137,7 @@
 }
 
 .addComment button {
-  background-color: #007bff;
+  background-color: #78bf83;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -147,5 +147,5 @@
 }
 
 .addComment button:hover {
-  background-color: #0056b3;
+  background-color: #69a572;
 }

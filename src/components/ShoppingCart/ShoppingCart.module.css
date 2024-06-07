@@ -1,3 +1,106 @@
+.navbar {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbarLogo {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.navbarTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+
+.navbarLinks {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex: 1;
+}
+
+.navbarLink {
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+}
+
+.navbarSearch {
+    display: flex;
+    align-items: center;
+}
+
+.navbarSearchInput {
+    padding: 5px;
+    margin-right: 10px;
+    border: 1px solid white;
+    color: black; /* Added for black text */
+}
+
+.navbarSearchButton {
+    padding: 5px 10px;
+    background-color: #555;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.navbarProfile {
+    display: flex;
+    align-items: center;
+}
+
+.navbarProfileImg {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+
+.navbarProfileName {
+    font-size: 1rem;
+    color: black; /* Added for black text */
+}
+
+.navbarLogout {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #555;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.navbarCart {
+    position: relative;
+}
+
+.navbarCartButton {
+    padding: 5px 10px;
+    background-color: #555;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.navbarCartCount {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 5px;
+    font-size: 0.8rem;
+}
+
 .cartContainer {
     position: fixed;
     top: 0;
@@ -10,6 +113,7 @@
     background-color: #fff;
     overflow-y: auto;
     overflow-x: hidden;
+    color: black; /* Added for black text */
 }
 
 @media screen and (max-width: 744px) {
@@ -20,12 +124,14 @@
         width: 100%;
         height: 100%;
         margin: 0;
+        color: black; /* Added for black text */
     }
 }
 
 .tittleCart {
     font-weight: bold;
     font-size: 1.125rem;
+    color: black; /* Added for black text */
 }
 
 .navCard {
@@ -35,10 +141,12 @@
     border-bottom: 1px solid #e5e7eb;
     padding-left: 20px;
     padding-right: 20px;
+    color: black; /* Added for black text */
 }
 
 .navCard li {
     list-style: none;
+    color: black; /* Added for black text */
 }
 
 .buttonCleanCart {
@@ -73,6 +181,7 @@
     margin-top: 15px;
     padding: 1rem;
     background-color: #fff;
+    color: black; /* Added for black text */
 }
 
 .buttonX {
@@ -80,6 +189,7 @@
     background-image: none;
     cursor: pointer;
     border: none;
+    color: black; /* Added for black text */
 }
 
 .divContainerFirstSection {
@@ -93,12 +203,13 @@
     border-width: 1px;
     border-style: solid;
     border-color: #e5e7eb;
-    color: #000;
+    color: black; /* Added for black text */
     transition-duration: 0.15s;
 }
 
 .icon {
     height: 1.5rem;
+    color: black; /* Added for black text */
 }
 
 .transition {
@@ -133,6 +244,7 @@
     flex-direction: column;
     height: 100%;
     padding: 0.25rem;
+    color: black; /* Added for black text */
 }
 
 .listUL {
@@ -145,6 +257,7 @@
     box-sizing: border-box;
     border: 0 solid #e5e7eb;
     border-radius: 10px;
+    color: black; /* Added for black text */
 }
 
 .iconCart {
@@ -159,6 +272,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    color: black; /* Added for black text */
 }
 
 .containerTotal {
@@ -168,16 +282,19 @@
     font-size: 15px;
     line-height: 1.25rem;
     font-weight: 600;
+    color: black; /* Added for black text */
 }
 
 .containerTotal p {
     padding-left: 5px;
     margin-left: 20px;
+    color: black; /* Added for black text */
 }
 
 .containerTotal hr {
     border: none;
     border-top: 1px solid #e5e7eb;
+    color: black; /* Added for black text */
 }
 
 .totalPrice {
@@ -189,4 +306,5 @@
     padding-bottom: .25rem;
     padding-top: .25rem;
     font-size: .875rem;
+    color: black; /* Added for black text */
 }

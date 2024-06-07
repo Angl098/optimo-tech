@@ -28,7 +28,7 @@
 
 .button {
     padding: 0.5rem;
-    background-color: #007bff;
+    background-color: #78bf83;
     color: white;
     border: none;
     border-radius: 0.25rem;
@@ -36,7 +36,7 @@
 }
 
 .button:hover {
-    background-color: #0056b3;
+    background-color: #69a572;
 }
 
 .categoryList {

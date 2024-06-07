@@ -1,45 +1,62 @@
-/* CartList.module.css */
-
 .cartListContainer {
-    max-width: 800px;
-    margin: 0 auto;
     padding: 20px;
 }
 
-.cart {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
+.filterContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 20px;
 }
 
+.input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #78bf83;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #69a572;
+}
+
+.cart {
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
 .cart h3 {
+    margin: 0;
     margin-bottom: 10px;
 }
 
-.suplementList {
-    list-style: none;
-    padding: 0;
-}
-
-.suplement {
-    border-bottom: 1px solid #ddd;
-    padding: 10px 0;
-}
-
-.suplement:last-child {
-    border-bottom: none;
-}
-
-.suplementDetails {
+.pagination {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
 }
 
-.suplementDetails span {
-    font-weight: bold;
+.pagination button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #78bf83;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-.error {
-    color: red;
+.pagination button:hover {
+    background-color: #69a572;
 }

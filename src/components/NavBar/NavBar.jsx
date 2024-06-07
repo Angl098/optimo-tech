@@ -88,76 +88,70 @@ const NavBar = (props) => {
             window.location.reload();
         });
     }
-    //user
- /*    useEffect(() => {
-        const dataUserJSON = window.localStorage.getItem('User');
-        if (dataUserJSON) {
-        const dataUser = JSON.parse(dataUserJSON);
-        dispatch(setUser(dataUser));     
-        }
-    }, []); */
 
 
     return (
-        <nav className={style.nav}>
-            <div className={style.mainContent}>
-                <div className={style.linkContainer}>
-                    <Link to={PATHROURES.LANDING}>
-                        <img src={logo} alt="" className={style.img} />
+        <nav className={style.navbar}>
+            <div className={style.navbarLeft}>
+                <Link to={PATHROURES.LANDING}>
+                    <img src={logo} alt="Logo" className={style.navbarLogo} />
+                </Link>
+                <Link to={PATHROURES.LANDING} className={style.navbarTitle}>
+                    ÓPTIMO
+                </Link>
+            </div>
+            <div className={style.navbarLinks}>
+                <Link to={PATHROURES.LANDING} className={style.navbarLink}>
+                    Home
+                </Link>
+                <Link to={PATHROURES.HOME} className={style.navbarLink}>
+                    Products
+                </Link>
+                {userState && userState.role === 'admin' && (
+                    <Link to="/dashboard" className={style.navbarLink}>
+                        Dashboard
                     </Link>
-                    <Link to={PATHROURES.LANDING} className={style.title}>ÓPTIMO</Link>
-                    <Link to={PATHROURES.LANDING} className={style.linkDesk} onClick={toggleNav}>Home</Link>
-                    <Link to={PATHROURES.HOME} className={style.linkDesk} onClick={toggleNav}>Products</Link>
-
-                    {
-                        admin ?
-                            <Link to={"/dashboard"} className={style.linkDesk} onClick={toggleNav}>Dashboard</Link>
-                            : <></>
-                    }
-                </div>
-
-                <div className={style.searchDeskContent}>
-                    <div className={style.group}>
-                        <input required type="text" className={style.input} value={search} onChange={handleChange} />
-                        <span className={style.highlight}></span>
-                        <span className={style.bar}></span>
-                    </div>
-                    <div className={style.groupButton}>
-                        <button type="submit" className={style.cssbuttonsIo} onClick={() => handleSearch(search)}>
-
-                            Buscar
-
+                )}
+            </div>
+            <div className={style.navbarSearch}>
+                <input
+                    type="text"
+                    className={style.navbarSearchInput}
+                    placeholder="Search..."
+                    value={search}
+                    onChange={handleChange}
+                />
+                <button className={style.navbarSearchButton} onClick={() => handleSearch(search)}>Buscar</button>
+            </div>
+            <div className={style.navbarProfile}>
+                {userState ? (
+                    <>
+                        <Link to="/userperfil" className={style.navbarLink}>
+                            <div className={style.navbarProfile}>
+                                <img
+                                    src="https://cdn.icon-icons.com/icons2/3298/PNG/96/ui_user_profile_avatar_person_icon_208734.png"
+                                    alt="Profile"
+                                    className={style.navbarProfileImg}
+                                />
+                                <p className={style.navbarProfileName}>{userState.name}</p>
+                            </div>
+                        </Link>
+                        <button className={style.navbarLogout} onClick={cerrarSesion}>
+                            Cerrar sesion
                         </button>
-                    </div>
-                </div>
-
-                <div className={style.cartContainer}>
-                    {userState === null
-                        ?
-                        <div className={style.buttonContainerDesk}>
-                            <Link to={"/login"}>
-                                <button className={style.buttonLog}>Log In</button>
-                            </Link>
-                            <Link to={"/registeruser"}>
-                                <button className={style.buttonSign}>Register</button>
-                            </Link>
-                        </div>
-                        : <></>
-
-                    }
-                </div>
-
-
-
-                <div className={style.cartContainer}>
-                    {userState !== null && <>
-                    <Link to='userperfil'>
-                        <img className={style.iconPerfil} src='https://cdn.icon-icons.com/icons2/3298/PNG/96/ui_user_profile_avatar_person_icon_208734.png' />
-                    </Link>
-                        <p>{userState.name}</p></>}
-
-                    {userState !== null && <button onClick={cerrarSesion} className={style.buttonSign}>Cerrar sesion</button>}
-                    <button className={style.cartButton} onClick={() => shoppingCart()}>
+                    </>
+                ) : (
+                    <>
+                        <Link to="/login" className={style.navbarLink}>
+                            Iniciar sesion
+                        </Link>
+                        <Link to="/registeruser" className={style.navbarLink}>
+                            Registrar
+                        </Link>
+                    </>
+                )}
+            </div>
+            <button className={style.cartButton} onClick={() => shoppingCart()}>
                         <svg
                             className={style.cartSvg}
                             xmlns="http://www.w3.org/2000/svg"
@@ -174,12 +168,8 @@ const NavBar = (props) => {
                         </div>
                     </button>
                     {showShoppingCartState && <ShoppingCart />}
-
-
-                </div>
-            </div>
         </nav>
-    )
+    );
 }
 
 export default NavBar;

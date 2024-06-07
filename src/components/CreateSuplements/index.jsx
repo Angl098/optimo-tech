@@ -33,7 +33,6 @@ function CreateSuplement() {
 
         if (name === "images") {
             newValue = [
-                ...newSuplements.images,
                 ...Array.from(files).slice(0, 3 - newSuplements.images.length),
             ];
         }

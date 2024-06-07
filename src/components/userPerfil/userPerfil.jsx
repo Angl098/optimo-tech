@@ -24,7 +24,13 @@ function userPerfil({ user }) {
   return (
     <div className={style.container}>
       <div className={style.imgPerfil}>
-        <h3 className={style.title}>Perfil de Usuario</h3>
+        {
+          user.role==="admin"?
+          <h3 className={style.title}>Perfil de Administrador</h3>
+          :
+          <h3 className={style.title}>Perfil de Usuario</h3>
+          }
+        
         <img className={style.iconPerfil} src='https://cdn.icon-icons.com/icons2/3298/PNG/96/ui_user_profile_avatar_person_icon_208734.png' alt="Profile" />
       </div>
       {user && (

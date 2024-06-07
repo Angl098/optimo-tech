@@ -172,6 +172,7 @@ export default function ProductList({ search }) {
                     >
                         <option className={style.optionElement} value="price">Por precio</option>
                         <option className={style.optionElement} value="name">Alfabéticamente</option>
+                        <option className={style.optionElement} value="sales">Ventas</option>
                     </select>
                     <select
                         name="orderDirection"

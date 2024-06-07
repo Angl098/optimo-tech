@@ -23,7 +23,7 @@ label {
 }
 
 .btn {
-  background: #007bff;
+  background: #78bf83;
   color: #fff;
   padding: 10px 15px;
   border: none;
@@ -33,7 +33,7 @@ label {
 }
 
 .btn:hover {
-  background: #0056b3;
+  background: #69a572;
 }
 
 .id {

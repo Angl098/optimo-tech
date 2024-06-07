@@ -4,7 +4,8 @@
 }
 
 .selectCategory {
-    background-color: #007bff;
+    cursor: pointer;
+    background-color: #a3a3a3;
     color: white;
     padding: 5px 10px;
     border-radius: 4px;
@@ -31,8 +32,8 @@
 
 .category:hover {
     cursor: pointer;
-    color: #007bff;
-    background-color: #e9ecef;
+    color: #000000;
+    background-color: #d6d6d6;
 }
 
 .catalogo {
@@ -139,7 +140,7 @@
 }
 
 .btnPages {
-    background-color: #007bff;
+    background-color: #78bf83;
     color: white;
     border: none;
     border-radius: 5px;
@@ -156,7 +157,7 @@
 }
 
 .btnPages:hover {
-    background-color: #0056b3;
+    background-color: #69a572;
 }
 .selectContainer {
     display: flex;
