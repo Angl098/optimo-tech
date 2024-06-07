@@ -44,23 +44,44 @@ const Detail = () => {
     };
 
     const [newComment, setNewComment] = useState("");
+    const [newReply, setNewReply] = useState("");
     const [parentId, setParentId] = useState(null);
-    const userId = JSON.parse(localStorage.getItem("User")).id;
+
+    let userId = null;
+    try {
+        userId = JSON.parse(localStorage.getItem("User"))?.id;
+    } catch (error) {
+        console.error("Failed to parse user from localStorage", error);
+    }
 
     const handleCommentChange = (e) => {
-        setNewComment(e.target.value);
+
+        if(e.target.name==="reply"){
+            setNewReply(e.target.value)
+        }else{
+
+            setNewComment(e.target.value);
+        }
     };
 
     const handleAddComment = () => {
+        if (!userId) {
+            alert("Debe iniciar sesión para comentar");
+            return;
+        }
         axios.post("/comments", { content: newComment, userId, suplementId: id, parentId }).then(({ data }) => {
             // Update the comments list with the new comment
-            setComments((prevComments) => [...prevComments, data]);
+            // setComments((prevComments) => [...prevComments, data]);
         });
         setNewComment("");
         setParentId(null);
     };
 
     const handleReplyToComment = (commentId) => {
+        if (!userId) {
+            alert("Debe iniciar sesión para responder");
+            return;
+        }
         setParentId(commentId);
     };
 
@@ -88,7 +109,7 @@ const Detail = () => {
                         <div key={comment.id} className={styles.comment}>
                             <p className={styles.commentAuthor}>{comment.user.name}</p>
                             <p className={styles.commentContent}>{comment.content}</p>
-                            {userId !== comment.userId && (
+                            {userId && userId !== comment.userId && (
                                 <div className={styles.commentActions}>
                                     <button
                                         className={styles.replyButton}
@@ -103,7 +124,8 @@ const Detail = () => {
                                     <input
                                         type="text"
                                         placeholder="Escribe tu respuesta..."
-                                        value={newComment}
+                                        name="reply"
+                                        value={newReply}
                                         onChange={handleCommentChange}
                                     />
                                     <button onClick={handleAddComment}>Responder</button>
@@ -115,7 +137,7 @@ const Detail = () => {
                                         <div key={response.id} className={styles.comment}>
                                             <p className={styles.commentAuthor}>{response.user.name}</p>
                                             <p className={styles.commentContent}>{response.content}</p>
-                                            {userId !== response.userId && (
+                                            {userId && userId !== response.userId && (
                                                 <div className={styles.commentActions}>
                                                     <button
                                                         className={styles.replyButton}
@@ -127,12 +149,13 @@ const Detail = () => {
                                             )}
                                             {parentId === response.id && (
                                                 <div className={styles.replyInput}>
-                                                   <input
+                                                    <input
                                                         type="text"
                                                         placeholder="Escribe tu respuesta..."
-                                                        value={newComment}
+                                                        value={newReply}
+                                                        name="reply"
                                                         onChange={handleCommentChange}
-                                                    /> 
+                                                    />
                                                     <button onClick={handleAddComment}>Responder</button>
                                                 </div>
                                             )}
@@ -143,15 +166,19 @@ const Detail = () => {
                         </div>
                     ))}
                 </div>
-                <div className={styles.addComment}>
-                    <input
-                        type="text"
-                        placeholder="Escribe tu comentario..."
-                        value={newComment}
-                        onChange={handleCommentChange}
-                    />
-                    <button onClick={handleAddComment}>Agregar comentario</button>
-                </div>
+                {userId ? (
+                    <div className={styles.addComment}>
+                        <input
+                            type="text"
+                            placeholder="Escribe tu comentario..."
+                            value={newComment}
+                            onChange={handleCommentChange}
+                        />
+                        <button onClick={handleAddComment}>Agregar comentario</button>
+                    </div>
+                ) : (
+                    <p className={styles.loginPrompt}>Debe iniciar sesión para comentar</p>
+                )}
             </div>
         </div>
     );

@@ -23,7 +23,7 @@ const Home = () => {
             {/* <NavBarLanding /> */}
             <div className={style.container}>
                 <div className={style.section}>
-                    <Link to={'/detail'} className={style.productOne}>
+                    <Link to={`/home/${randomSuplement[0]?.id}`} className={style.productOne}>
                         <img className={style.productsFirst} src={randomSuplement[0]?.image} alt={randomSuplement[0]?.name} />
                         <div className={`${style.info} ${style.firstInfo}`}>
                             <p className={style.p}>{randomSuplement[0]?.name}</p>
@@ -31,14 +31,14 @@ const Home = () => {
                         </div>
                     </Link>
                     <div className={style.leftContent}>
-                        <Link to={'/detail'} className={style.productTwo}>
+                        <Link to={`/home/${randomSuplement[1]?.id}`} className={style.productTwo}>
                             <img className={style.products} src={randomSuplement[1]?.image} alt={randomSuplement[1]?.name} />
                             <div className={style.info}>
                                 <p className={style.p}>{randomSuplement[1]?.name}</p>
                                 <button className={style.button}>$42000 ARS</button>
                             </div>
                         </Link>
-                        <Link to={'/detail'} className={style.productThree}>
+                        <Link to={`/home/${randomSuplement[2]?.id}`} className={style.productThree}>
                             <img className={style.products} src={randomSuplement[2]?.image} alt={randomSuplement[2]?.name} />
                             <div className={style.info}>
                                 <p className={style.p}>{randomSuplement[2]?.name}</p>
